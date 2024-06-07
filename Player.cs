@@ -35,10 +35,11 @@ public partial class Player : CharacterBody2D
 				ANIMATION_TREE.Set("parameters/conditions/isOnSurface", false);
 				return;
 			}
+
 			ANIMATION_TREE.Set("parameters/conditions/isOnSurface", true);
 			ANIMATION_TREE.Set("parameters/conditions/isFloating", false);
 			CurrentStamina = 3;
-			if (c_collision != null) Velocity = -c_collision.GetNormal();
+			if (c_collision != null) velocity = -c_collision.GetNormal();
 			surfaceCurrentlyInContact = value;
 			affectByGravity = false;
 			switch (surfaceCurrentlyInContact)
@@ -87,6 +88,7 @@ public partial class Player : CharacterBody2D
 			GD.Print(
 				ANIMATION_TREE.Get("parameters/conditions/isAttacking"), ' ',
 				ANIMATION_TREE.Get("parameters/Attack/conditions/whirlwindAttack"), ' ',
+				ANIMATION_TREE.Get("parameters/conditions/isFloating"), ' ',
 				ANIMATION_TREE.Get("parameters/conditions/isJumping"), ' ',
 				ANIMATION_TREE.Get("parameters/conditions/isOnSurface"), ' ',
 				ANIMATION_TREE.Get("parameters/FloatMidAir/blend_position"), ' ',
@@ -138,7 +140,7 @@ public partial class Player : CharacterBody2D
 					}
 					else if (SurfaceCurrentlyInContact == SurfaceType.WALL_LEFT) { c_direction = new(Mathf.Max(0, c_direction.X), c_direction.Y); }
 					else if (SurfaceCurrentlyInContact == SurfaceType.WALL_RIGHT) { c_direction = new(Mathf.Min(0, c_direction.X), c_direction.Y); }
-					Velocity = c_direction.Normalized() * JUMP_FORCE;
+					velocity = c_direction.Normalized() * JUMP_FORCE;
 					ANIMATION_TREE.Set("parameters/conditions/isJumping", true);
 				}
 			}
@@ -154,8 +156,8 @@ public partial class Player : CharacterBody2D
 	}
 	void HandlePhysics()
 	{
-		if (!isSliding) velocity = new(Velocity.X, affectByGravity ? Velocity.Y + GRAVITY * (float)Engine.TimeScale : Velocity.Y);
-		else velocity = new(Velocity.X * FRICTION_FACTOR, 0);
+		if (!isSliding) velocity = new(velocity.X, affectByGravity ? velocity.Y + GRAVITY * (float)Engine.TimeScale : velocity.Y);
+		else velocity = new(velocity.X * FRICTION_FACTOR, 0);
 		c_collision = MoveAndCollide(velocity * (float)Engine.TimeScale);
 
 		if (c_collision != null)
