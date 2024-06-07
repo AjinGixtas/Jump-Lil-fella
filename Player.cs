@@ -7,7 +7,9 @@ public partial class Player : CharacterBody2D
 	[Export] int AMOUNT_OF_TRAJECTORY_POINT;
 	[Export] PackedScene TRAJECTORY_POINT_SCENE;
 	[Export] Node2D TRAJECTORY_POINT_CONTAINER;
-	[Export] AnimationPlayer ANIMATION_PLAYER; [Export] Sprite2D SPRITE;
+	[Export] AnimationPlayer ANIMATION_PLAYER;
+	[Export] AnimationTree ANIMATION_TREE;
+	[Export] Sprite2D SPRITE;
 	enum SurfaceType { NONE, FLOOR, WALL_LEFT, WALL_RIGHT, CEILING }
 	[Export] bool affectByGravity = true, isSliding = false;
 	float currentStamina, deltaF;
@@ -26,26 +28,29 @@ public partial class Player : CharacterBody2D
 		get { return surfaceCurrentlyInContact; }
 		set
 		{
-			if (surfaceCurrentlyInContact != value)
+			if (value == SurfaceType.NONE)
 			{
-				if (value == SurfaceType.NONE) { affectByGravity = true; surfaceCurrentlyInContact = value; return; }
-				CurrentStamina = 3;
-				if (c_collision != null) Velocity = -c_collision.GetNormal();
-				surfaceCurrentlyInContact = value;
-				affectByGravity = false;
-				switch (surfaceCurrentlyInContact)
-				{
-					case SurfaceType.WALL_LEFT:
-						SPRITE.FlipH = true;
-						break;
-					case SurfaceType.WALL_RIGHT:
-						SPRITE.FlipH = false;
-						break;
-					case SurfaceType.CEILING:
-						break;
-					case SurfaceType.FLOOR:
-						break;
-				}
+				affectByGravity = true; surfaceCurrentlyInContact = value;
+				ANIMATION_TREE.Set("parameters/conditions/isFloating", true);
+				ANIMATION_TREE.Set("parameters/conditions/isOnSurface", false);
+				return;
+			}
+			ANIMATION_TREE.Set("parameters/conditions/isOnSurface", true);
+			ANIMATION_TREE.Set("parameters/conditions/isFloating", false);
+			CurrentStamina = 3;
+			if (c_collision != null) Velocity = -c_collision.GetNormal();
+			surfaceCurrentlyInContact = value;
+			affectByGravity = false;
+			switch (surfaceCurrentlyInContact)
+			{
+				case SurfaceType.WALL_LEFT:
+					break;
+				case SurfaceType.WALL_RIGHT:
+					break;
+				case SurfaceType.CEILING:
+					break;
+				case SurfaceType.FLOOR:
+					break;
 			}
 		}
 	}
@@ -54,7 +59,11 @@ public partial class Player : CharacterBody2D
 		get { return Velocity; }
 		set
 		{
+			if(Mathf.Abs(value.X) < 1) { isSliding = false; }
 			Velocity = value;
+			if(value.X > 0) SPRITE.FlipH = true; else SPRITE.FlipH = false;
+			ANIMATION_TREE.Set("parameters/FloatMidAir/blend_position", Velocity.Normalized());
+			ANIMATION_TREE.Set("parameters/GrabSurface/blend_position", Velocity.Normalized());
 		}
 	}
 	Vector2 c_direction, c_CalculatingVector; KinematicCollision2D c_collision; Node2D c_collisionNode;
@@ -70,10 +79,20 @@ public partial class Player : CharacterBody2D
 			TRAJECTORY_POINT_CONTAINER.AddChild(TRAJECTORY_POINTS[i]);
 		}
 	}
+	int counter, max_counter = 100;
 	public override void _Process(double delta)
 	{
 		HandlePlayerInput();
-		GD.Print(Velocity);
+		if (counter > max_counter)
+			GD.Print(
+				ANIMATION_TREE.Get("parameters/conditions/isAttacking"), ' ',
+				ANIMATION_TREE.Get("parameters/Attack/conditions/whirlwindAttack"), ' ',
+				ANIMATION_TREE.Get("parameters/conditions/isJumping"), ' ',
+				ANIMATION_TREE.Get("parameters/conditions/isOnSurface"), ' ',
+				ANIMATION_TREE.Get("parameters/FloatMidAir/blend_position"), ' ',
+				ANIMATION_TREE.Get("parameters/GrabSurface/blend_position"), ' ',
+				velocity);
+		else ++counter;
 	}
 	public override void _PhysicsProcess(double delta)
 	{
@@ -81,30 +100,31 @@ public partial class Player : CharacterBody2D
 		HandlePhysics();
 		HandleCounter();
 	}
+	bool canSlide;
 	void HandlePlayerInput()
 	{
 		if (SurfaceCurrentlyInContact != SurfaceType.NONE || isSliding)
 		{
 			if (Input.IsActionPressed("ui_jump"))
 			{
+				canSlide = false;
 				TRAJECTORY_POINT_CONTAINER.Visible = true;
-				Engine.TimeScale = .1;
 				c_direction = GetGlobalMousePosition() - GlobalPosition;
 				if (SurfaceCurrentlyInContact == SurfaceType.CEILING) { c_direction = new(c_direction.X, Mathf.Max(0, c_direction.Y)); }
 				else if (SurfaceCurrentlyInContact == SurfaceType.FLOOR)
 				{
 					c_CalculatingVector = c_direction * c_direction;
-					if (c_CalculatingVector.X / (c_CalculatingVector.X + c_CalculatingVector.Y) >= 0.933012701894f) c_direction = new(c_direction.X, 0);
+					if (c_CalculatingVector.X / (c_CalculatingVector.X + c_CalculatingVector.Y) >= 0.933012701894f) { c_direction = new(c_direction.X, 0); canSlide = true; }
 				}
 				else if (SurfaceCurrentlyInContact == SurfaceType.WALL_LEFT) { c_direction = new(Mathf.Max(0, c_direction.X), c_direction.Y); }
 				else if (SurfaceCurrentlyInContact == SurfaceType.WALL_RIGHT) { c_direction = new(Mathf.Min(0, c_direction.X), c_direction.Y); }
 				c_direction = c_direction.Normalized() * JUMP_FORCE;
-				for (int i = 0; i < AMOUNT_OF_TRAJECTORY_POINT; ++i) { TRAJECTORY_POINTS[i].Update(c_direction, i * .75f); }
+				for (int i = 0; i < AMOUNT_OF_TRAJECTORY_POINT; ++i) { TRAJECTORY_POINTS[i].Update(canSlide, c_direction, i * .75f); }
 			}
 			else
 			{
 				TRAJECTORY_POINT_CONTAINER.Visible = false;
-				Engine.TimeScale = 1;
+				// Engine.TimeScale = 1;
 				if (Input.IsActionJustReleased("ui_jump") && (SurfaceCurrentlyInContact != SurfaceType.NONE || isSliding))
 				{
 					c_direction = GetGlobalMousePosition() - GlobalPosition;
@@ -119,6 +139,7 @@ public partial class Player : CharacterBody2D
 					else if (SurfaceCurrentlyInContact == SurfaceType.WALL_LEFT) { c_direction = new(Mathf.Max(0, c_direction.X), c_direction.Y); }
 					else if (SurfaceCurrentlyInContact == SurfaceType.WALL_RIGHT) { c_direction = new(Mathf.Min(0, c_direction.X), c_direction.Y); }
 					Velocity = c_direction.Normalized() * JUMP_FORCE;
+					ANIMATION_TREE.Set("parameters/conditions/isJumping", true);
 				}
 			}
 		}
@@ -126,14 +147,16 @@ public partial class Player : CharacterBody2D
 		{
 			if (Input.IsActionJustPressed("ui_whirlwindAttack"))
 			{
+				ANIMATION_TREE.Set("parameters/conditions/isAttacking", true);
+				ANIMATION_TREE.Set("parameters/Attack/conditions/whirlwindAttack", true);
 			}
 		}
 	}
 	void HandlePhysics()
 	{
-		if (!isSliding) velocity = new(Velocity.X, affectByGravity ? Velocity.Y + GRAVITY : Velocity.Y);
+		if (!isSliding) velocity = new(Velocity.X, affectByGravity ? Velocity.Y + GRAVITY * (float)Engine.TimeScale : Velocity.Y);
 		else velocity = new(Velocity.X * FRICTION_FACTOR, 0);
-		c_collision = MoveAndCollide(velocity);
+		c_collision = MoveAndCollide(velocity * (float)Engine.TimeScale);
 
 		if (c_collision != null)
 		{

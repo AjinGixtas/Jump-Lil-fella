@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://d38w3kvjpff8u"]
+[gd_scene load_steps=42 format=3 uid="uid://d38w3kvjpff8u"]
 
 [ext_resource type="Script" path="res://Player.cs" id="1_kg7dr"]
 [ext_resource type="PackedScene" path="res://TrajectoryPoint.tscn" id="2_p7oop"]
@@ -25,7 +25,6 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_uhb77"]
 resource_name = "GrabCeiling"
-loop_mode = 1
 step = 0.25
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -39,11 +38,22 @@ tracks/0/keys = {
 "update": 1,
 "values": [Vector2i(0, 5), Vector2i(1, 5), Vector2i(2, 5), Vector2i(3, 5)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationTree:parameters/conditions/isJumping")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_1w62n"]
 resource_name = "GrabFloor"
 length = 0.4
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -55,6 +65,18 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [Vector2i(0, 6), Vector2i(1, 6)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationTree:parameters/conditions/isJumping")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_n2gsr"]
@@ -75,20 +97,19 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:flip_h")
+tracks/1/path = NodePath("AnimationTree:parameters/conditions/isJumping")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_nbhfh"]
 resource_name = "GrabWallRight"
 length = 0.6
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -104,7 +125,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:flip_h")
+tracks/1/path = NodePath("AnimationTree:parameters/conditions/isJumping")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -132,14 +153,38 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("AnimationPlayer:current_animation")
+tracks/1/path = NodePath("AnimationTree:parameters/conditions/isJumping")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0.5),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [&"FloatMidAir"]
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationTree:parameters/conditions/isOnSurface")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AnimationTree:parameters/conditions/isFloating")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_tqnh7"]
@@ -159,20 +204,67 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:flip_h")
+tracks/1/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationTree:parameters/Attack/conditions/whirlwindAttack")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AnimationTree:parameters/conditions/isJumping")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AnimationTree:parameters/conditions/isOnSurface")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("AnimationTree:parameters/conditions/isFloating")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_id8bt"]
 resource_name = "RiseUpward"
 length = 0.2
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -218,6 +310,30 @@ tracks/0/keys = {
 "update": 1,
 "values": [Vector2i(0, 7), Vector2i(1, 7), Vector2i(2, 7), Vector2i(3, 7), Vector2i(4, 7)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationTree:parameters/Attack/conditions/whirlwindAttack")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_rqa5f"]
 _data = {
@@ -238,14 +354,16 @@ animation = &"WhirlwindAttack"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_r0g6s"]
 advance_mode = 2
+advance_condition = &"whirlwindAttack"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lrkgr"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7dbk5"]
+switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_q83b4"]
 states/WhirlwindAttack/node = SubResource("AnimationNodeAnimation_qk6xj")
-states/WhirlwindAttack/position = Vector2(539, 100)
-transitions = ["Start", "WhirlwindAttack", SubResource("AnimationNodeStateMachineTransition_r0g6s"), "WhirlwindAttack", "End", SubResource("AnimationNodeStateMachineTransition_lrkgr")]
+states/WhirlwindAttack/position = Vector2(509, 100)
+transitions = ["Start", "WhirlwindAttack", SubResource("AnimationNodeStateMachineTransition_r0g6s"), "WhirlwindAttack", "End", SubResource("AnimationNodeStateMachineTransition_7dbk5")]
 graph_offset = Vector2(-22, -92)
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_j4iba"]
@@ -254,11 +372,24 @@ animation = &"FallDownward"
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_oqcgv"]
 animation = &"RiseUpward"
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1hdy2"]
+animation = &"Slide"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bfpdb"]
+animation = &"Slide"
+
 [sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_v73vt"]
+auto_triangles = false
 blend_point_0/node = SubResource("AnimationNodeAnimation_j4iba")
 blend_point_0/pos = Vector2(0, 1)
 blend_point_1/node = SubResource("AnimationNodeAnimation_oqcgv")
 blend_point_1/pos = Vector2(0, -1)
+blend_point_2/node = SubResource("AnimationNodeAnimation_1hdy2")
+blend_point_2/pos = Vector2(-1, 0)
+blend_point_3/node = SubResource("AnimationNodeAnimation_bfpdb")
+blend_point_3/pos = Vector2(1, 0)
+triangles = PackedInt32Array(0, 1, 2, 0, 1, 3)
+blend_mode = 1
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3etyo"]
 animation = &"GrabCeiling"
@@ -281,20 +412,14 @@ blend_point_2/node = SubResource("AnimationNodeAnimation_tqh2i")
 blend_point_2/pos = Vector2(-1, 0)
 blend_point_3/node = SubResource("AnimationNodeAnimation_ckgtx")
 blend_point_3/pos = Vector2(1, 0)
+blend_mode = 1
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qo2x6"]
 animation = &"Jump"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cfq65"]
-advance_mode = 2
-
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sdmoj"]
 advance_mode = 2
 advance_condition = &"isJumping"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bd2im"]
-advance_mode = 2
-advance_condition = &"isOnSurface"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3u3t8"]
 advance_mode = 2
@@ -302,20 +427,36 @@ advance_condition = &"isOnSurface"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mdki5"]
 advance_mode = 2
+advance_condition = &"isFloating"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rkpi4"]
 advance_mode = 2
 advance_condition = &"isAttacking"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nqn0p"]
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_j5xif"]
-advance_mode = 2
-
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0brki"]
 advance_mode = 2
 advance_condition = &"isAttacking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_t70iw"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"isJumping"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7wwqt"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"isFloating"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_th58w"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vxk45"]
+advance_mode = 2
+advance_condition = &"isOnSurface"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1y5lb"]
+advance_mode = 2
+advance_condition = &"isOnSurface"
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_ebb3e"]
 states/Attack/node = SubResource("AnimationNodeStateMachine_q83b4")
@@ -328,19 +469,20 @@ states/GrabSurface/position = Vector2(401, 100)
 states/Jump/node = SubResource("AnimationNodeAnimation_qo2x6")
 states/Jump/position = Vector2(401, -50)
 states/Start/position = Vector2(43, 100)
-transitions = ["Start", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_cfq65"), "GrabSurface", "Jump", SubResource("AnimationNodeStateMachineTransition_sdmoj"), "Jump", "GrabSurface", SubResource("AnimationNodeStateMachineTransition_bd2im"), "FloatMidAir", "GrabSurface", SubResource("AnimationNodeStateMachineTransition_3u3t8"), "Jump", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_mdki5"), "Jump", "Attack", SubResource("AnimationNodeStateMachineTransition_rkpi4"), "Attack", "Jump", SubResource("AnimationNodeStateMachineTransition_nqn0p"), "Attack", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_j5xif"), "FloatMidAir", "Attack", SubResource("AnimationNodeStateMachineTransition_0brki")]
-graph_offset = Vector2(-451, -168)
+transitions = ["GrabSurface", "Jump", SubResource("AnimationNodeStateMachineTransition_sdmoj"), "FloatMidAir", "GrabSurface", SubResource("AnimationNodeStateMachineTransition_3u3t8"), "Jump", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_mdki5"), "Jump", "Attack", SubResource("AnimationNodeStateMachineTransition_rkpi4"), "FloatMidAir", "Attack", SubResource("AnimationNodeStateMachineTransition_0brki"), "Attack", "Jump", SubResource("AnimationNodeStateMachineTransition_t70iw"), "Attack", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_7wwqt"), "Start", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_th58w"), "Jump", "GrabSurface", SubResource("AnimationNodeStateMachineTransition_vxk45"), "Attack", "GrabSurface", SubResource("AnimationNodeStateMachineTransition_1y5lb")]
+graph_offset = Vector2(-264, -92)
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("TRAJECTORY_POINTS", "ANIMATION_PLAYER", "SPRITE")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("TRAJECTORY_POINTS", "ANIMATION_PLAYER", "ANIMATION_TREE", "SPRITE")]
 script = ExtResource("1_kg7dr")
 JUMP_FORCE = 7.5
 MAX_STAMINA = 3.0
-GRAVITY = 10.0
+GRAVITY = 1.0
 FRICTION_FACTOR = 0.97
 TRAJECTORY_POINTS = []
-AMOUNT_OF_TRAJECTORY_POINT = 30
+AMOUNT_OF_TRAJECTORY_POINT = 75
 TRAJECTORY_POINT_SCENE = ExtResource("2_p7oop")
 ANIMATION_PLAYER = NodePath("AnimationPlayer")
+ANIMATION_TREE = NodePath("AnimationTree")
 SPRITE = NodePath("Sprite2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -361,10 +503,13 @@ libraries = {
 autoplay = "GrabFloor"
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
+deterministic = false
 tree_root = SubResource("AnimationNodeStateMachine_ebb3e")
 anim_player = NodePath("../AnimationPlayer")
 parameters/conditions/isAttacking = false
+parameters/conditions/isFloating = false
 parameters/conditions/isJumping = false
 parameters/conditions/isOnSurface = false
+parameters/Attack/conditions/whirlwindAttack = false
 parameters/FloatMidAir/blend_position = Vector2(0, 0)
-parameters/GrabSurface/blend_position = Vector2(-0.996531, 0.0294118)
+parameters/GrabSurface/blend_position = Vector2(0, 0)

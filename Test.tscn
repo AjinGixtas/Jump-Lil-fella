@@ -23,8 +23,9 @@ rotation = 3.14159
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2.5, 2.5)
 
-[node name="Player" parent="." node_paths=PackedStringArray("TRAJECTORY_POINTS", "TRAJECTORY_POINT_CONTAINER") instance=ExtResource("2_oi0il")]
-TRAJECTORY_POINTS = []
+[node name="Player" parent="." node_paths=PackedStringArray("TRAJECTORY_POINT_CONTAINER") instance=ExtResource("2_oi0il")]
+position = Vector2(2, 88)
+GRAVITY = 10.0
 TRAJECTORY_POINT_CONTAINER = NodePath("../Node2D")
 
 [node name="Node2D" type="Node2D" parent="."]
