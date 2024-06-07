@@ -1,0 +1,370 @@
+[gd_scene load_steps=39 format=3 uid="uid://d38w3kvjpff8u"]
+
+[ext_resource type="Script" path="res://Player.cs" id="1_kg7dr"]
+[ext_resource type="PackedScene" path="res://TrajectoryPoint.tscn" id="2_p7oop"]
+[ext_resource type="Texture2D" uid="uid://cm5msfrjshh2m" path="res://Sprites/Character_Frog_Ninja.png" id="2_sx6ou"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eiv2h"]
+size = Vector2(16, 32)
+
+[sub_resource type="Animation" id="Animation_j0qf4"]
+resource_name = "FallDownward"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Vector2i(0, 2), Vector2i(1, 2)]
+}
+
+[sub_resource type="Animation" id="Animation_uhb77"]
+resource_name = "GrabCeiling"
+loop_mode = 1
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.75),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 5), Vector2i(1, 5), Vector2i(2, 5), Vector2i(3, 5)]
+}
+
+[sub_resource type="Animation" id="Animation_1w62n"]
+resource_name = "GrabFloor"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Vector2i(0, 6), Vector2i(1, 6)]
+}
+
+[sub_resource type="Animation" id="Animation_n2gsr"]
+resource_name = "GrabWallLeft"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Vector2i(0, 3), Vector2i(1, 3)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_nbhfh"]
+resource_name = "GrabWallRight"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Vector2i(0, 3), Vector2i(1, 3)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_a2w70"]
+resource_name = "Jump"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationPlayer:current_animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [&"FloatMidAir"]
+}
+
+[sub_resource type="Animation" id="Animation_tqnh7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_id8bt"]
+resource_name = "RiseUpward"
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Vector2i(0, 1), Vector2i(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_yonac"]
+resource_name = "Slide"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 4), Vector2i(1, 4), Vector2i(2, 4)]
+}
+
+[sub_resource type="Animation" id="Animation_x8cej"]
+resource_name = "WhirlwindAttack"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 7), Vector2i(1, 7), Vector2i(2, 7), Vector2i(3, 7), Vector2i(4, 7)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_rqa5f"]
+_data = {
+"FallDownward": SubResource("Animation_j0qf4"),
+"GrabCeiling": SubResource("Animation_uhb77"),
+"GrabFloor": SubResource("Animation_1w62n"),
+"GrabWallLeft": SubResource("Animation_n2gsr"),
+"GrabWallRight": SubResource("Animation_nbhfh"),
+"Jump": SubResource("Animation_a2w70"),
+"RESET": SubResource("Animation_tqnh7"),
+"RiseUpward": SubResource("Animation_id8bt"),
+"Slide": SubResource("Animation_yonac"),
+"WhirlwindAttack": SubResource("Animation_x8cej")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qk6xj"]
+animation = &"WhirlwindAttack"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_r0g6s"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lrkgr"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_q83b4"]
+states/WhirlwindAttack/node = SubResource("AnimationNodeAnimation_qk6xj")
+states/WhirlwindAttack/position = Vector2(539, 100)
+transitions = ["Start", "WhirlwindAttack", SubResource("AnimationNodeStateMachineTransition_r0g6s"), "WhirlwindAttack", "End", SubResource("AnimationNodeStateMachineTransition_lrkgr")]
+graph_offset = Vector2(-22, -92)
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_j4iba"]
+animation = &"FallDownward"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_oqcgv"]
+animation = &"RiseUpward"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_v73vt"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_j4iba")
+blend_point_0/pos = Vector2(0, 1)
+blend_point_1/node = SubResource("AnimationNodeAnimation_oqcgv")
+blend_point_1/pos = Vector2(0, -1)
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3etyo"]
+animation = &"GrabCeiling"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_i0lbd"]
+animation = &"GrabFloor"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_tqh2i"]
+animation = &"GrabWallLeft"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ckgtx"]
+animation = &"GrabWallRight"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_0d2vv"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_3etyo")
+blend_point_0/pos = Vector2(0, -1)
+blend_point_1/node = SubResource("AnimationNodeAnimation_i0lbd")
+blend_point_1/pos = Vector2(0, 1)
+blend_point_2/node = SubResource("AnimationNodeAnimation_tqh2i")
+blend_point_2/pos = Vector2(-1, 0)
+blend_point_3/node = SubResource("AnimationNodeAnimation_ckgtx")
+blend_point_3/pos = Vector2(1, 0)
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qo2x6"]
+animation = &"Jump"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cfq65"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sdmoj"]
+advance_mode = 2
+advance_condition = &"isJumping"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bd2im"]
+advance_mode = 2
+advance_condition = &"isOnSurface"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3u3t8"]
+advance_mode = 2
+advance_condition = &"isOnSurface"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mdki5"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rkpi4"]
+advance_mode = 2
+advance_condition = &"isAttacking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nqn0p"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_j5xif"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0brki"]
+advance_mode = 2
+advance_condition = &"isAttacking"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_ebb3e"]
+states/Attack/node = SubResource("AnimationNodeStateMachine_q83b4")
+states/Attack/position = Vector2(221, -50)
+states/End/position = Vector2(581, 100)
+states/FloatMidAir/node = SubResource("AnimationNodeBlendSpace2D_v73vt")
+states/FloatMidAir/position = Vector2(221, 100)
+states/GrabSurface/node = SubResource("AnimationNodeBlendSpace2D_0d2vv")
+states/GrabSurface/position = Vector2(401, 100)
+states/Jump/node = SubResource("AnimationNodeAnimation_qo2x6")
+states/Jump/position = Vector2(401, -50)
+states/Start/position = Vector2(43, 100)
+transitions = ["Start", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_cfq65"), "GrabSurface", "Jump", SubResource("AnimationNodeStateMachineTransition_sdmoj"), "Jump", "GrabSurface", SubResource("AnimationNodeStateMachineTransition_bd2im"), "FloatMidAir", "GrabSurface", SubResource("AnimationNodeStateMachineTransition_3u3t8"), "Jump", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_mdki5"), "Jump", "Attack", SubResource("AnimationNodeStateMachineTransition_rkpi4"), "Attack", "Jump", SubResource("AnimationNodeStateMachineTransition_nqn0p"), "Attack", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_j5xif"), "FloatMidAir", "Attack", SubResource("AnimationNodeStateMachineTransition_0brki")]
+graph_offset = Vector2(-451, -168)
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("TRAJECTORY_POINTS", "ANIMATION_PLAYER", "SPRITE")]
+script = ExtResource("1_kg7dr")
+JUMP_FORCE = 7.5
+MAX_STAMINA = 3.0
+GRAVITY = 10.0
+FRICTION_FACTOR = 0.97
+TRAJECTORY_POINTS = []
+AMOUNT_OF_TRAJECTORY_POINT = 30
+TRAJECTORY_POINT_SCENE = ExtResource("2_p7oop")
+ANIMATION_PLAYER = NodePath("AnimationPlayer")
+SPRITE = NodePath("Sprite2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_eiv2h")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -1)
+texture = ExtResource("2_sx6ou")
+flip_h = true
+hframes = 5
+vframes = 8
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_rqa5f")
+}
+autoplay = "GrabFloor"
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_ebb3e")
+anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/isAttacking = false
+parameters/conditions/isJumping = false
+parameters/conditions/isOnSurface = false
+parameters/FloatMidAir/blend_position = Vector2(0, 0)
+parameters/GrabSurface/blend_position = Vector2(-0.996531, 0.0294118)
