@@ -2,7 +2,7 @@ using Godot;
 
 public partial class Player : CharacterBody2D
 {
-	[Export] public float JUMP_FORCE, MAX_STAMINA, GRAVITY, FRICTION_FACTOR;
+	[Export] public float JUMP_FORCE, MAX_STAMINA, FRICTION_FACTOR;
 	[Export] TrajectoryPoint[] TRAJECTORY_POINTS;
 	[Export] int AMOUNT_OF_TRAJECTORY_POINT;
 	[Export] PackedScene TRAJECTORY_POINT_SCENE;
@@ -11,6 +11,7 @@ public partial class Player : CharacterBody2D
 	[Export] AnimationTree ANIMATION_TREE;
 	[Export] Sprite2D SPRITE;
 	enum SurfaceType { NONE, FLOOR, WALL_LEFT, WALL_RIGHT, CEILING }
+	float GRAVITY = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 	[Export] bool affectByGravity = true, isSliding = false;
 	float currentStamina, deltaF;
 	float CurrentStamina
@@ -42,17 +43,6 @@ public partial class Player : CharacterBody2D
 			if (c_collision != null) velocity = -c_collision.GetNormal();
 			surfaceCurrentlyInContact = value;
 			affectByGravity = false;
-			switch (surfaceCurrentlyInContact)
-			{
-				case SurfaceType.WALL_LEFT:
-					break;
-				case SurfaceType.WALL_RIGHT:
-					break;
-				case SurfaceType.CEILING:
-					break;
-				case SurfaceType.FLOOR:
-					break;
-			}
 		}
 	}
 	Vector2 velocity
@@ -72,7 +62,7 @@ public partial class Player : CharacterBody2D
 	{
 		GRAVITY /= 60f;
 		TrajectoryPoint.GRAVITY_VECTOR = new(0, GRAVITY);
-		TrajectoryPoint.PLAYER = this;
+		Enemy.PLAYER = this;
 		TRAJECTORY_POINTS = new TrajectoryPoint[AMOUNT_OF_TRAJECTORY_POINT];
 		for (int i = 0; i < AMOUNT_OF_TRAJECTORY_POINT; ++i)
 		{
@@ -84,17 +74,17 @@ public partial class Player : CharacterBody2D
 	public override void _Process(double delta)
 	{
 		HandlePlayerInput();
-		if (counter > max_counter)
-			GD.Print(
-				ANIMATION_TREE.Get("parameters/conditions/isAttacking"), ' ',
-				ANIMATION_TREE.Get("parameters/Attack/conditions/whirlwindAttack"), ' ',
-				ANIMATION_TREE.Get("parameters/conditions/isFloating"), ' ',
-				ANIMATION_TREE.Get("parameters/conditions/isJumping"), ' ',
-				ANIMATION_TREE.Get("parameters/conditions/isOnSurface"), ' ',
-				ANIMATION_TREE.Get("parameters/FloatMidAir/blend_position"), ' ',
-				ANIMATION_TREE.Get("parameters/GrabSurface/blend_position"), ' ',
-				velocity);
-		else ++counter;
+		// if (counter > max_counter)
+		// 	GD.Print(
+		// 		ANIMATION_TREE.Get("parameters/conditions/isAttacking"), ' ',
+		// 		ANIMATION_TREE.Get("parameters/Attack/conditions/whirlwindAttack"), ' ',
+		// 		ANIMATION_TREE.Get("parameters/conditions/isFloating"), ' ',
+		// 		ANIMATION_TREE.Get("parameters/conditions/isJumping"), ' ',
+		// 		ANIMATION_TREE.Get("parameters/conditions/isOnSurface"), ' ',
+		// 		ANIMATION_TREE.Get("parameters/FloatMidAir/blend_position"), ' ',
+		// 		ANIMATION_TREE.Get("parameters/GrabSurface/blend_position"), ' ',
+		// 		ANIMATION_PLAYER.CurrentAnimation, ' ', velocity, ' ', SPRITE.FlipH);
+		// else ++counter;
 	}
 	public override void _PhysicsProcess(double delta)
 	{
@@ -121,7 +111,7 @@ public partial class Player : CharacterBody2D
 				else if (SurfaceCurrentlyInContact == SurfaceType.WALL_LEFT) { c_direction = new(Mathf.Max(0, c_direction.X), c_direction.Y); }
 				else if (SurfaceCurrentlyInContact == SurfaceType.WALL_RIGHT) { c_direction = new(Mathf.Min(0, c_direction.X), c_direction.Y); }
 				c_direction = c_direction.Normalized() * JUMP_FORCE;
-				for (int i = 0; i < AMOUNT_OF_TRAJECTORY_POINT; ++i) { TRAJECTORY_POINTS[i].Update(canSlide, c_direction, i * .75f); }
+				for (int i = 0; i < AMOUNT_OF_TRAJECTORY_POINT; ++i) { TRAJECTORY_POINTS[i].Update(Position, canSlide, c_direction, i * .75f); }
 			}
 			else
 			{
