@@ -30,6 +30,5 @@ TRAJECTORY_POINT_CONTAINER = NodePath("../Node2D")
 
 [node name="RobotDuelist" parent="." instance=ExtResource("3_rdqxd")]
 position = Vector2(36, 92)
-JUMP_FORCE = 1.5
 
 [node name="Node2D" type="Node2D" parent="."]
