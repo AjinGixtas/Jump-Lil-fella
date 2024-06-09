@@ -1,8 +1,9 @@
-[gd_scene load_steps=40 format=3 uid="uid://d38w3kvjpff8u"]
+[gd_scene load_steps=42 format=3 uid="uid://d38w3kvjpff8u"]
 
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_kg7dr"]
 [ext_resource type="PackedScene" uid="uid://b04ghogku75b4" path="res://Scenes/TrajectoryPoint.tscn" id="2_p7oop"]
 [ext_resource type="Texture2D" uid="uid://cm5msfrjshh2m" path="res://Sprites/Character_Frog_Ninja.png" id="2_sx6ou"]
+[ext_resource type="Script" path="res://Scripts/Components/Hurtbox.cs" id="4_dkvq4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eiv2h"]
 size = Vector2(16, 32)
@@ -478,10 +479,13 @@ states/Start/position = Vector2(43, 100)
 transitions = ["GrabSurface", "Jump", SubResource("AnimationNodeStateMachineTransition_sdmoj"), "FloatMidAir", "GrabSurface", SubResource("AnimationNodeStateMachineTransition_3u3t8"), "Jump", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_mdki5"), "Jump", "Attack", SubResource("AnimationNodeStateMachineTransition_rkpi4"), "FloatMidAir", "Attack", SubResource("AnimationNodeStateMachineTransition_0brki"), "Attack", "Jump", SubResource("AnimationNodeStateMachineTransition_t70iw"), "Attack", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_7wwqt"), "Start", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_th58w"), "Attack", "GrabSurface", SubResource("AnimationNodeStateMachineTransition_1y5lb")]
 graph_offset = Vector2(-64, -84)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1ax5r"]
+size = Vector2(12, 28)
+
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("TRAJECTORY_POINTS", "ANIMATION_PLAYER", "ANIMATION_TREE", "SPRITE")]
 collision_layer = 0
 script = ExtResource("1_kg7dr")
-JUMP_FORCE = 10.0
+JUMP_FORCE = 7.5
 MAX_STAMINA = 3.0
 FRICTION_FACTOR = 0.97
 TRAJECTORY_POINTS = []
@@ -518,3 +522,10 @@ parameters/conditions/isOnSurface = false
 parameters/Attack/conditions/whirlwindAttack = false
 parameters/FloatMidAir/blend_position = Vector2(-0.0144, 0.968254)
 parameters/GrabSurface/blend_position = Vector2(-0.9952, 0.0661478)
+
+[node name="Hurtbox" type="Area2D" parent="." groups=["Hurtbox"]]
+script = ExtResource("4_dkvq4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_1ax5r")

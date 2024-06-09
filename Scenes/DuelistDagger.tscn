@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://di2ppo2eyg241"]
+
+[ext_resource type="Script" path="res://Scripts/Dagger.cs" id="1_53psc"]
+[ext_resource type="Texture2D" uid="uid://ddecanu3po3qu" path="res://Sprites/Dagger.png" id="2_rctl8"]
+
+[node name="DuelistDagger" type="Node2D"]
+z_index = 1
+script = ExtResource("1_53psc")
+SPEED = 250.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-4, 0)
+rotation = 1.57079
+texture = ExtResource("2_rctl8")

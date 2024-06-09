@@ -1,52 +1,86 @@
+using System;
 using Godot;
 
 public partial class RobotDuelist : Enemy
 {
+	[Export] AnimationTree ANIMATION_TREE;
+	[Export] Node2D FIRE_SPOT;
+	[Export] Timer JUMP_COOLDOWN_TIMER, ATTACK_COOLDOWN_TIMER;
+	[Export] Sprite2D SPRITE;
 	[Export] float JUMP_FORCE;
-	[Export] Sprite2D SPRITE; [Export] AnimationTree ANIMATION_TREE; 
-	[Export] Timer jumpAttackCooldownTimer, jumpDurationTimer; 
-	float GRAVITY = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
-	bool canJump = true, isJumping = false;
-	bool IsJumping { get { return isJumping; } set { isJumping = value; ANIMATION_TREE.Set("parameters/conditions/isJumping", value); }}
-	KinematicCollision2D c_collision; Node2D c_collisionNode;
-	SurfaceType SurfaceCurrentlyInContact {
-		get { return surfaceCurrentlyInContact; }
-		set {
-			if(surfaceCurrentlyInContact != SurfaceType.NONE) { isJumping = false; ANIMATION_TREE.Set("parameters/conditions/isOnSurface", true); } else { ANIMATION_TREE.Set("parameters/conditions/isOnSurface", false); }
-			if (c_collision != null) velocity = -c_collision.GetNormal();
-			surfaceCurrentlyInContact = value;
-		}
-	}
+	[Export] bool affectByGravity, canAttack = true, canJump, isAttacking;
+	[Export] PackedScene DAGGER_SCENE;
 	Vector2 velocity
 	{
 		get { return Velocity; }
 		set
 		{
 			Velocity = value;
-			if(value.X > 0) SPRITE.FlipH = true; else SPRITE.FlipH = false;
+			if (value.X != 0 && !isAttacking) SPRITE.FlipH = value.X > 0;
 			ANIMATION_TREE.Set("parameters/FloatMidAir/blend_position", Velocity.Normalized());
 			ANIMATION_TREE.Set("parameters/GrabSurface/blend_position", Velocity.Normalized());
+			ANIMATION_TREE.Set("parameters/LandOnSurface/blend_position", Velocity.Normalized());
+		}
+	}
+	KinematicCollision2D c_kinematicCollision; Node2D c_collisionNode;
+	SurfaceType SurfaceCurrentlyInContact
+	{
+		get { return surfaceCurrentlyInContact; }
+		set
+		{
+			surfaceCurrentlyInContact = value;
+			if (c_kinematicCollision != null) velocity = -c_kinematicCollision.GetNormal();
+			if (surfaceCurrentlyInContact == SurfaceType.NONE || surfaceCurrentlyInContact == SurfaceType.CEILING)
+			{
+				affectByGravity = true;
+				ANIMATION_TREE.Set("parameters/conditions/isJumping", true);
+				ANIMATION_TREE.Set("parameters/conditions/isOnSurface", false);
+			}
+			else
+			{
+				affectByGravity = false;
+				ANIMATION_TREE.Set("parameters/conditions/isJumping", false);
+				ANIMATION_TREE.Set("parameters/conditions/isOnSurface", true);
+			}
 		}
 	}
 	public override void _Process(double delta)
 	{
-		if (canJump)
+		if (canAttack && SurfaceCurrentlyInContact == SurfaceType.NONE && Mathf.Abs(Velocity.Y) < 2) { ANIMATION_TREE.Set("parameters/conditions/isAttacking", true); canAttack = false; ATTACK_COOLDOWN_TIMER.Start(); }
+		if(canJump) Jump();
+	}
+	public override void _PhysicsProcess(double delta)
+	{
+		velocity += affectByGravity ? GRAVITY_VECTOR * (float)delta : Vector2.Zero;
+		c_kinematicCollision = MoveAndCollide(velocity);
+		if (c_kinematicCollision != null)
 		{
-			velocity = (PLAYER.Position - Position).Normalized() * JUMP_FORCE;
-			canJump = false; isJumping = true;
-			jumpAttackCooldownTimer.Start(); jumpDurationTimer.Start();
-		}
-		GD.Print(canJump, isJumping, isJumping, (PLAYER.Position - Position).Normalized(), (PLAYER.Position - Position).Normalized() * JUMP_FORCE, SurfaceCurrentlyInContact, velocity, JUMP_FORCE);
-		c_collision = MoveAndCollide(velocity);
-		if(c_collision != null) {
-			c_collisionNode = c_collision.GetCollider() as Node2D;
+			c_collisionNode = c_kinematicCollision.GetCollider() as Node2D;
 			if (c_collisionNode.IsInGroup("Floor")) { SurfaceCurrentlyInContact = SurfaceType.FLOOR; }
 			else if (c_collisionNode.IsInGroup("WallLeft")) { SurfaceCurrentlyInContact = SurfaceType.WALL_LEFT; }
 			else if (c_collisionNode.IsInGroup("WallRight")) { SurfaceCurrentlyInContact = SurfaceType.WALL_RIGHT; }
+			else if (c_collisionNode.IsInGroup("Ceiling")) { velocity = Vector2.Zero; }
 			else { SurfaceCurrentlyInContact = SurfaceType.NONE; }
-		} else { SurfaceCurrentlyInContact = SurfaceType.NONE; }
-		velocity = new(surfaceCurrentlyInContact == SurfaceType.NONE ? velocity.X : velocity.X * .97f, isJumping ? velocity.Y : velocity.Y + GRAVITY * (float)delta * (float)Engine.TimeScale);
+		}
+		else { SurfaceCurrentlyInContact = SurfaceType.NONE; }
 	}
-	public void OnJumpAttackCooldownTimerTimeout() { canJump = true; }
-	public void OnJumpDurationTimerTimeout() { isJumping = false; }
+	public void Jump()
+	{
+		if (c_kinematicCollision == null || !canJump) return;
+		canJump = false;
+		velocity = (c_kinematicCollision.GetNormal() + new Vector2(GD.Randf() - .5f, (GD.Randf() - .5f) / 10)).Normalized() * JUMP_FORCE;
+		JUMP_COOLDOWN_TIMER.Start();
+	}
+	Dagger c_daggerInstance; int c_spawnPointIndex;
+	public void ThrowDagger()
+	{
+		velocity = new(velocity.X / 2f, 0);
+		c_daggerInstance = DAGGER_SCENE.Instantiate<Dagger>();
+		PROJECTILE_CONTAINER.AddChild(c_daggerInstance);
+		c_daggerInstance.GlobalPosition = FIRE_SPOT.GlobalPosition;
+		SPRITE.FlipH = c_daggerInstance.Velocity.X > 0;
+		c_daggerInstance.Intialize((PLAYER.GlobalPosition - FIRE_SPOT.GlobalPosition).Normalized() + Velocity.Normalized() * .33f);
+	}
+	public void OnJumpCooldownTimerTimeout() { canJump = true; }
+	public void OnAttackCooldownTimerTimeout() { canAttack = true; }
 }

@@ -24,11 +24,69 @@ rotation = 3.14159
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2.5, 2.5)
 
-[node name="Player" parent="." node_paths=PackedStringArray("TRAJECTORY_POINT_CONTAINER") instance=ExtResource("2_oc2s3")]
+[node name="Player" parent="." node_paths=PackedStringArray("TRAJECTORY_POINT_CONTAINER", "PROJECTILE_CONTAINER") instance=ExtResource("2_oc2s3")]
 position = Vector2(0, 89)
 TRAJECTORY_POINT_CONTAINER = NodePath("../Node2D")
-
-[node name="RobotDuelist" parent="." instance=ExtResource("3_rdqxd")]
-position = Vector2(36, 92)
+PROJECTILE_CONTAINER = NodePath("../Wall")
 
 [node name="Node2D" type="Node2D" parent="."]
+
+[node name="RobotDuelist" parent="." instance=ExtResource("3_rdqxd")]
+isAttacking = true
+
+[node name="RobotDuelist2" parent="." instance=ExtResource("3_rdqxd")]
+isAttacking = true
+
+[node name="RobotDuelist3" parent="." instance=ExtResource("3_rdqxd")]
+isAttacking = true
+
+[node name="RobotDuelist4" parent="." instance=ExtResource("3_rdqxd")]
+isAttacking = true
+
+[node name="RobotDuelist5" parent="." instance=ExtResource("3_rdqxd")]
+isAttacking = true
+
+[node name="RobotDuelist6" parent="." instance=ExtResource("3_rdqxd")]
+isAttacking = true
+
+[node name="RobotDuelist7" parent="." instance=ExtResource("3_rdqxd")]
+isAttacking = true
+
+[node name="RobotDuelist8" parent="." instance=ExtResource("3_rdqxd")]
+isAttacking = true
+
+[node name="RobotDuelist9" parent="." instance=ExtResource("3_rdqxd")]
+isAttacking = true
+
+[node name="RobotDuelist10" parent="." instance=ExtResource("3_rdqxd")]
+isAttacking = true
+
+[node name="RobotDuelist11" parent="." instance=ExtResource("3_rdqxd")]
+isAttacking = true
+
+[node name="RobotDuelist12" parent="." instance=ExtResource("3_rdqxd")]
+isAttacking = true
+
+[node name="RobotDuelist13" parent="." instance=ExtResource("3_rdqxd")]
+isAttacking = true
+
+[node name="RobotDuelist14" parent="." instance=ExtResource("3_rdqxd")]
+isAttacking = true
+
+[node name="RobotDuelist15" parent="." instance=ExtResource("3_rdqxd")]
+isAttacking = true
+
+[node name="RobotDuelist16" parent="." instance=ExtResource("3_rdqxd")]
+isAttacking = true
+
+[node name="RobotDuelist17" parent="." instance=ExtResource("3_rdqxd")]
+isAttacking = true
+
+[node name="RobotDuelist18" parent="." instance=ExtResource("3_rdqxd")]
+isAttacking = true
+
+[node name="RobotDuelist19" parent="." instance=ExtResource("3_rdqxd")]
+isAttacking = true
+
+[node name="RobotDuelist20" parent="." instance=ExtResource("3_rdqxd")]
+isAttacking = true

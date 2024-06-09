@@ -1,7 +1,8 @@
-[gd_scene load_steps=35 format=3 uid="uid://621oo0s8t1bf"]
+[gd_scene load_steps=40 format=3 uid="uid://621oo0s8t1bf"]
 
 [ext_resource type="Texture2D" uid="uid://biymhvdiajyk4" path="res://Sprites/RobotDuelist_FrogNinja.png" id="1_la27p"]
 [ext_resource type="Script" path="res://Scripts/RobotDuelist.cs" id="1_xqdf2"]
+[ext_resource type="PackedScene" uid="uid://di2ppo2eyg241" path="res://Scenes/DuelistDagger.tscn" id="2_rb7jj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3hppv"]
 size = Vector2(24, 24)
@@ -28,10 +29,48 @@ tracks/1/path = NodePath(".:affectByGravity")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.5),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"ThrowDagger"
+}]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:isAttacking")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
 }
 
 [sub_resource type="Animation" id="Animation_0pohj"]
@@ -117,8 +156,8 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_t1xq2"]
 resource_name = "LandWall"
-length = 0.75
-step = 0.25
+length = 0.15
+step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -126,7 +165,7 @@ tracks/0/path = NodePath("Sprite2D:frame_coords")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.25, 0.5),
+"times": PackedFloat32Array(0, 0.05, 0.1),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [Vector2i(0, 6), Vector2i(1, 6), Vector2i(2, 6)]
@@ -153,6 +192,30 @@ tracks/1/path = NodePath(".:affectByGravity")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:isAttacking")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -188,27 +251,31 @@ _data = {
 "RiseUpward": SubResource("Animation_y7c6f")
 }
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bjews"]
+animation = &"ApexSlash"
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rqc4x"]
 animation = &"FallDownward"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ox6na"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ikrig"]
+animation = &"FallDownward"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2elal"]
 animation = &"RiseUpward"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0r4ft"]
-animation = &"ApexSlash"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2ngni"]
-animation = &"ApexSlash"
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_034du"]
+animation = &"RiseUpward"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_35yxn"]
 blend_point_0/node = SubResource("AnimationNodeAnimation_rqc4x")
-blend_point_0/pos = Vector2(0, 1)
-blend_point_1/node = SubResource("AnimationNodeAnimation_ox6na")
-blend_point_1/pos = Vector2(0, -1)
-blend_point_2/node = SubResource("AnimationNodeAnimation_0r4ft")
-blend_point_2/pos = Vector2(-0.1, 0)
-blend_point_3/node = SubResource("AnimationNodeAnimation_2ngni")
-blend_point_3/pos = Vector2(0.1, 0)
+blend_point_0/pos = Vector2(0.1, 1)
+blend_point_1/node = SubResource("AnimationNodeAnimation_ikrig")
+blend_point_1/pos = Vector2(-0.1, 1)
+blend_point_2/node = SubResource("AnimationNodeAnimation_2elal")
+blend_point_2/pos = Vector2(0.1, -1)
+blend_point_3/node = SubResource("AnimationNodeAnimation_034du")
+blend_point_3/pos = Vector2(-0.1, -1)
+blend_mode = 1
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_n5hrr"]
 animation = &"GrabWall"
@@ -226,6 +293,7 @@ blend_point_1/node = SubResource("AnimationNodeAnimation_mtsc0")
 blend_point_1/pos = Vector2(1, 0)
 blend_point_2/node = SubResource("AnimationNodeAnimation_syynv")
 blend_point_2/pos = Vector2(0, 1)
+blend_mode = 1
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yaicc"]
 animation = &"Jump"
@@ -236,16 +304,19 @@ animation = &"LandWall"
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_lkc2y"]
 animation = &"LandWall"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_n5hqh"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_kyv58"]
 animation = &"LandFloor"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_8rb8e"]
+auto_triangles = false
 blend_point_0/node = SubResource("AnimationNodeAnimation_6x66n")
 blend_point_0/pos = Vector2(-1, 0)
 blend_point_1/node = SubResource("AnimationNodeAnimation_lkc2y")
 blend_point_1/pos = Vector2(1, 0)
-blend_point_2/node = SubResource("AnimationNodeAnimation_n5hqh")
+blend_point_2/node = SubResource("AnimationNodeAnimation_kyv58")
 blend_point_2/pos = Vector2(0, 1)
+triangles = PackedInt32Array(0, 1, 2)
+blend_mode = 1
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ktylk"]
 advance_mode = 2
@@ -262,6 +333,7 @@ advance_condition = &"isOnSurface"
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_e73u1"]
 switch_mode = 2
 advance_mode = 2
+advance_condition = &"isJumping"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_825dc"]
 advance_mode = 2
@@ -270,7 +342,21 @@ advance_mode = 2
 switch_mode = 2
 advance_mode = 2
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mb8ph"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_a0qj5"]
+advance_mode = 2
+advance_condition = &"isAttacking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_da8ns"]
+advance_mode = 2
+advance_condition = &"isAttacking"
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_4gmn0"]
+states/ApexSlash/node = SubResource("AnimationNodeAnimation_bjews")
+states/ApexSlash/position = Vector2(351, -6)
 states/FloatMidAir/node = SubResource("AnimationNodeBlendSpace2D_35yxn")
 states/FloatMidAir/position = Vector2(351, 100)
 states/GrabSurface/node = SubResource("AnimationNodeBlendSpace2D_rnrme")
@@ -279,17 +365,20 @@ states/Jump/node = SubResource("AnimationNodeAnimation_yaicc")
 states/Jump/position = Vector2(523, -6)
 states/LandOnSurface/node = SubResource("AnimationNodeBlendSpace2D_8rb8e")
 states/LandOnSurface/position = Vector2(523, 100)
-transitions = ["GrabSurface", "Jump", SubResource("AnimationNodeStateMachineTransition_ktylk"), "FloatMidAir", "LandOnSurface", SubResource("AnimationNodeStateMachineTransition_oispc"), "Jump", "LandOnSurface", SubResource("AnimationNodeStateMachineTransition_bvnmw"), "Jump", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_e73u1"), "Start", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_825dc"), "LandOnSurface", "GrabSurface", SubResource("AnimationNodeStateMachineTransition_oc2ef")]
+transitions = ["GrabSurface", "Jump", SubResource("AnimationNodeStateMachineTransition_ktylk"), "FloatMidAir", "LandOnSurface", SubResource("AnimationNodeStateMachineTransition_oispc"), "Jump", "LandOnSurface", SubResource("AnimationNodeStateMachineTransition_bvnmw"), "Jump", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_e73u1"), "Start", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_825dc"), "LandOnSurface", "GrabSurface", SubResource("AnimationNodeStateMachineTransition_oc2ef"), "ApexSlash", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_mb8ph"), "Jump", "ApexSlash", SubResource("AnimationNodeStateMachineTransition_a0qj5"), "FloatMidAir", "ApexSlash", SubResource("AnimationNodeStateMachineTransition_da8ns")]
 graph_offset = Vector2(132, -73)
 
-[node name="RobotDuelist" type="CharacterBody2D" node_paths=PackedStringArray("SPRITE", "ANIMATION_TREE", "jumpAttackCooldownTimer", "jumpDurationTimer")]
+[node name="RobotDuelist" type="CharacterBody2D" node_paths=PackedStringArray("ANIMATION_TREE", "FIRE_SPOT", "JUMP_COOLDOWN_TIMER", "ATTACK_COOLDOWN_TIMER", "SPRITE")]
 collision_layer = 0
 script = ExtResource("1_xqdf2")
-JUMP_FORCE = 6.0
-SPRITE = NodePath("Sprite2D")
 ANIMATION_TREE = NodePath("AnimationTree")
-jumpAttackCooldownTimer = NodePath("JumpAttackCooldownTimer")
-jumpDurationTimer = NodePath("JumpDurationTimer")
+FIRE_SPOT = NodePath("FireSpot")
+JUMP_COOLDOWN_TIMER = NodePath("JumpCooldownTimer")
+ATTACK_COOLDOWN_TIMER = NodePath("AttackCooldownTimer")
+SPRITE = NodePath("Sprite2D")
+JUMP_FORCE = 6.5
+isAttacking = true
+DAGGER_SCENE = ExtResource("2_rb7jj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_3hppv")
@@ -308,19 +397,24 @@ libraries = {
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource("AnimationNodeStateMachine_4gmn0")
 anim_player = NodePath("../AnimationPlayer")
-parameters/conditions/isJumping = false
+parameters/conditions/isAttacking = false
+parameters/conditions/isJumping = true
 parameters/conditions/isOnSurface = false
-parameters/FloatMidAir/blend_position = Vector2(0, 0)
-parameters/GrabSurface/blend_position = Vector2(0, 0)
-parameters/LandOnSurface/blend_position = Vector2(-0.00160003, -0.972603)
+parameters/FloatMidAir/blend_position = Vector2(0.00800002, 0.00389099)
+parameters/GrabSurface/blend_position = Vector2(0, 1)
+parameters/LandOnSurface/blend_position = Vector2(0, -1)
 
-[node name="JumpAttackCooldownTimer" type="Timer" parent="."]
-wait_time = 4.0
+[node name="JumpCooldownTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+autostart = true
+
+[node name="AttackCooldownTimer" type="Timer" parent="."]
+wait_time = 2.0
 one_shot = true
 
-[node name="JumpDurationTimer" type="Timer" parent="."]
-wait_time = 0.2
-one_shot = true
+[node name="FireSpot" type="Node2D" parent="."]
+position = Vector2(10, 0)
 
-[connection signal="timeout" from="JumpAttackCooldownTimer" to="." method="OnJumpAttackCooldownTimerTimeout"]
-[connection signal="timeout" from="JumpDurationTimer" to="." method="OnJumpDurationTimerTimeout"]
+[connection signal="timeout" from="JumpCooldownTimer" to="." method="OnJumpCooldownTimerTimeout"]
+[connection signal="timeout" from="AttackCooldownTimer" to="." method="OnAttackCooldownTimerTimeout"]
