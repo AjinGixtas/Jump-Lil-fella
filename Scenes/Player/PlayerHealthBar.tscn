@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://cmg1agna74220"]
+
+[ext_resource type="Texture2D" uid="uid://dea7rww3jqvps" path="res://Sprites/PlayerHealthBarBone.png" id="1_o6cg7"]
+[ext_resource type="Script" path="res://Scripts/Components/HealthBar.cs" id="2_e4nm7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ado4h"]
+bg_color = Color(0.259294, 0.259294, 0.259294, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c47cw"]
+bg_color = Color(6.257e-07, 0.546174, 0.181649, 1)
+
+[node name="HealthBarSprite" type="NinePatchRect" node_paths=PackedStringArray("VALUE_BAR")]
+offset_left = 96.0
+offset_top = 32.0
+offset_right = 356.0
+offset_bottom = 92.0
+texture = ExtResource("1_o6cg7")
+patch_margin_left = 10
+patch_margin_top = 10
+patch_margin_right = 10
+patch_margin_bottom = 10
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+script = ExtResource("2_e4nm7")
+VALUE_BAR = NodePath("HealthBar")
+INITIAL_SCALE = Vector2(60, 60)
+SCALE_SCALE = Vector2(50, 0)
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+z_index = -1
+layout_mode = 0
+offset_right = 260.0
+offset_bottom = 60.0
+theme_override_styles/background = SubResource("StyleBoxFlat_ado4h")
+theme_override_styles/fill = SubResource("StyleBoxFlat_c47cw")
+max_value = 5.0
+step = 1.0
+value = 5.0
+show_percentage = false

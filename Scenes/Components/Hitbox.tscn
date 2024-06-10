@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cbo517a5hki3f"]
+
+[ext_resource type="Script" path="res://Scripts/Components/Hitbox.cs" id="1_otppa"]
+
+[node name="Hitbox" type="Area2D" groups=["Hitbox"]]
+monitorable = false
+script = ExtResource("1_otppa")
+
+[connection signal="area_entered" from="." to="." method="OnAreaEntered"]

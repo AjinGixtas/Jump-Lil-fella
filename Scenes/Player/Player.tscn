@@ -1,9 +1,12 @@
-[gd_scene load_steps=42 format=3 uid="uid://d38w3kvjpff8u"]
+[gd_scene load_steps=58 format=3 uid="uid://d38w3kvjpff8u"]
 
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_kg7dr"]
 [ext_resource type="PackedScene" uid="uid://b04ghogku75b4" path="res://Scenes/TrajectoryPoint.tscn" id="2_p7oop"]
 [ext_resource type="Texture2D" uid="uid://cm5msfrjshh2m" path="res://Sprites/Character_Frog_Ninja.png" id="2_sx6ou"]
+[ext_resource type="PackedScene" uid="uid://brdrfltebgdik" path="res://Scenes/Player/PlayerDagger.tscn" id="3_87ym2"]
 [ext_resource type="Script" path="res://Scripts/Components/Hurtbox.cs" id="4_dkvq4"]
+[ext_resource type="PackedScene" uid="uid://cmg1agna74220" path="res://Scenes/Player/PlayerHealthBar.tscn" id="5_8csau"]
+[ext_resource type="PackedScene" uid="uid://bmmmknw7gg2cd" path="res://Scenes/Player/PlayerShieldBar.tscn" id="6_jmplk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eiv2h"]
 size = Vector2(16, 32)
@@ -271,6 +274,18 @@ tracks/5/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("AnimationTree:parameters/Attack/conditions/ThrowDagger")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_id8bt"]
 resource_name = "RiseUpward"
@@ -304,6 +319,226 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [Vector2i(0, 4), Vector2i(1, 4), Vector2i(2, 4)]
+}
+
+[sub_resource type="Animation" id="Animation_mavbe"]
+resource_name = "ThrowDaggerCeiling"
+length = 0.2
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 12), Vector2i(1, 12), Vector2i(2, 12)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationTree:parameters/Attack/conditions/ThrowDagger")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.05),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"ThrowDagger"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_iikr0"]
+resource_name = "ThrowDaggerFloor"
+length = 0.2
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 9), Vector2i(1, 9), Vector2i(2, 9)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationTree:parameters/Attack/conditions/ThrowDagger")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.05),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"ThrowDagger"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_mimw7"]
+resource_name = "ThrowDaggerMidAir"
+length = 0.2
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 10), Vector2i(1, 10), Vector2i(2, 10)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationTree:parameters/Attack/conditions/ThrowDagger")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.05),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"ThrowDagger"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_xcn3f"]
+resource_name = "ThrowDaggerWall"
+length = 0.2
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 11), Vector2i(1, 11), Vector2i(2, 11)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationTree:parameters/Attack/conditions/ThrowDagger")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.05),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"ThrowDagger"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_x8cej"]
@@ -357,8 +592,39 @@ _data = {
 "RESET": SubResource("Animation_tqnh7"),
 "RiseUpward": SubResource("Animation_id8bt"),
 "Slide": SubResource("Animation_yonac"),
+"ThrowDaggerCeiling": SubResource("Animation_mavbe"),
+"ThrowDaggerFloor": SubResource("Animation_iikr0"),
+"ThrowDaggerMidAir": SubResource("Animation_mimw7"),
+"ThrowDaggerWall": SubResource("Animation_xcn3f"),
 "WhirlwindAttack": SubResource("Animation_x8cej")
 }
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pd3r0"]
+animation = &"ThrowDaggerWall"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_y2dys"]
+animation = &"ThrowDaggerWall"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_wrx36"]
+animation = &"ThrowDaggerFloor"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5rkbt"]
+animation = &"ThrowDaggerCeiling"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gh16u"]
+animation = &"ThrowDaggerMidAir"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_t6awv"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_pd3r0")
+blend_point_0/pos = Vector2(-1, 0)
+blend_point_1/node = SubResource("AnimationNodeAnimation_y2dys")
+blend_point_1/pos = Vector2(1, 0)
+blend_point_2/node = SubResource("AnimationNodeAnimation_wrx36")
+blend_point_2/pos = Vector2(0, 1)
+blend_point_3/node = SubResource("AnimationNodeAnimation_5rkbt")
+blend_point_3/pos = Vector2(0, -1)
+blend_point_4/node = SubResource("AnimationNodeAnimation_gh16u")
+blend_point_4/pos = Vector2(0, 0)
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qk6xj"]
 animation = &"WhirlwindAttack"
@@ -371,10 +637,20 @@ advance_condition = &"whirlwindAttack"
 switch_mode = 2
 advance_mode = 2
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_q6e5o"]
+advance_mode = 2
+advance_condition = &"ThrowDagger"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6qqi8"]
+switch_mode = 2
+advance_mode = 2
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_q83b4"]
+states/ThrowDagger/node = SubResource("AnimationNodeBlendSpace2D_t6awv")
+states/ThrowDagger/position = Vector2(509, 4)
 states/WhirlwindAttack/node = SubResource("AnimationNodeAnimation_qk6xj")
 states/WhirlwindAttack/position = Vector2(509, 100)
-transitions = ["Start", "WhirlwindAttack", SubResource("AnimationNodeStateMachineTransition_r0g6s"), "WhirlwindAttack", "End", SubResource("AnimationNodeStateMachineTransition_7dbk5")]
+transitions = ["Start", "WhirlwindAttack", SubResource("AnimationNodeStateMachineTransition_r0g6s"), "WhirlwindAttack", "End", SubResource("AnimationNodeStateMachineTransition_7dbk5"), "Start", "ThrowDagger", SubResource("AnimationNodeStateMachineTransition_q6e5o"), "ThrowDagger", "End", SubResource("AnimationNodeStateMachineTransition_6qqi8")]
 graph_offset = Vector2(-22, -92)
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_j4iba"]
@@ -462,8 +738,13 @@ advance_condition = &"isFloating"
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1y5lb"]
+switch_mode = 2
 advance_mode = 2
 advance_condition = &"isOnSurface"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6v3k6"]
+advance_mode = 2
+advance_condition = &"isAttacking"
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_ebb3e"]
 states/Attack/node = SubResource("AnimationNodeStateMachine_q83b4")
@@ -476,13 +757,13 @@ states/GrabSurface/position = Vector2(401, 100)
 states/Jump/node = SubResource("AnimationNodeAnimation_qo2x6")
 states/Jump/position = Vector2(401, -50)
 states/Start/position = Vector2(43, 100)
-transitions = ["GrabSurface", "Jump", SubResource("AnimationNodeStateMachineTransition_sdmoj"), "FloatMidAir", "GrabSurface", SubResource("AnimationNodeStateMachineTransition_3u3t8"), "Jump", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_mdki5"), "Jump", "Attack", SubResource("AnimationNodeStateMachineTransition_rkpi4"), "FloatMidAir", "Attack", SubResource("AnimationNodeStateMachineTransition_0brki"), "Attack", "Jump", SubResource("AnimationNodeStateMachineTransition_t70iw"), "Attack", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_7wwqt"), "Start", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_th58w"), "Attack", "GrabSurface", SubResource("AnimationNodeStateMachineTransition_1y5lb")]
+transitions = ["GrabSurface", "Jump", SubResource("AnimationNodeStateMachineTransition_sdmoj"), "FloatMidAir", "GrabSurface", SubResource("AnimationNodeStateMachineTransition_3u3t8"), "Jump", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_mdki5"), "Jump", "Attack", SubResource("AnimationNodeStateMachineTransition_rkpi4"), "FloatMidAir", "Attack", SubResource("AnimationNodeStateMachineTransition_0brki"), "Attack", "Jump", SubResource("AnimationNodeStateMachineTransition_t70iw"), "Attack", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_7wwqt"), "Start", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_th58w"), "Attack", "GrabSurface", SubResource("AnimationNodeStateMachineTransition_1y5lb"), "GrabSurface", "Attack", SubResource("AnimationNodeStateMachineTransition_6v3k6")]
 graph_offset = Vector2(-64, -84)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1ax5r"]
 size = Vector2(12, 28)
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("TRAJECTORY_POINTS", "ANIMATION_PLAYER", "ANIMATION_TREE", "SPRITE")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("TRAJECTORY_POINTS", "DAGGER_SPAWN_POINTS_CONTAINER", "DAGGER_SPAWN_POINTS", "ANIMATION_PLAYER", "ANIMATION_TREE", "SPRITE")]
 collision_layer = 0
 script = ExtResource("1_kg7dr")
 JUMP_FORCE = 7.5
@@ -491,6 +772,9 @@ FRICTION_FACTOR = 0.97
 TRAJECTORY_POINTS = []
 AMOUNT_OF_TRAJECTORY_POINT = 75
 TRAJECTORY_POINT_SCENE = ExtResource("2_p7oop")
+DAGGER_SCENE = ExtResource("3_87ym2")
+DAGGER_SPAWN_POINTS_CONTAINER = NodePath("DaggerSpawnPointContainer")
+DAGGER_SPAWN_POINTS = [NodePath("DaggerSpawnPointContainer/DaggerSpawnPoint0"), NodePath("DaggerSpawnPointContainer/DaggerSpawnPoint1"), NodePath("DaggerSpawnPointContainer/DaggerSpawnPoint2")]
 ANIMATION_PLAYER = NodePath("AnimationPlayer")
 ANIMATION_TREE = NodePath("AnimationTree")
 SPRITE = NodePath("Sprite2D")
@@ -500,10 +784,12 @@ position = Vector2(0, -1)
 shape = SubResource("RectangleShape2D_eiv2h")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 1
+z_as_relative = false
 position = Vector2(0, -1)
 texture = ExtResource("2_sx6ou")
 hframes = 7
-vframes = 9
+vframes = 13
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -519,13 +805,42 @@ parameters/conditions/isAttacking = false
 parameters/conditions/isFloating = false
 parameters/conditions/isJumping = false
 parameters/conditions/isOnSurface = false
+parameters/Attack/conditions/ThrowDagger = false
 parameters/Attack/conditions/whirlwindAttack = false
+parameters/Attack/ThrowDagger/blend_position = Vector2(0, 0)
 parameters/FloatMidAir/blend_position = Vector2(-0.0144, 0.968254)
 parameters/GrabSurface/blend_position = Vector2(-0.9952, 0.0661478)
 
-[node name="Hurtbox" type="Area2D" parent="." groups=["Hurtbox"]]
+[node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("HEALTH_BAR", "SHIELD_BAR") groups=["Hurtbox"]]
+collision_layer = 2
+collision_mask = 0
 script = ExtResource("4_dkvq4")
+MAX_HEALTH = 4.0
+MAX_SHIELD = 2.0
+HEALTH_BAR = NodePath("../CanvasLayer/HealthBarSprite")
+SHIELD_BAR = NodePath("../CanvasLayer/ShieldBarSprite")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 position = Vector2(0, -1)
 shape = SubResource("RectangleShape2D_1ax5r")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HealthBarSprite" parent="CanvasLayer" instance=ExtResource("5_8csau")]
+
+[node name="ShieldBarSprite" parent="CanvasLayer" instance=ExtResource("6_jmplk")]
+INITIAL_SCALE = Vector2(52, 52)
+
+[node name="DaggerSpawnPointContainer" type="Node2D" parent="."]
+scale = Vector2(5, 5)
+
+[node name="DaggerSpawnPoint0" type="Node2D" parent="DaggerSpawnPointContainer"]
+position = Vector2(2.2, 0)
+
+[node name="DaggerSpawnPoint1" type="Node2D" parent="DaggerSpawnPointContainer"]
+position = Vector2(2, -0.6)
+rotation = -0.261799
+
+[node name="DaggerSpawnPoint2" type="Node2D" parent="DaggerSpawnPointContainer"]
+position = Vector2(2, 0.6)
+rotation = 0.261799

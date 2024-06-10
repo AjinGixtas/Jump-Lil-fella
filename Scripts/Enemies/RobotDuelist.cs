@@ -17,6 +17,7 @@ public partial class RobotDuelist : Enemy
 		{
 			Velocity = value;
 			if (value.X != 0 && !isAttacking) SPRITE.FlipH = value.X > 0;
+			else if(isAttacking) SPRITE.FlipH = PLAYER.Position.X > Position.X;
 			ANIMATION_TREE.Set("parameters/FloatMidAir/blend_position", Velocity.Normalized());
 			ANIMATION_TREE.Set("parameters/GrabSurface/blend_position", Velocity.Normalized());
 			ANIMATION_TREE.Set("parameters/LandOnSurface/blend_position", Velocity.Normalized());
@@ -49,9 +50,11 @@ public partial class RobotDuelist : Enemy
 		if (canAttack && SurfaceCurrentlyInContact == SurfaceType.NONE && Mathf.Abs(Velocity.Y) < 2) { ANIMATION_TREE.Set("parameters/conditions/isAttacking", true); canAttack = false; ATTACK_COOLDOWN_TIMER.Start(); }
 		if(canJump) Jump();
 	}
+	float deltaF;
 	public override void _PhysicsProcess(double delta)
 	{
-		velocity += affectByGravity ? GRAVITY_VECTOR * (float)delta : Vector2.Zero;
+		deltaF = (float)delta;
+		velocity += affectByGravity ? GRAVITY_VECTOR * deltaF : Vector2.Zero;
 		c_kinematicCollision = MoveAndCollide(velocity);
 		if (c_kinematicCollision != null)
 		{

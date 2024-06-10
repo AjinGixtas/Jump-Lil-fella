@@ -1,0 +1,78 @@
+[gd_scene load_steps=9 format=3 uid="uid://bmmmknw7gg2cd"]
+
+[ext_resource type="Texture2D" uid="uid://crt4nltt8vu2c" path="res://Sprites/PlayerShieldBarBone.png" id="1_y1kpw"]
+[ext_resource type="Script" path="res://Scripts/Components/ShieldBar.cs" id="2_oviuf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rrgnv"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lwstt"]
+bg_color = Color(0, 0.388235, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rnji2"]
+bg_color = Color(0.151276, 0.151276, 0.151276, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0i0c1"]
+bg_color = Color(0.186909, 0.319554, 0.319756, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x1435"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vtljs"]
+bg_color = Color(0, 0.65098, 0.882353, 1)
+
+[node name="ShieldBarSprite" type="NinePatchRect" node_paths=PackedStringArray("SHIELD_BAR", "SHIELD_DELAY_BAR", "SHIELD_REGEN_BAR")]
+offset_left = 96.0
+offset_top = 82.0
+offset_right = 232.0
+offset_bottom = 134.0
+texture = ExtResource("1_y1kpw")
+patch_margin_left = 10
+patch_margin_top = 10
+patch_margin_right = 10
+patch_margin_bottom = 10
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+script = ExtResource("2_oviuf")
+SHIELD_BAR = NodePath("ShieldBar")
+SHIELD_DELAY_BAR = NodePath("ShieldDelayBar")
+SHIELD_REGEN_BAR = NodePath("ShieldRegenBar")
+INITIAL_SCALE = Vector2(32, 32)
+SCALE_SCALE = Vector2(42, 0)
+
+[node name="ShieldBar" type="ProgressBar" parent="."]
+z_index = -1
+layout_mode = 0
+offset_right = 136.0
+offset_bottom = 52.0
+theme_override_styles/background = SubResource("StyleBoxFlat_rrgnv")
+theme_override_styles/fill = SubResource("StyleBoxFlat_lwstt")
+max_value = 3.0
+step = 1.0
+value = 3.0
+show_percentage = false
+
+[node name="ShieldDelayBar" type="ProgressBar" parent="."]
+z_index = -3
+layout_mode = 0
+offset_top = 52.0
+offset_right = 52.0
+offset_bottom = 188.0
+rotation = -1.5708
+theme_override_styles/background = SubResource("StyleBoxFlat_rnji2")
+theme_override_styles/fill = SubResource("StyleBoxFlat_0i0c1")
+max_value = 3.0
+step = 0.001
+value = 3.0
+show_percentage = false
+
+[node name="ShieldRegenBar" type="ProgressBar" parent="."]
+z_index = -2
+layout_mode = 0
+offset_right = 136.0
+offset_bottom = 52.0
+theme_override_styles/background = SubResource("StyleBoxFlat_x1435")
+theme_override_styles/fill = SubResource("StyleBoxFlat_vtljs")
+max_value = 3.0
+step = 0.001
+show_percentage = false

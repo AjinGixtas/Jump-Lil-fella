@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://b5cpx8vlupe1t"]
+
+[ext_resource type="Texture2D" uid="uid://dyitvqdk3xxk1" path="res://Sprites/EnemyHealthBarBone.png" id="1_0kakd"]
+[ext_resource type="Script" path="res://Scripts/Components/HealthBar.cs" id="2_t56rc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7x1tm"]
+bg_color = Color(0.212305, 0.212305, 0.212305, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c38vd"]
+bg_color = Color(0.6, 0.25098, 0.203922, 1)
+
+[node name="EnemyHealthBar" type="NinePatchRect" node_paths=PackedStringArray("VALUE_BAR")]
+offset_left = -15.0
+offset_top = 15.0
+offset_right = 47.0
+offset_bottom = 27.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_0kakd")
+patch_margin_left = 2
+patch_margin_top = 2
+patch_margin_right = 2
+patch_margin_bottom = 2
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+script = ExtResource("2_t56rc")
+VALUE_BAR = NodePath("HealthBar")
+INITIAL_SCALE = Vector2(12, 12)
+SCALE_SCALE = Vector2(10, 0)
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+z_index = -1
+layout_mode = 0
+offset_right = 62.0
+offset_bottom = 12.0
+theme_override_styles/background = SubResource("StyleBoxFlat_7x1tm")
+theme_override_styles/fill = SubResource("StyleBoxFlat_c38vd")
+max_value = 6.0
+step = 0.5
+value = 6.0
+show_percentage = false
