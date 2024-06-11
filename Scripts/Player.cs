@@ -5,7 +5,7 @@ public partial class Player : CharacterBody2D
 	[Export] public float JUMP_FORCE, MAX_STAMINA, FRICTION_FACTOR;
 	[Export] TrajectoryPoint[] TRAJECTORY_POINTS;
 	[Export] int AMOUNT_OF_TRAJECTORY_POINT;
-	[Export] PackedScene TRAJECTORY_POINT_SCENE, DAGGER_SCENE;
+	[Export] PackedScene TRAJECTORY_POINT_SCENE, SMALL_DAGGER_SCENE, BIG_DAGGER_SCENE, BOMB_SCENE;
 	[Export] Node2D TRAJECTORY_POINT_CONTAINER, PROJECTILE_CONTAINER, DAGGER_SPAWN_POINTS_CONTAINER;
 	[Export] Node2D[] DAGGER_SPAWN_POINTS;
 	[Export] AnimationPlayer ANIMATION_PLAYER;
@@ -45,7 +45,8 @@ public partial class Player : CharacterBody2D
 			if (c_collision != null) velocity = -c_collision.GetNormal();
 			surfaceCurrentlyInContact = value;
 			affectByGravity = false;
-			switch(surfaceCurrentlyInContact) {
+			switch (surfaceCurrentlyInContact)
+			{
 				case SurfaceType.FLOOR:
 					ANIMATION_TREE.Set("parameters/Attack/ThrowDagger/blend_position", Vector2.Down);
 					break;
@@ -100,9 +101,9 @@ public partial class Player : CharacterBody2D
 	bool canSlide;
 	void HandlePlayerInput()
 	{
+		// Ground-only attack	
 		if (SurfaceCurrentlyInContact != SurfaceType.NONE || isSliding)
 		{
-			TRAJECTORY_POINT_CONTAINER.Visible = false;
 			if (Input.IsActionPressed("ui_jump"))
 			{
 				canSlide = false;
@@ -118,38 +119,51 @@ public partial class Player : CharacterBody2D
 				else if (SurfaceCurrentlyInContact == SurfaceType.WALL_RIGHT) { c_direction = new(Mathf.Min(0, c_direction.X), c_direction.Y); }
 				c_direction = c_direction.Normalized() * JUMP_FORCE;
 				for (int i = 0; i < AMOUNT_OF_TRAJECTORY_POINT; ++i) { TRAJECTORY_POINTS[i].Update(Position, canSlide, c_direction, i * .75f, FRICTION_FACTOR); }
+				return;
 			}
-			else if (Input.IsActionJustReleased("ui_jump"))
+			else
 			{
-				c_direction = GetGlobalMousePosition() - GlobalPosition;
-				isSliding = false;
-				if (SurfaceCurrentlyInContact == SurfaceType.CEILING) { c_direction = new(c_direction.X, Mathf.Max(0, c_direction.Y)); }
-				else if (SurfaceCurrentlyInContact == SurfaceType.FLOOR)
+				TRAJECTORY_POINT_CONTAINER.Visible = false;
+				if (Input.IsActionJustReleased("ui_jump"))
 				{
-					c_CalculatingVector = c_direction * c_direction;
-					isSliding = c_CalculatingVector.X / (c_CalculatingVector.X + c_CalculatingVector.Y) >= 0.933012701894f;
-					if (isSliding) c_direction = new(c_direction.X, 0);
+					Jump();
+					ANIMATION_TREE.Set("parameters/conditions/isJumping", true);
+					return;
 				}
-				else if (SurfaceCurrentlyInContact == SurfaceType.WALL_LEFT) { c_direction = new(Mathf.Max(0, c_direction.X), c_direction.Y); }
-				else if (SurfaceCurrentlyInContact == SurfaceType.WALL_RIGHT) { c_direction = new(Mathf.Min(0, c_direction.X), c_direction.Y); }
-				velocity = c_direction.Normalized() * JUMP_FORCE;
-				ANIMATION_TREE.Set("parameters/conditions/isJumping", true);
 			}
 		}
+		// Air-only attack
 		else
 		{
 			if (Input.IsActionJustPressed("ui_whirlwindAttack"))
 			{
+				WhirlwindAttack();
 				ANIMATION_TREE.Set("parameters/conditions/isAttacking", true);
 				ANIMATION_TREE.Set("parameters/Attack/conditions/whirlwindAttack", true);
-				velocity = new(velocity.X / 2f, Mathf.Min(-2.5f, velocity.Y - 1));
 				ANIMATION_TREE.Set("parameters/conditions/isJumping", true);
+				return;
 			}
 		}
-		if (Input.IsActionJustPressed("ui_throwDagger"))
+		if (Input.IsActionJustPressed("ui_throwSmallDagger"))
 		{
+			ThrowDagger(true);
 			ANIMATION_TREE.Set("parameters/conditions/isAttacking", true);
-			ANIMATION_TREE.Set("parameters/Attack/conditions/ThrowDagger", true);
+			ANIMATION_TREE.Set("parameters/Attack/conditions/throwDagger", true);
+			return;
+		}
+		if (Input.IsActionJustPressed("ui_throwBigDagger"))
+		{
+			ThrowDagger(false);
+			ANIMATION_TREE.Set("parameters/conditions/isAttacking", true);
+			ANIMATION_TREE.Set("parameters/Attack/conditions/throwThing", true);
+			return;
+		}
+		if(Input.IsActionJustPressed("ui_throwBomb"))
+		{
+			ThrowBomb();
+			ANIMATION_TREE.Set("parameters/conditions/isAttacking", true);
+			ANIMATION_TREE.Set("parameters/Attack/conditions/throwThing", true);
+			return;
 		}
 	}
 	void HandlePhysics()
@@ -170,16 +184,51 @@ public partial class Player : CharacterBody2D
 		else { SurfaceCurrentlyInContact = SurfaceType.NONE; }
 	}
 	void HandleCounter() { CurrentStamina -= deltaF; }
-	Dagger c_daggerInstance;
-	public void ThrowDagger() {
-		DAGGER_SPAWN_POINTS_CONTAINER.LookAt(GetGlobalMousePosition());
-
-		for(int i = 0; i < DAGGER_SPAWN_POINTS.Length; ++i) {
-			c_daggerInstance = DAGGER_SCENE.Instantiate<Dagger>();
-			PROJECTILE_CONTAINER.AddChild(c_daggerInstance);
-			c_daggerInstance.GlobalPosition = DAGGER_SPAWN_POINTS[i].GlobalPosition;
-			c_daggerInstance.GlobalRotation = DAGGER_SPAWN_POINTS[i].GlobalRotation;
-			c_daggerInstance.Intialize(new(Mathf.Cos(c_daggerInstance.GlobalRotation), Mathf.Sin(c_daggerInstance.GlobalRotation)));
+	void Jump()
+	{
+		c_direction = GetGlobalMousePosition() - GlobalPosition;
+		isSliding = false;
+		if (SurfaceCurrentlyInContact == SurfaceType.CEILING) { c_direction = new(c_direction.X, Mathf.Max(0, c_direction.Y)); }
+		else if (SurfaceCurrentlyInContact == SurfaceType.FLOOR)
+		{
+			c_CalculatingVector = c_direction * c_direction;
+			isSliding = c_CalculatingVector.X / (c_CalculatingVector.X + c_CalculatingVector.Y) >= 0.933012701894f;
+			if (isSliding) c_direction = new(c_direction.X, 0);
 		}
+		else if (SurfaceCurrentlyInContact == SurfaceType.WALL_LEFT) { c_direction = new(Mathf.Max(0, c_direction.X), c_direction.Y); }
+		else if (SurfaceCurrentlyInContact == SurfaceType.WALL_RIGHT) { c_direction = new(Mathf.Min(0, c_direction.X), c_direction.Y); }
+		velocity = c_direction.Normalized() * JUMP_FORCE;
+	}
+	void WhirlwindAttack()
+	{
+		velocity = new(velocity.X / 2f, Mathf.Min(-2.5f, velocity.Y - 1));
+	}
+	Dagger c_daggerInstance;
+	void ThrowDagger(bool isThrowingSmallDagger)
+	{
+		DAGGER_SPAWN_POINTS_CONTAINER.LookAt(GetGlobalMousePosition());
+		if (isThrowingSmallDagger)
+		{
+			for (int i = 0; i < DAGGER_SPAWN_POINTS.Length; ++i)
+			{
+				c_daggerInstance = SMALL_DAGGER_SCENE.Instantiate<Dagger>();
+				PROJECTILE_CONTAINER.AddChild(c_daggerInstance);
+				c_daggerInstance.Transform = new(DAGGER_SPAWN_POINTS[i].GlobalRotation, DAGGER_SPAWN_POINTS[i].GlobalPosition);
+				c_daggerInstance.Intialize(new(Mathf.Cos(c_daggerInstance.GlobalRotation), Mathf.Sin(c_daggerInstance.GlobalRotation)));
+			}
+			return;
+		}
+		c_daggerInstance = BIG_DAGGER_SCENE.Instantiate<Dagger>();
+		PROJECTILE_CONTAINER.AddChild(c_daggerInstance);
+		c_daggerInstance.Transform = new(DAGGER_SPAWN_POINTS[0].GlobalRotation, DAGGER_SPAWN_POINTS[0].GlobalPosition);
+		c_daggerInstance.Intialize(new(Mathf.Cos(c_daggerInstance.GlobalRotation), Mathf.Sin(c_daggerInstance.GlobalRotation)));
+	}
+	StarSpike c_bombInstace;
+	void ThrowBomb() {
+		DAGGER_SPAWN_POINTS_CONTAINER.LookAt(GetGlobalMousePosition());
+		c_bombInstace = BOMB_SCENE.Instantiate<StarSpike>();
+		PROJECTILE_CONTAINER.AddChild(c_bombInstace);
+		c_bombInstace.GlobalPosition = DAGGER_SPAWN_POINTS[0].GlobalPosition;
+		c_bombInstace.Intialize(new(Mathf.Cos(DAGGER_SPAWN_POINTS[0].GlobalRotation), Mathf.Sin(DAGGER_SPAWN_POINTS[0].GlobalRotation)));
 	}
 }

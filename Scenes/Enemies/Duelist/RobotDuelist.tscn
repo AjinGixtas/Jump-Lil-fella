@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/Enemies/RobotDuelist.cs" id="1_1qd7u"]
 [ext_resource type="Texture2D" uid="uid://biymhvdiajyk4" path="res://Sprites/RobotDuelist_FrogNinja.png" id="1_la27p"]
 [ext_resource type="PackedScene" uid="uid://di2ppo2eyg241" path="res://Scenes/Enemies/Duelist/DuelistDagger.tscn" id="2_rb7jj"]
-[ext_resource type="PackedScene" path="res://Scenes/Enemies/EnemyHealthBar.tscn" id="4_80vum"]
+[ext_resource type="PackedScene" uid="uid://b5cpx8vlupe1t" path="res://Scenes/Enemies/EnemyHealthBar.tscn" id="4_80vum"]
 [ext_resource type="PackedScene" uid="uid://dnejbk4onyjfd" path="res://Scenes/Components/Hurtbox.tscn" id="4_ouq0h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3hppv"]

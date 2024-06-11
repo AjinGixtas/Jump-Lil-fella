@@ -1,15 +1,34 @@
-[gd_scene load_steps=58 format=3 uid="uid://d38w3kvjpff8u"]
+[gd_scene load_steps=64 format=3 uid="uid://d38w3kvjpff8u"]
 
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_kg7dr"]
 [ext_resource type="PackedScene" uid="uid://b04ghogku75b4" path="res://Scenes/TrajectoryPoint.tscn" id="2_p7oop"]
 [ext_resource type="Texture2D" uid="uid://cm5msfrjshh2m" path="res://Sprites/Character_Frog_Ninja.png" id="2_sx6ou"]
-[ext_resource type="PackedScene" uid="uid://brdrfltebgdik" path="res://Scenes/Player/PlayerDagger.tscn" id="3_87ym2"]
+[ext_resource type="PackedScene" uid="uid://brdrfltebgdik" path="res://Scenes/Player/PlayerSmallDagger.tscn" id="3_35hns"]
 [ext_resource type="Script" path="res://Scripts/Components/Hurtbox.cs" id="4_dkvq4"]
+[ext_resource type="PackedScene" uid="uid://b76ug6pjmn1ef" path="res://Scenes/Player/PlayerBigDagger.tscn" id="4_ym2fe"]
+[ext_resource type="PackedScene" uid="uid://dfl581b4elkou" path="res://Scenes/Player/PlayerBomb.tscn" id="5_4apvw"]
 [ext_resource type="PackedScene" uid="uid://cmg1agna74220" path="res://Scenes/Player/PlayerHealthBar.tscn" id="5_8csau"]
 [ext_resource type="PackedScene" uid="uid://bmmmknw7gg2cd" path="res://Scenes/Player/PlayerShieldBar.tscn" id="6_jmplk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eiv2h"]
 size = Vector2(16, 32)
+
+[sub_resource type="Animation" id="Animation_t0px0"]
+resource_name = "Dash"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 8), Vector2i(1, 8), Vector2i(2, 8), Vector2i(3, 8), Vector2i(4, 8), Vector2i(5, 8)]
+}
 
 [sub_resource type="Animation" id="Animation_j0qf4"]
 resource_name = "FallDownward"
@@ -361,20 +380,6 @@ tracks/2/keys = {
 "update": 1,
 "values": [false]
 }
-tracks/3/type = "method"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0.05),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"ThrowDagger"
-}]
-}
 
 [sub_resource type="Animation" id="Animation_iikr0"]
 resource_name = "ThrowDaggerFloor"
@@ -415,20 +420,6 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
-}
-tracks/3/type = "method"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0.05),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"ThrowDagger"
-}]
 }
 
 [sub_resource type="Animation" id="Animation_mimw7"]
@@ -471,20 +462,6 @@ tracks/2/keys = {
 "update": 1,
 "values": [false]
 }
-tracks/3/type = "method"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0.05),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"ThrowDagger"
-}]
-}
 
 [sub_resource type="Animation" id="Animation_xcn3f"]
 resource_name = "ThrowDaggerWall"
@@ -525,20 +502,6 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
-}
-tracks/3/type = "method"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0.05),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"ThrowDagger"
-}]
 }
 
 [sub_resource type="Animation" id="Animation_x8cej"]
@@ -584,6 +547,7 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_rqa5f"]
 _data = {
+"Dash": SubResource("Animation_t0px0"),
 "FallDownward": SubResource("Animation_j0qf4"),
 "GrabCeiling": SubResource("Animation_uhb77"),
 "GrabFloor": SubResource("Animation_1w62n"),
@@ -598,6 +562,9 @@ _data = {
 "ThrowDaggerWall": SubResource("Animation_xcn3f"),
 "WhirlwindAttack": SubResource("Animation_x8cej")
 }
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yj8aa"]
+animation = &"Dash"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pd3r0"]
 animation = &"ThrowDaggerWall"
@@ -639,19 +606,29 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_q6e5o"]
 advance_mode = 2
-advance_condition = &"ThrowDagger"
+advance_condition = &"throwThing"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6qqi8"]
 switch_mode = 2
 advance_mode = 2
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lavep"]
+advance_mode = 2
+advance_condition = &"dash"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rirle"]
+switch_mode = 2
+advance_mode = 2
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_q83b4"]
-states/ThrowDagger/node = SubResource("AnimationNodeBlendSpace2D_t6awv")
-states/ThrowDagger/position = Vector2(509, 4)
+states/Dash/node = SubResource("AnimationNodeAnimation_yj8aa")
+states/Dash/position = Vector2(509, 208)
+states/ThrowThing/node = SubResource("AnimationNodeBlendSpace2D_t6awv")
+states/ThrowThing/position = Vector2(509, 4)
 states/WhirlwindAttack/node = SubResource("AnimationNodeAnimation_qk6xj")
 states/WhirlwindAttack/position = Vector2(509, 100)
-transitions = ["Start", "WhirlwindAttack", SubResource("AnimationNodeStateMachineTransition_r0g6s"), "WhirlwindAttack", "End", SubResource("AnimationNodeStateMachineTransition_7dbk5"), "Start", "ThrowDagger", SubResource("AnimationNodeStateMachineTransition_q6e5o"), "ThrowDagger", "End", SubResource("AnimationNodeStateMachineTransition_6qqi8")]
-graph_offset = Vector2(-22, -92)
+transitions = ["Start", "WhirlwindAttack", SubResource("AnimationNodeStateMachineTransition_r0g6s"), "WhirlwindAttack", "End", SubResource("AnimationNodeStateMachineTransition_7dbk5"), "Start", "ThrowThing", SubResource("AnimationNodeStateMachineTransition_q6e5o"), "ThrowThing", "End", SubResource("AnimationNodeStateMachineTransition_6qqi8"), "Start", "Dash", SubResource("AnimationNodeStateMachineTransition_lavep"), "Dash", "End", SubResource("AnimationNodeStateMachineTransition_rirle")]
+graph_offset = Vector2(22, -69)
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_j4iba"]
 animation = &"FallDownward"
@@ -766,13 +743,15 @@ size = Vector2(12, 28)
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("TRAJECTORY_POINTS", "DAGGER_SPAWN_POINTS_CONTAINER", "DAGGER_SPAWN_POINTS", "ANIMATION_PLAYER", "ANIMATION_TREE", "SPRITE")]
 collision_layer = 0
 script = ExtResource("1_kg7dr")
-JUMP_FORCE = 7.5
+JUMP_FORCE = 100.0
 MAX_STAMINA = 3.0
 FRICTION_FACTOR = 0.97
 TRAJECTORY_POINTS = []
 AMOUNT_OF_TRAJECTORY_POINT = 75
 TRAJECTORY_POINT_SCENE = ExtResource("2_p7oop")
-DAGGER_SCENE = ExtResource("3_87ym2")
+SMALL_DAGGER_SCENE = ExtResource("3_35hns")
+BIG_DAGGER_SCENE = ExtResource("4_ym2fe")
+BOMB_SCENE = ExtResource("5_4apvw")
 DAGGER_SPAWN_POINTS_CONTAINER = NodePath("DaggerSpawnPointContainer")
 DAGGER_SPAWN_POINTS = [NodePath("DaggerSpawnPointContainer/DaggerSpawnPoint0"), NodePath("DaggerSpawnPointContainer/DaggerSpawnPoint1"), NodePath("DaggerSpawnPointContainer/DaggerSpawnPoint2")]
 ANIMATION_PLAYER = NodePath("AnimationPlayer")
@@ -805,9 +784,10 @@ parameters/conditions/isAttacking = false
 parameters/conditions/isFloating = false
 parameters/conditions/isJumping = false
 parameters/conditions/isOnSurface = false
-parameters/Attack/conditions/ThrowDagger = false
+parameters/Attack/conditions/dash = false
+parameters/Attack/conditions/throwThing = false
 parameters/Attack/conditions/whirlwindAttack = false
-parameters/Attack/ThrowDagger/blend_position = Vector2(0, 0)
+parameters/Attack/ThrowThing/blend_position = Vector2(0, 0)
 parameters/FloatMidAir/blend_position = Vector2(-0.0144, 0.968254)
 parameters/GrabSurface/blend_position = Vector2(-0.9952, 0.0661478)
 
@@ -839,8 +819,8 @@ position = Vector2(2.2, 0)
 
 [node name="DaggerSpawnPoint1" type="Node2D" parent="DaggerSpawnPointContainer"]
 position = Vector2(2, -0.6)
-rotation = -0.261799
+rotation = -0.418879
 
 [node name="DaggerSpawnPoint2" type="Node2D" parent="DaggerSpawnPointContainer"]
 position = Vector2(2, 0.6)
-rotation = 0.261799
+rotation = 0.418879

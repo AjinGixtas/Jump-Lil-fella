@@ -1,14 +1,14 @@
 [gd_scene load_steps=9 format=3 uid="uid://brdrfltebgdik"]
 
-[ext_resource type="Script" path="res://Scripts/Dagger.cs" id="1_ak30u"]
-[ext_resource type="Texture2D" uid="uid://ddecanu3po3qu" path="res://Sprites/Dagger.png" id="2_qsonr"]
-[ext_resource type="PackedScene" uid="uid://cbo517a5hki3f" path="res://Scenes/Components/Hitbox.tscn" id="3_kawgm"]
+[ext_resource type="Script" path="res://Scripts/Dagger.cs" id="1_yty2o"]
+[ext_resource type="Texture2D" uid="uid://ddecanu3po3qu" path="res://Sprites/Dagger.png" id="2_6ru3w"]
+[ext_resource type="PackedScene" uid="uid://cbo517a5hki3f" path="res://Scenes/Components/Hitbox.tscn" id="3_rypjy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g3pue"]
 size = Vector2(3, 3)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_foh32"]
-size = Vector2(3, 1)
+size = Vector2(7, 5)
 
 [sub_resource type="Animation" id="Animation_xb3fc"]
 length = 0.001
@@ -103,11 +103,11 @@ _data = {
 "StuckToWall": SubResource("Animation_0jo32")
 }
 
-[node name="PlayerDagger" type="CharacterBody2D" node_paths=PackedStringArray("ANIMATION_PLAYER")]
+[node name="PlayerSmallDagger" type="CharacterBody2D" node_paths=PackedStringArray("ANIMATION_PLAYER")]
 z_as_relative = false
 collision_layer = 0
-script = ExtResource("1_ak30u")
-SPEED = 750.0
+script = ExtResource("1_yty2o")
+SPEED = 15.0
 IsMoving = true
 ANIMATION_PLAYER = NodePath("AnimationPlayer")
 
@@ -118,16 +118,15 @@ shape = SubResource("RectangleShape2D_g3pue")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_as_relative = false
 position = Vector2(-4, 0)
-rotation = 1.57079
-texture = ExtResource("2_qsonr")
+texture = ExtResource("2_6ru3w")
 
-[node name="Hitbox" parent="." instance=ExtResource("3_kawgm")]
+[node name="Hitbox" parent="." instance=ExtResource("3_rypjy")]
 collision_layer = 0
 collision_mask = 4
 damage = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2(-3.5, 0)
+position = Vector2(-1.5, 0)
 shape = SubResource("RectangleShape2D_foh32")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

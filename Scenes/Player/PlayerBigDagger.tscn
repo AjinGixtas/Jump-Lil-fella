@@ -1,14 +1,14 @@
-[gd_scene load_steps=9 format=3 uid="uid://di2ppo2eyg241"]
+[gd_scene load_steps=9 format=3 uid="uid://b76ug6pjmn1ef"]
 
-[ext_resource type="Script" path="res://Scripts/Dagger.cs" id="1_53psc"]
-[ext_resource type="Texture2D" uid="uid://ddecanu3po3qu" path="res://Sprites/Dagger.png" id="2_rctl8"]
-[ext_resource type="PackedScene" uid="uid://cbo517a5hki3f" path="res://Scenes/Components/Hitbox.tscn" id="3_d2reb"]
+[ext_resource type="Script" path="res://Scripts/Dagger.cs" id="1_mr5lt"]
+[ext_resource type="Texture2D" uid="uid://30nq1k4dgts5" path="res://Sprites/BigDagger.png" id="2_1b488"]
+[ext_resource type="PackedScene" uid="uid://cbo517a5hki3f" path="res://Scenes/Components/Hitbox.tscn" id="3_vrtlj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g3pue"]
-size = Vector2(3, 3)
+size = Vector2(15, 3)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_foh32"]
-size = Vector2(3, 1)
+size = Vector2(19, 9)
 
 [sub_resource type="Animation" id="Animation_xb3fc"]
 length = 0.001
@@ -103,13 +103,12 @@ _data = {
 "StuckToWall": SubResource("Animation_0jo32")
 }
 
-[node name="DuelistDagger" type="CharacterBody2D" node_paths=PackedStringArray("ANIMATION_PLAYER")]
+[node name="PlayerBigDagger" type="CharacterBody2D" node_paths=PackedStringArray("ANIMATION_PLAYER")]
 z_as_relative = false
 collision_layer = 0
-script = ExtResource("1_53psc")
-SPEED = 8.0
+script = ExtResource("1_mr5lt")
+SPEED = 15.0
 IsMoving = true
-affectByGravity = true
 ANIMATION_PLAYER = NodePath("AnimationPlayer")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -117,18 +116,17 @@ position = Vector2(-6.5, 0)
 shape = SubResource("RectangleShape2D_g3pue")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-z_index = 1
 z_as_relative = false
-position = Vector2(-4, 0)
-texture = ExtResource("2_rctl8")
+position = Vector2(-3, 0)
+texture = ExtResource("2_1b488")
 
-[node name="Hitbox" parent="." instance=ExtResource("3_d2reb")]
+[node name="Hitbox" parent="." instance=ExtResource("3_vrtlj")]
 collision_layer = 0
-collision_mask = 2
-damage = 1.0
+collision_mask = 4
+damage = 3.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2(-3.5, 0)
+position = Vector2(1.5, 0)
 shape = SubResource("RectangleShape2D_foh32")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

@@ -21,4 +21,13 @@ public static class Vector2Extensions
     public static Vector2 GetPerpendicularVector(Vector2 vector) {
         return new(vector.Y, -vector.X);
     }
+    public static float GetEuclideanDistance(Vector2 A, Vector2 B) {
+        return Mathf.Sqrt(Mathf.Pow(A.X - B.X, 2) + Mathf.Pow(A.X - B.X, 2));
+    }
+    public static float GetManhattanDistance(Vector2 A, Vector2 B) {
+        return Mathf.Abs(A.X - B.X) + Mathf.Abs(A.Y - B.Y);
+    }
+    public static float GetChebyshevDistance(Vector2 A, Vector2 B) {
+        return Mathf.Max(Mathf.Abs(A.X - B.X), Mathf.Abs(A.Y - B.Y));
+    }
 }

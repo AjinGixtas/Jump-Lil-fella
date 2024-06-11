@@ -2,8 +2,9 @@ using Godot;
 
 public partial class Dagger : CharacterBody2D
 {
-	[Export] float SPEED;
-	[Export] bool IsMoving;
+	[Export] float SPEED; 
+	[Export] bool IsMoving, affectByGravity;
+	float GRAVITY = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 	[Export] AnimationPlayer ANIMATION_PLAYER;
 	KinematicCollision2D c_kinematicCollision;
 	public void Intialize(Vector2 direction)
@@ -11,11 +12,15 @@ public partial class Dagger : CharacterBody2D
 		Velocity = direction.Normalized() * SPEED;
 		GlobalRotation = Mathf.Atan2(Velocity.Y, Velocity.X);
 	}
-	public override void _Process(double delta)
+	public override void _PhysicsProcess(double delta)
 	{
 		if (IsMoving)
 		{
-			c_kinematicCollision = MoveAndCollide(Velocity * (float)delta);
+			if(affectByGravity) {
+				Velocity += new Vector2(0, GRAVITY * (float)delta);
+				GlobalRotation = Mathf.Atan2(Velocity.Y, Velocity.X);
+			}
+			c_kinematicCollision = MoveAndCollide(Velocity);
 			if (c_kinematicCollision != null && (c_kinematicCollision.GetCollider() as Node2D).IsInGroup("Wall"))
 			{
 				ANIMATION_PLAYER.Play("StuckToWall");
