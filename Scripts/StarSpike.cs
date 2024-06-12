@@ -2,18 +2,34 @@ using Godot;
 
 public partial class StarSpike : CharacterBody2D
 {
-	[Export] AnimationPlayer ANIMATION_PLAYER;
+	[Export] AnimationTree ANIMATION_TREE;
 	[Export] Timer FUSE_TIMER;
 	[Export] float SPEED;
-	float GRAVITY = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
-	public void Intialize(Vector2 direction) {
+	[Export] float MAX_HEALTH;
+	[Export] float currentHealth;
+	float CurrentHealth { 
+		get { return currentHealth; } 
+		set { 
+			currentHealth = value;
+			if(currentHealth <= 0) { ANIMATION_TREE.Set("parameters/conditions/isDestroyed", true); } 
+		} 
+	}
+	[Export] bool isMoving;
+	float GRAVITY = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle() * 2f;
+	public void Intialize(Vector2 direction)
+	{
+		CurrentHealth = MAX_HEALTH;
 		Velocity = direction.Normalized() * SPEED;
 		FUSE_TIMER.Start();
 	}
 	public override void _PhysicsProcess(double delta)
 	{
-		Velocity += new Vector2(0, GRAVITY * (float)delta);
-		if(MoveAndCollide(Velocity) != null) { ANIMATION_PLAYER.Play("SpikeBurst"); }
+		CurrentHealth -= (float)delta;
+		if (isMoving) {
+			Velocity += new Vector2(0, GRAVITY * (float)delta);
+			if (MoveAndCollide(Velocity) != null) { ANIMATION_TREE.Set("parameters/conditions/isStopped", true); isMoving = false;  }
+		}
 	}
-	public void OnFuseTimerTimeout() { ANIMATION_PLAYER.Play("SpikeBurst"); }
+	public void OnFuseTimerTimeout() { ANIMATION_TREE.Set("parameters/conditions/isStopped", true); isMoving = false; }
+	public void OnDealingDamage() { CurrentHealth--; ANIMATION_TREE.Set("parameters/conditions/isAttacking", true); }
 }

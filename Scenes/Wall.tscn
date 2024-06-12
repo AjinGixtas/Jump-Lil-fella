@@ -2,14 +2,15 @@
 
 [ext_resource type="Texture2D" uid="uid://bq5c8dhfjui5" path="res://Sprites/icon.svg" id="1_hinam"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_05rdg"]
-size = Vector2(640, 26)
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_h81w1"]
+distance = 4.0
 
 [node name="Wall" type="StaticBody2D" groups=["Wall"]]
 z_as_relative = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_05rdg")
+position = Vector2(0, -9)
+shape = SubResource("WorldBoundaryShape2D_h81w1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 2

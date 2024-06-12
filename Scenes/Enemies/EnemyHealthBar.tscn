@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://b5cpx8vlupe1t"]
 
-[ext_resource type="Texture2D" uid="uid://dyitvqdk3xxk1" path="res://Sprites/EnemyHealthBarBone.png" id="1_0kakd"]
+[ext_resource type="Texture2D" uid="uid://1vyle6tmm4wn" path="res://Sprites/EnemyHealthBarBone.png" id="1_0kakd"]
 [ext_resource type="Script" path="res://Scripts/Components/HealthBar.cs" id="2_t56rc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7x1tm"]

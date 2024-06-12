@@ -7,6 +7,7 @@ public partial class Player : CharacterBody2D
 	[Export] int AMOUNT_OF_TRAJECTORY_POINT;
 	[Export] PackedScene TRAJECTORY_POINT_SCENE, SMALL_DAGGER_SCENE, BIG_DAGGER_SCENE, BOMB_SCENE;
 	[Export] Node2D TRAJECTORY_POINT_CONTAINER, PROJECTILE_CONTAINER, DAGGER_SPAWN_POINTS_CONTAINER;
+	[Export] EnemiesManager ENEMIES_MANAGER;
 	[Export] Node2D[] DAGGER_SPAWN_POINTS;
 	[Export] AnimationPlayer ANIMATION_PLAYER;
 	[Export] AnimationTree ANIMATION_TREE;
@@ -77,6 +78,7 @@ public partial class Player : CharacterBody2D
 	Vector2 c_direction, c_CalculatingVector; KinematicCollision2D c_collision; Node2D c_collisionNode;
 	public override void _Ready()
 	{
+
 		TrajectoryPoint.GRAVITY_VECTOR = new(0, GRAVITY);
 		Enemy.PLAYER = this;
 		TRAJECTORY_POINTS = new TrajectoryPoint[AMOUNT_OF_TRAJECTORY_POINT];
@@ -91,6 +93,7 @@ public partial class Player : CharacterBody2D
 	public override void _Process(double delta)
 	{
 		HandlePlayerInput();
+		GD.Print(ANIMATION_TREE.Get("parameters/conditions/isAttacking"), ANIMATION_TREE.Get("parameters/Attack/conditions/throwThing"), ANIMATION_TREE.Get("parameters/Attack/conditions/whirlwindAttack"));
 	}
 	public override void _PhysicsProcess(double delta)
 	{
@@ -160,7 +163,7 @@ public partial class Player : CharacterBody2D
 		}
 		if(Input.IsActionJustPressed("ui_throwBomb"))
 		{
-			ThrowBomb();
+			ThrowStarSpike();
 			ANIMATION_TREE.Set("parameters/conditions/isAttacking", true);
 			ANIMATION_TREE.Set("parameters/Attack/conditions/throwThing", true);
 			return;
@@ -223,12 +226,12 @@ public partial class Player : CharacterBody2D
 		c_daggerInstance.Transform = new(DAGGER_SPAWN_POINTS[0].GlobalRotation, DAGGER_SPAWN_POINTS[0].GlobalPosition);
 		c_daggerInstance.Intialize(new(Mathf.Cos(c_daggerInstance.GlobalRotation), Mathf.Sin(c_daggerInstance.GlobalRotation)));
 	}
-	StarSpike c_bombInstace;
-	void ThrowBomb() {
+	StarSpike c_starSpikeInstance;
+	void ThrowStarSpike() {
 		DAGGER_SPAWN_POINTS_CONTAINER.LookAt(GetGlobalMousePosition());
-		c_bombInstace = BOMB_SCENE.Instantiate<StarSpike>();
-		PROJECTILE_CONTAINER.AddChild(c_bombInstace);
-		c_bombInstace.GlobalPosition = DAGGER_SPAWN_POINTS[0].GlobalPosition;
-		c_bombInstace.Intialize(new(Mathf.Cos(DAGGER_SPAWN_POINTS[0].GlobalRotation), Mathf.Sin(DAGGER_SPAWN_POINTS[0].GlobalRotation)));
+		c_starSpikeInstance = BOMB_SCENE.Instantiate<StarSpike>();
+		PROJECTILE_CONTAINER.AddChild(c_starSpikeInstance);
+		c_starSpikeInstance.GlobalPosition = DAGGER_SPAWN_POINTS[0].GlobalPosition;
+		c_starSpikeInstance.Intialize(new(Mathf.Cos(DAGGER_SPAWN_POINTS[0].GlobalRotation), Mathf.Sin(DAGGER_SPAWN_POINTS[0].GlobalRotation)));
 	}
 }

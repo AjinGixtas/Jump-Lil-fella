@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=3 uid="uid://d38w3kvjpff8u"]
+[gd_scene load_steps=67 format=3 uid="uid://d38w3kvjpff8u"]
 
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_kg7dr"]
 [ext_resource type="PackedScene" uid="uid://b04ghogku75b4" path="res://Scenes/TrajectoryPoint.tscn" id="2_p7oop"]
@@ -6,8 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://brdrfltebgdik" path="res://Scenes/Player/PlayerSmallDagger.tscn" id="3_35hns"]
 [ext_resource type="Script" path="res://Scripts/Components/Hurtbox.cs" id="4_dkvq4"]
 [ext_resource type="PackedScene" uid="uid://b76ug6pjmn1ef" path="res://Scenes/Player/PlayerBigDagger.tscn" id="4_ym2fe"]
-[ext_resource type="PackedScene" uid="uid://dfl581b4elkou" path="res://Scenes/Player/PlayerBomb.tscn" id="5_4apvw"]
 [ext_resource type="PackedScene" uid="uid://cmg1agna74220" path="res://Scenes/Player/PlayerHealthBar.tscn" id="5_8csau"]
+[ext_resource type="PackedScene" uid="uid://dfl581b4elkou" path="res://Scenes/Player/PlayerStarSpike.tscn" id="5_rg3rk"]
 [ext_resource type="PackedScene" uid="uid://bmmmknw7gg2cd" path="res://Scenes/Player/PlayerShieldBar.tscn" id="6_jmplk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eiv2h"]
@@ -248,7 +248,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("AnimationTree:parameters/Attack/conditions/whirlwindAttack")
+tracks/2/path = NodePath("AnimationTree:parameters/conditions/isJumping")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -260,7 +260,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("AnimationTree:parameters/conditions/isJumping")
+tracks/3/path = NodePath("AnimationTree:parameters/conditions/isOnSurface")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -272,7 +272,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("AnimationTree:parameters/conditions/isOnSurface")
+tracks/4/path = NodePath("AnimationTree:parameters/conditions/isFloating")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -284,7 +284,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("AnimationTree:parameters/conditions/isFloating")
+tracks/5/path = NodePath("AnimationTree:parameters/Attack/conditions/dash")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -296,10 +296,22 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("AnimationTree:parameters/Attack/conditions/ThrowDagger")
+tracks/6/path = NodePath("AnimationTree:parameters/Attack/conditions/throwThing")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("AnimationTree:parameters/Attack/conditions/whirlwindAttack")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -356,30 +368,6 @@ tracks/0/keys = {
 "update": 1,
 "values": [Vector2i(0, 12), Vector2i(1, 12), Vector2i(2, 12)]
 }
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnimationTree:parameters/Attack/conditions/ThrowDagger")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.2),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0.2),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
 
 [sub_resource type="Animation" id="Animation_iikr0"]
 resource_name = "ThrowDaggerFloor"
@@ -396,30 +384,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [Vector2i(0, 9), Vector2i(1, 9), Vector2i(2, 9)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnimationTree:parameters/Attack/conditions/ThrowDagger")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.2),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0.2),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_mimw7"]
@@ -438,30 +402,6 @@ tracks/0/keys = {
 "update": 1,
 "values": [Vector2i(0, 10), Vector2i(1, 10), Vector2i(2, 10)]
 }
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnimationTree:parameters/Attack/conditions/ThrowDagger")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.2),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0.2),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
 
 [sub_resource type="Animation" id="Animation_xcn3f"]
 resource_name = "ThrowDaggerWall"
@@ -478,30 +418,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [Vector2i(0, 11), Vector2i(1, 11), Vector2i(2, 11)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnimationTree:parameters/Attack/conditions/ThrowDagger")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.2),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0.2),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_x8cej"]
@@ -520,14 +436,30 @@ tracks/0/keys = {
 "update": 1,
 "values": [Vector2i(0, 7), Vector2i(1, 7), Vector2i(2, 7), Vector2i(3, 7), Vector2i(4, 7), Vector2i(5, 7), Vector2i(6, 7)]
 }
+
+[sub_resource type="Animation" id="Animation_6srpv"]
+resource_name = "ResetAttackState"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationTree:parameters/Attack/conditions/dash")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
+tracks/1/path = NodePath("AnimationTree:parameters/Attack/conditions/throwThing")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.35),
+"times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
@@ -539,7 +471,7 @@ tracks/2/path = NodePath("AnimationTree:parameters/Attack/conditions/whirlwindAt
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.35),
+"times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
@@ -554,6 +486,7 @@ _data = {
 "GrabWall": SubResource("Animation_n2gsr"),
 "Jump": SubResource("Animation_a2w70"),
 "RESET": SubResource("Animation_tqnh7"),
+"ResetAttackState": SubResource("Animation_6srpv"),
 "RiseUpward": SubResource("Animation_id8bt"),
 "Slide": SubResource("Animation_yonac"),
 "ThrowDaggerCeiling": SubResource("Animation_mavbe"),
@@ -565,6 +498,9 @@ _data = {
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yj8aa"]
 animation = &"Dash"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3cen0"]
+animation = &"ResetAttackState"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pd3r0"]
 animation = &"ThrowDaggerWall"
@@ -600,35 +536,41 @@ animation = &"WhirlwindAttack"
 advance_mode = 2
 advance_condition = &"whirlwindAttack"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7dbk5"]
-switch_mode = 2
-advance_mode = 2
-
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_q6e5o"]
 advance_mode = 2
 advance_condition = &"throwThing"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6qqi8"]
-switch_mode = 2
-advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lavep"]
 advance_mode = 2
 advance_condition = &"dash"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rirle"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_inswe"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_f5xt3"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1bsdu"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8uicq"]
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_q83b4"]
 states/Dash/node = SubResource("AnimationNodeAnimation_yj8aa")
 states/Dash/position = Vector2(509, 208)
+states/ResetAttackState/node = SubResource("AnimationNodeAnimation_3cen0")
+states/ResetAttackState/position = Vector2(748, 100)
 states/ThrowThing/node = SubResource("AnimationNodeBlendSpace2D_t6awv")
 states/ThrowThing/position = Vector2(509, 4)
 states/WhirlwindAttack/node = SubResource("AnimationNodeAnimation_qk6xj")
 states/WhirlwindAttack/position = Vector2(509, 100)
-transitions = ["Start", "WhirlwindAttack", SubResource("AnimationNodeStateMachineTransition_r0g6s"), "WhirlwindAttack", "End", SubResource("AnimationNodeStateMachineTransition_7dbk5"), "Start", "ThrowThing", SubResource("AnimationNodeStateMachineTransition_q6e5o"), "ThrowThing", "End", SubResource("AnimationNodeStateMachineTransition_6qqi8"), "Start", "Dash", SubResource("AnimationNodeStateMachineTransition_lavep"), "Dash", "End", SubResource("AnimationNodeStateMachineTransition_rirle")]
-graph_offset = Vector2(22, -69)
+transitions = ["Start", "WhirlwindAttack", SubResource("AnimationNodeStateMachineTransition_r0g6s"), "Start", "ThrowThing", SubResource("AnimationNodeStateMachineTransition_q6e5o"), "Start", "Dash", SubResource("AnimationNodeStateMachineTransition_lavep"), "ResetAttackState", "End", SubResource("AnimationNodeStateMachineTransition_inswe"), "ThrowThing", "ResetAttackState", SubResource("AnimationNodeStateMachineTransition_f5xt3"), "WhirlwindAttack", "ResetAttackState", SubResource("AnimationNodeStateMachineTransition_1bsdu"), "Dash", "ResetAttackState", SubResource("AnimationNodeStateMachineTransition_8uicq")]
+graph_offset = Vector2(-89, -29)
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_j4iba"]
 animation = &"FallDownward"
@@ -715,7 +657,6 @@ advance_condition = &"isFloating"
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1y5lb"]
-switch_mode = 2
 advance_mode = 2
 advance_condition = &"isOnSurface"
 
@@ -751,7 +692,7 @@ AMOUNT_OF_TRAJECTORY_POINT = 75
 TRAJECTORY_POINT_SCENE = ExtResource("2_p7oop")
 SMALL_DAGGER_SCENE = ExtResource("3_35hns")
 BIG_DAGGER_SCENE = ExtResource("4_ym2fe")
-BOMB_SCENE = ExtResource("5_4apvw")
+BOMB_SCENE = ExtResource("5_rg3rk")
 DAGGER_SPAWN_POINTS_CONTAINER = NodePath("DaggerSpawnPointContainer")
 DAGGER_SPAWN_POINTS = [NodePath("DaggerSpawnPointContainer/DaggerSpawnPoint0"), NodePath("DaggerSpawnPointContainer/DaggerSpawnPoint1"), NodePath("DaggerSpawnPointContainer/DaggerSpawnPoint2")]
 ANIMATION_PLAYER = NodePath("AnimationPlayer")

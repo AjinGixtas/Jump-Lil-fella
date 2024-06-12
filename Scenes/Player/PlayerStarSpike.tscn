@@ -1,0 +1,290 @@
+[gd_scene load_steps=24 format=3 uid="uid://dfl581b4elkou"]
+
+[ext_resource type="Script" path="res://Scripts/StarSpike.cs" id="1_f6k2m"]
+[ext_resource type="Texture2D" uid="uid://dijrweusbgffw" path="res://Sprites/Bomb.png" id="2_xvmy7"]
+[ext_resource type="PackedScene" uid="uid://cbo517a5hki3f" path="res://Scenes/Components/Hitbox.tscn" id="3_2apdc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_aq3yh"]
+radius = 20.0
+
+[sub_resource type="Animation" id="Animation_cnjt4"]
+resource_name = "Move"
+length = 0.2
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_213ex"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hitbox/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_onenm"]
+resource_name = "SpikeBurst"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(5, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hitbox/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.15),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_aq8f6"]
+resource_name = "Attack"
+length = 0.1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Vector2i(0, 2), Vector2i(1, 2)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hitbox/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_5ujs7"]
+resource_name = "Destroy"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2), Vector2i(3, 2)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hitbox/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.4),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6m3xq"]
+_data = {
+"Attack": SubResource("Animation_aq8f6"),
+"Destroy": SubResource("Animation_5ujs7"),
+"Move": SubResource("Animation_cnjt4"),
+"RESET": SubResource("Animation_213ex"),
+"SpikeBurst": SubResource("Animation_onenm")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_s2x8x"]
+animation = &"Attack"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1w1d5"]
+animation = &"Destroy"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6pksf"]
+animation = &"Move"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_b87xa"]
+animation = &"SpikeBurst"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_78j7a"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3mkem"]
+advance_mode = 2
+advance_condition = &"isStopped"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yujn1"]
+advance_mode = 2
+advance_condition = &"isAttacking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_36vfe"]
+advance_mode = 2
+advance_condition = &"isDestroyed"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tct1j"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2r6d1"]
+advance_mode = 2
+advance_condition = &"isDestroyed"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4ls70"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"isStopped"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_0etrm"]
+states/Attack/node = SubResource("AnimationNodeAnimation_s2x8x")
+states/Attack/position = Vector2(563, 100)
+states/Destroy/node = SubResource("AnimationNodeAnimation_1w1d5")
+states/Destroy/position = Vector2(563, 214)
+states/End/position = Vector2(770, 214)
+states/Move/node = SubResource("AnimationNodeAnimation_6pksf")
+states/Move/position = Vector2(174, 100)
+states/SpikeBurst/node = SubResource("AnimationNodeAnimation_b87xa")
+states/SpikeBurst/position = Vector2(367, 100)
+states/Start/position = Vector2(21, 100)
+transitions = ["Start", "Move", SubResource("AnimationNodeStateMachineTransition_78j7a"), "Move", "SpikeBurst", SubResource("AnimationNodeStateMachineTransition_3mkem"), "SpikeBurst", "Attack", SubResource("AnimationNodeStateMachineTransition_yujn1"), "Attack", "Destroy", SubResource("AnimationNodeStateMachineTransition_36vfe"), "Destroy", "End", SubResource("AnimationNodeStateMachineTransition_tct1j"), "SpikeBurst", "Destroy", SubResource("AnimationNodeStateMachineTransition_2r6d1"), "Attack", "SpikeBurst", SubResource("AnimationNodeStateMachineTransition_4ls70")]
+graph_offset = Vector2(-78, 38)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6ephl"]
+radius = 20.0
+
+[node name="PlayerStarSpike" type="CharacterBody2D" node_paths=PackedStringArray("ANIMATION_TREE", "FUSE_TIMER")]
+collision_layer = 0
+collision_mask = 5
+script = ExtResource("1_f6k2m")
+ANIMATION_TREE = NodePath("AnimationTree")
+FUSE_TIMER = NodePath("FuseTimer")
+SPEED = 10.0
+MAX_HEALTH = 5.0
+isMoving = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_aq3yh")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_xvmy7")
+hframes = 6
+vframes = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+process_mode = 3
+libraries = {
+"": SubResource("AnimationLibrary_6m3xq")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_0etrm")
+anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/isAttacking = false
+parameters/conditions/isDestroyed = false
+parameters/conditions/isStopped = false
+
+[node name="Hitbox" parent="." instance=ExtResource("3_2apdc")]
+collision_layer = 0
+collision_mask = 4
+damage = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_6ephl")
+disabled = true
+
+[node name="FuseTimer" type="Timer" parent="."]
+wait_time = 0.33
+one_shot = true
+
+[connection signal="OnDealingDamage" from="Hitbox" to="." method="OnDealingDamage"]
+[connection signal="timeout" from="FuseTimer" to="." method="OnFuseTimerTimeout"]
