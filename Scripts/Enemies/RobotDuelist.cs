@@ -3,10 +3,8 @@ using Godot;
 
 public partial class RobotDuelist : Enemy
 {
-	[Export] AnimationTree ANIMATION_TREE;
 	[Export] Node2D FIRE_SPOT;
 	[Export] Timer JUMP_COOLDOWN_TIMER, ATTACK_COOLDOWN_TIMER;
-	[Export] Sprite2D SPRITE;
 	[Export] float JUMP_FORCE;
 	[Export] bool affectByGravity, canAttack = true, canJump, isAttacking;
 	[Export] PackedScene DAGGER_SCENE;
