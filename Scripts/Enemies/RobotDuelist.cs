@@ -80,7 +80,7 @@ public partial class RobotDuelist : Enemy
 		PROJECTILE_CONTAINER.AddChild(c_daggerInstance);
 		c_daggerInstance.GlobalPosition = FIRE_SPOT.GlobalPosition;
 		SPRITE.FlipH = c_daggerInstance.Velocity.X > 0;
-		c_daggerInstance.Intialize((PLAYER.GlobalPosition - FIRE_SPOT.GlobalPosition).Normalized() + Velocity.Normalized() * .15f);
+		c_daggerInstance.Intialize((PLAYER.GlobalPosition - FIRE_SPOT.GlobalPosition).Normalized() + Velocity.Normalized() * .05f);
 	}
 	public void OnJumpCooldownTimerTimeout() { canJump = true; }
 	public void OnAttackCooldownTimerTimeout() { canAttack = true; }

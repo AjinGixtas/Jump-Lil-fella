@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bpsp21lh2suvu"]
+[gd_scene load_steps=8 format=3 uid="uid://bpsp21lh2suvu"]
 
 [ext_resource type="PackedScene" uid="uid://b0k8lbg3xfgl7" path="res://Scenes/Wall.tscn" id="1_y4sgl"]
 [ext_resource type="PackedScene" uid="uid://d38w3kvjpff8u" path="res://Scenes/Player/Player.tscn" id="2_oc2s3"]
 [ext_resource type="Script" path="res://Scripts/Enemies/EnemiesManager.cs" id="3_hcwis"]
 [ext_resource type="PackedScene" uid="uid://621oo0s8t1bf" path="res://Scenes/Enemies/Duelist/RobotDuelist.tscn" id="4_52nkb"]
+[ext_resource type="PackedScene" uid="uid://bhtb1ser2d3ts" path="res://Scenes/Enemies/SpikyBall.tscn" id="5_bvfcl"]
 
 [sub_resource type="Animation" id="Animation_d3dif"]
 resource_name = "Attack"
@@ -55,3 +56,6 @@ ENEMIES_MANAGER = NodePath("../GenericContainer/EnemiesManager")
 libraries = {
 "": SubResource("AnimationLibrary_7dkno")
 }
+
+[node name="SpikyBall" parent="." instance=ExtResource("5_bvfcl")]
+position = Vector2(-90, 31)

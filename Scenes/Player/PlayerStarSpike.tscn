@@ -7,6 +7,89 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_aq3yh"]
 radius = 20.0
 
+[sub_resource type="Animation" id="Animation_aq8f6"]
+resource_name = "Attack"
+length = 0.1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Vector2i(0, 2), Vector2i(1, 2)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hitbox/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_5ujs7"]
+resource_name = "Destroy"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2), Vector2i(3, 2)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hitbox/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.4),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
 [sub_resource type="Animation" id="Animation_cnjt4"]
 resource_name = "Move"
 length = 0.2
@@ -93,89 +176,6 @@ tracks/1/keys = {
 "values": [false]
 }
 
-[sub_resource type="Animation" id="Animation_aq8f6"]
-resource_name = "Attack"
-length = 0.1
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame_coords")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [Vector2i(0, 2), Vector2i(1, 2)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Hitbox/CollisionShape2D:disabled")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [true, false]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0.1),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-
-[sub_resource type="Animation" id="Animation_5ujs7"]
-resource_name = "Destroy"
-length = 0.4
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame_coords")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2), Vector2i(3, 2)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Hitbox/CollisionShape2D:disabled")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/2/type = "method"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0.4),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"queue_free"
-}]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_6m3xq"]
 _data = {
 "Attack": SubResource("Animation_aq8f6"),
@@ -209,6 +209,7 @@ advance_mode = 2
 advance_condition = &"isAttacking"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_36vfe"]
+switch_mode = 2
 advance_mode = 2
 advance_condition = &"isDestroyed"
 
@@ -237,7 +238,7 @@ states/SpikeBurst/node = SubResource("AnimationNodeAnimation_b87xa")
 states/SpikeBurst/position = Vector2(367, 100)
 states/Start/position = Vector2(21, 100)
 transitions = ["Start", "Move", SubResource("AnimationNodeStateMachineTransition_78j7a"), "Move", "SpikeBurst", SubResource("AnimationNodeStateMachineTransition_3mkem"), "SpikeBurst", "Attack", SubResource("AnimationNodeStateMachineTransition_yujn1"), "Attack", "Destroy", SubResource("AnimationNodeStateMachineTransition_36vfe"), "Destroy", "End", SubResource("AnimationNodeStateMachineTransition_tct1j"), "SpikeBurst", "Destroy", SubResource("AnimationNodeStateMachineTransition_2r6d1"), "Attack", "SpikeBurst", SubResource("AnimationNodeStateMachineTransition_4ls70")]
-graph_offset = Vector2(-78, 38)
+graph_offset = Vector2(-84, -1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6ephl"]
 radius = 20.0
@@ -271,7 +272,7 @@ tree_root = SubResource("AnimationNodeStateMachine_0etrm")
 anim_player = NodePath("../AnimationPlayer")
 parameters/conditions/isAttacking = false
 parameters/conditions/isDestroyed = false
-parameters/conditions/isStopped = false
+parameters/conditions/isStopped = true
 
 [node name="Hitbox" parent="." instance=ExtResource("3_2apdc")]
 collision_layer = 0

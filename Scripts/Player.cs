@@ -93,7 +93,6 @@ public partial class Player : CharacterBody2D
 	public override void _Process(double delta)
 	{
 		HandlePlayerInput();
-		GD.Print(ANIMATION_TREE.Get("parameters/conditions/isAttacking"), ANIMATION_TREE.Get("parameters/Attack/conditions/throwThing"), ANIMATION_TREE.Get("parameters/Attack/conditions/whirlwindAttack"));
 	}
 	public override void _PhysicsProcess(double delta)
 	{
