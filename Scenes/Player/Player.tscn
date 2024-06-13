@@ -394,7 +394,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_mavbe"]
 resource_name = "ThrowDaggerCeiling"
-length = 0.2
+length = 0.15
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -403,7 +403,7 @@ tracks/0/path = NodePath("Sprite2D:frame_coords")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.15),
+"times": PackedFloat32Array(0, 0.05, 0.1),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [Vector2i(0, 12), Vector2i(1, 12), Vector2i(2, 12)]
@@ -411,7 +411,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_iikr0"]
 resource_name = "ThrowDaggerFloor"
-length = 0.2
+length = 0.15
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -420,7 +420,7 @@ tracks/0/path = NodePath("Sprite2D:frame_coords")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.15),
+"times": PackedFloat32Array(0, 0.05, 0.1),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [Vector2i(0, 9), Vector2i(1, 9), Vector2i(2, 9)]
@@ -428,7 +428,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_mimw7"]
 resource_name = "ThrowDaggerMidAir"
-length = 0.2
+length = 0.15
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -437,7 +437,7 @@ tracks/0/path = NodePath("Sprite2D:frame_coords")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.15),
+"times": PackedFloat32Array(0, 0.05, 0.1),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [Vector2i(0, 10), Vector2i(1, 10), Vector2i(2, 10)]
@@ -445,7 +445,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_xcn3f"]
 resource_name = "ThrowDaggerWall"
-length = 0.2
+length = 0.15
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -454,7 +454,7 @@ tracks/0/path = NodePath("Sprite2D:frame_coords")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.15),
+"times": PackedFloat32Array(0, 0.05, 0.1),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [Vector2i(0, 11), Vector2i(1, 11), Vector2i(2, 11)]
@@ -674,7 +674,7 @@ states/GrabSurface/node = SubResource("AnimationNodeBlendSpace2D_0d2vv")
 states/GrabSurface/position = Vector2(401, 100)
 states/Jump/node = SubResource("AnimationNodeAnimation_qo2x6")
 states/Jump/position = Vector2(401, -50)
-states/Start/position = Vector2(43, 100)
+states/Start/position = Vector2(47, 100)
 transitions = ["GrabSurface", "Jump", SubResource("AnimationNodeStateMachineTransition_sdmoj"), "FloatMidAir", "GrabSurface", SubResource("AnimationNodeStateMachineTransition_3u3t8"), "Jump", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_mdki5"), "Jump", "Attack", SubResource("AnimationNodeStateMachineTransition_rkpi4"), "FloatMidAir", "Attack", SubResource("AnimationNodeStateMachineTransition_0brki"), "Attack", "Jump", SubResource("AnimationNodeStateMachineTransition_t70iw"), "Attack", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_7wwqt"), "Start", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_th58w"), "Attack", "GrabSurface", SubResource("AnimationNodeStateMachineTransition_1y5lb"), "GrabSurface", "Attack", SubResource("AnimationNodeStateMachineTransition_6v3k6")]
 graph_offset = Vector2(-64, -84)
 

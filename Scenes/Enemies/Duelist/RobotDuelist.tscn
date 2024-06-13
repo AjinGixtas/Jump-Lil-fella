@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://621oo0s8t1bf"]
+[gd_scene load_steps=54 format=3 uid="uid://621oo0s8t1bf"]
 
 [ext_resource type="Script" path="res://Scripts/Enemies/RobotDuelist.cs" id="1_1qd7u"]
 [ext_resource type="Texture2D" uid="uid://biymhvdiajyk4" path="res://Sprites/RobotDuelist_FrogNinja.png" id="1_la27p"]
@@ -197,7 +197,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [true]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -221,7 +221,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_y7c6f"]
@@ -240,9 +240,88 @@ tracks/0/keys = {
 "values": [Vector2i(0, 1), Vector2i(1, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_6brbq"]
+resource_name = "DieFloating"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 8), Vector2i(1, 8), Vector2i(2, 8)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [false],
+"method": &"set_process"
+}, {
+"args": [true],
+"method": &"set_physics_process"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:affectByGravity")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.05),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_8ma44"]
+resource_name = "DieLandFloor"
+length = 0.75
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 9), Vector2i(1, 9), Vector2i(2, 9), Vector2i(3, 9)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.75),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qgv3d"]
 _data = {
 "ApexSlash": SubResource("Animation_7p5av"),
+"DieFloating": SubResource("Animation_6brbq"),
+"DieLandFloor": SubResource("Animation_8ma44"),
 "FallDownward": SubResource("Animation_0pohj"),
 "GrabFloor": SubResource("Animation_xl80o"),
 "GrabWall": SubResource("Animation_rrk8l"),
@@ -255,6 +334,12 @@ _data = {
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bjews"]
 animation = &"ApexSlash"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gwjw8"]
+animation = &"DieFloating"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ofdp8"]
+animation = &"DieLandFloor"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rqc4x"]
 animation = &"FallDownward"
@@ -356,19 +441,53 @@ advance_condition = &"isAttacking"
 advance_mode = 2
 advance_condition = &"isAttacking"
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3wodh"]
+advance_mode = 2
+advance_condition = &"isDead"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_uhha5"]
+advance_mode = 2
+advance_condition = &"isDead"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_t3dvw"]
+advance_mode = 2
+advance_condition = &"isDead"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_46rje"]
+advance_mode = 2
+advance_condition = &"isDead"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_k6sse"]
+advance_mode = 2
+advance_condition = &"isDead"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_u4be0"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"isOnSurface"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0yy4u"]
+switch_mode = 2
+advance_mode = 2
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_4gmn0"]
 states/ApexSlash/node = SubResource("AnimationNodeAnimation_bjews")
-states/ApexSlash/position = Vector2(351, -6)
+states/ApexSlash/position = Vector2(351, 16)
+states/Die/node = SubResource("AnimationNodeAnimation_gwjw8")
+states/Die/position = Vector2(717, 196)
+states/DieLandFloor/node = SubResource("AnimationNodeAnimation_ofdp8")
+states/DieLandFloor/position = Vector2(523, 196)
+states/End/position = Vector2(351, 196)
 states/FloatMidAir/node = SubResource("AnimationNodeBlendSpace2D_35yxn")
 states/FloatMidAir/position = Vector2(351, 100)
 states/GrabSurface/node = SubResource("AnimationNodeBlendSpace2D_rnrme")
 states/GrabSurface/position = Vector2(717, 100)
 states/Jump/node = SubResource("AnimationNodeAnimation_yaicc")
-states/Jump/position = Vector2(523, -6)
+states/Jump/position = Vector2(523, 16)
 states/LandOnSurface/node = SubResource("AnimationNodeBlendSpace2D_8rb8e")
 states/LandOnSurface/position = Vector2(523, 100)
-transitions = ["GrabSurface", "Jump", SubResource("AnimationNodeStateMachineTransition_ktylk"), "FloatMidAir", "LandOnSurface", SubResource("AnimationNodeStateMachineTransition_oispc"), "Jump", "LandOnSurface", SubResource("AnimationNodeStateMachineTransition_bvnmw"), "Jump", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_e73u1"), "Start", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_825dc"), "LandOnSurface", "GrabSurface", SubResource("AnimationNodeStateMachineTransition_oc2ef"), "ApexSlash", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_mb8ph"), "Jump", "ApexSlash", SubResource("AnimationNodeStateMachineTransition_a0qj5"), "FloatMidAir", "ApexSlash", SubResource("AnimationNodeStateMachineTransition_da8ns")]
-graph_offset = Vector2(132, -73)
+transitions = ["GrabSurface", "Jump", SubResource("AnimationNodeStateMachineTransition_ktylk"), "FloatMidAir", "LandOnSurface", SubResource("AnimationNodeStateMachineTransition_oispc"), "Jump", "LandOnSurface", SubResource("AnimationNodeStateMachineTransition_bvnmw"), "Jump", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_e73u1"), "Start", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_825dc"), "LandOnSurface", "GrabSurface", SubResource("AnimationNodeStateMachineTransition_oc2ef"), "ApexSlash", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_mb8ph"), "Jump", "ApexSlash", SubResource("AnimationNodeStateMachineTransition_a0qj5"), "FloatMidAir", "ApexSlash", SubResource("AnimationNodeStateMachineTransition_da8ns"), "ApexSlash", "Die", SubResource("AnimationNodeStateMachineTransition_3wodh"), "FloatMidAir", "Die", SubResource("AnimationNodeStateMachineTransition_uhha5"), "Jump", "Die", SubResource("AnimationNodeStateMachineTransition_t3dvw"), "GrabSurface", "Die", SubResource("AnimationNodeStateMachineTransition_46rje"), "LandOnSurface", "Die", SubResource("AnimationNodeStateMachineTransition_k6sse"), "Die", "DieLandFloor", SubResource("AnimationNodeStateMachineTransition_u4be0"), "DieLandFloor", "End", SubResource("AnimationNodeStateMachineTransition_0yy4u")]
+graph_offset = Vector2(-132, 9)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8beqi"]
 size = Vector2(30, 30)
@@ -380,7 +499,7 @@ FIRE_SPOT = NodePath("FireSpot")
 JUMP_COOLDOWN_TIMER = NodePath("JumpCooldownTimer")
 ATTACK_COOLDOWN_TIMER = NodePath("AttackCooldownTimer")
 JUMP_FORCE = 6.5
-isAttacking = true
+affectByGravity = true
 DAGGER_SCENE = ExtResource("2_rb7jj")
 ANIMATION_TREE = NodePath("AnimationTree")
 SPRITE = NodePath("Sprite2D")
@@ -393,18 +512,21 @@ z_as_relative = false
 texture = ExtResource("1_la27p")
 flip_h = true
 hframes = 5
-vframes = 9
+vframes = 10
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+process_mode = 3
 libraries = {
 "": SubResource("AnimationLibrary_qgv3d")
 }
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
+process_mode = 3
 tree_root = SubResource("AnimationNodeStateMachine_4gmn0")
 anim_player = NodePath("../AnimationPlayer")
 parameters/conditions/isAttacking = false
-parameters/conditions/isJumping = true
+parameters/conditions/isDead = false
+parameters/conditions/isJumping = false
 parameters/conditions/isOnSurface = false
 parameters/FloatMidAir/blend_position = Vector2(0.00800002, 0.00389099)
 parameters/GrabSurface/blend_position = Vector2(0, 1)
@@ -439,3 +561,4 @@ shape = SubResource("RectangleShape2D_8beqi")
 
 [connection signal="timeout" from="JumpCooldownTimer" to="." method="OnJumpCooldownTimerTimeout"]
 [connection signal="timeout" from="AttackCooldownTimer" to="." method="OnAttackCooldownTimerTimeout"]
+[connection signal="Dead" from="Hurtbox" to="." method="OnDead"]

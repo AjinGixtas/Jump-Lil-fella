@@ -44,7 +44,7 @@ rotation = 1.5708
 position = Vector2(0, 117)
 
 [node name="Player" parent="." node_paths=PackedStringArray("TRAJECTORY_POINT_CONTAINER", "PROJECTILE_CONTAINER", "ENEMIES_MANAGER") instance=ExtResource("2_oc2s3")]
-position = Vector2(3, 45)
+position = Vector2(88, 66)
 JUMP_FORCE = 7.5
 TRAJECTORY_POINT_CONTAINER = NodePath("../GenericContainer/TrajectoryPointContainer")
 PROJECTILE_CONTAINER = NodePath("../GenericContainer")

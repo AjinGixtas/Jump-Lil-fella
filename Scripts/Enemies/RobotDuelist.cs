@@ -1,4 +1,3 @@
-using System;
 using Godot;
 
 public partial class RobotDuelist : Enemy
@@ -84,4 +83,5 @@ public partial class RobotDuelist : Enemy
 	}
 	public void OnJumpCooldownTimerTimeout() { canJump = true; }
 	public void OnAttackCooldownTimerTimeout() { canAttack = true; }
+	public void OnDead() { ANIMATION_TREE.Set("parameters/conditions/isDead", true); }
 }
