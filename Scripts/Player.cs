@@ -93,6 +93,7 @@ public partial class Player : CharacterBody2D
 	public override void _Process(double delta)
 	{
 		HandlePlayerInput();
+		// GD.Print(ANIMATION_TREE.Get("parameters/conditions/isAttacking"), ANIMATION_TREE.Get("parameters/conditions/isFloating"), ANIMATION_TREE.Get("parameters/conditions/isJumping"), ANIMATION_TREE.Get("parameters/conditions/isOnSurface"), ANIMATION_TREE.Get("parameters/Attack/conditions/dash"), ANIMATION_TREE.Get("parameters/Attack/conditions/throwThing"), ANIMATION_TREE.Get("parameters/Attack/conditions/whirlwindAttack"));
 	}
 	public override void _PhysicsProcess(double delta)
 	{
@@ -103,7 +104,6 @@ public partial class Player : CharacterBody2D
 	bool canSlide;
 	void HandlePlayerInput()
 	{
-		// Ground-only attack	
 		if (SurfaceCurrentlyInContact != SurfaceType.NONE || isSliding)
 		{
 			if (Input.IsActionPressed("ui_jump"))
@@ -134,7 +134,6 @@ public partial class Player : CharacterBody2D
 				}
 			}
 		}
-		// Air-only attack
 		else
 		{
 			if (Input.IsActionJustPressed("ui_whirlwindAttack"))
@@ -142,7 +141,6 @@ public partial class Player : CharacterBody2D
 				WhirlwindAttack();
 				ANIMATION_TREE.Set("parameters/conditions/isAttacking", true);
 				ANIMATION_TREE.Set("parameters/Attack/conditions/whirlwindAttack", true);
-				ANIMATION_TREE.Set("parameters/conditions/isJumping", true);
 				return;
 			}
 		}
@@ -150,7 +148,7 @@ public partial class Player : CharacterBody2D
 		{
 			ThrowDagger(true);
 			ANIMATION_TREE.Set("parameters/conditions/isAttacking", true);
-			ANIMATION_TREE.Set("parameters/Attack/conditions/throwDagger", true);
+			ANIMATION_TREE.Set("parameters/Attack/conditions/throwThing", true);
 			return;
 		}
 		if (Input.IsActionJustPressed("ui_throwBigDagger"))

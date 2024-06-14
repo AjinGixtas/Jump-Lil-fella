@@ -83,5 +83,6 @@ public partial class RobotDuelist : Enemy
 	}
 	public void OnJumpCooldownTimerTimeout() { canJump = true; }
 	public void OnAttackCooldownTimerTimeout() { canAttack = true; }
+	public void OnTakingDamage() { ANIMATION_TREE.Set("parameters/conditions/isTakingDamage", true); }
 	public void OnDead() { ANIMATION_TREE.Set("parameters/conditions/isDead", true); }
 }

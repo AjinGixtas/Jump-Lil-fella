@@ -74,18 +74,6 @@ tracks/1/keys = {
 "update": 1,
 "values": [false]
 }
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
 
 [sub_resource type="Animation" id="Animation_1w62n"]
 resource_name = "GrabFloor"
@@ -114,18 +102,6 @@ tracks/1/keys = {
 "update": 1,
 "values": [false]
 }
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
 
 [sub_resource type="Animation" id="Animation_n2gsr"]
 resource_name = "GrabWall"
@@ -149,18 +125,6 @@ tracks/1/path = NodePath("AnimationTree:parameters/conditions/isJumping")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -280,7 +244,7 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [true]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -321,7 +285,7 @@ tracks/7/keys = {
 
 [sub_resource type="Animation" id="Animation_6srpv"]
 resource_name = "ResetAttackState"
-length = 0.001
+length = 0.01
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -357,6 +321,32 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"Yar"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_id8bt"]
@@ -571,7 +561,7 @@ states/ThrowThing/position = Vector2(509, 4)
 states/WhirlwindAttack/node = SubResource("AnimationNodeAnimation_qk6xj")
 states/WhirlwindAttack/position = Vector2(509, 100)
 transitions = ["Start", "WhirlwindAttack", SubResource("AnimationNodeStateMachineTransition_r0g6s"), "Start", "ThrowThing", SubResource("AnimationNodeStateMachineTransition_q6e5o"), "Start", "Dash", SubResource("AnimationNodeStateMachineTransition_lavep"), "ResetAttackState", "End", SubResource("AnimationNodeStateMachineTransition_inswe"), "ThrowThing", "ResetAttackState", SubResource("AnimationNodeStateMachineTransition_f5xt3"), "WhirlwindAttack", "ResetAttackState", SubResource("AnimationNodeStateMachineTransition_1bsdu"), "Dash", "ResetAttackState", SubResource("AnimationNodeStateMachineTransition_8uicq")]
-graph_offset = Vector2(-89, -29)
+graph_offset = Vector2(-28, -13)
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_j4iba"]
 animation = &"FallDownward"
@@ -658,6 +648,7 @@ advance_condition = &"isFloating"
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1y5lb"]
+switch_mode = 2
 advance_mode = 2
 advance_condition = &"isOnSurface"
 
@@ -724,15 +715,15 @@ deterministic = false
 tree_root = SubResource("AnimationNodeStateMachine_ebb3e")
 anim_player = NodePath("../AnimationPlayer")
 parameters/conditions/isAttacking = false
-parameters/conditions/isFloating = false
+parameters/conditions/isFloating = true
 parameters/conditions/isJumping = false
 parameters/conditions/isOnSurface = false
 parameters/Attack/conditions/dash = false
 parameters/Attack/conditions/throwThing = false
 parameters/Attack/conditions/whirlwindAttack = false
-parameters/Attack/ThrowThing/blend_position = Vector2(0, 0)
-parameters/FloatMidAir/blend_position = Vector2(-0.0144, 0.968254)
-parameters/GrabSurface/blend_position = Vector2(-0.9952, 0.0661478)
+parameters/Attack/ThrowThing/blend_position = Vector2(-0.2032, 0.78836)
+parameters/FloatMidAir/blend_position = Vector2(0, 0)
+parameters/GrabSurface/blend_position = Vector2(0, 0)
 
 [node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("HEALTH_BAR", "SHIELD_BAR") groups=["Hurtbox"]]
 collision_layer = 2

@@ -1,10 +1,17 @@
-[gd_scene load_steps=26 format=3 uid="uid://bhtb1ser2d3ts"]
+[gd_scene load_steps=28 format=3 uid="uid://bhtb1ser2d3ts"]
 
 [ext_resource type="Texture2D" uid="uid://hbidg3o2vhb5" path="res://Sprites/SpikyBall.png" id="1_2efmq"]
 [ext_resource type="Script" path="res://Scripts/Enemies/SpikyBall.cs" id="1_m7emk"]
+[ext_resource type="Shader" uid="uid://bwat2i5hqjp71" path="res://Materials/FlashMaterial.tres" id="2_klugy"]
 [ext_resource type="PackedScene" uid="uid://cbo517a5hki3f" path="res://Scenes/Components/Hitbox.tscn" id="3_m01ap"]
 [ext_resource type="PackedScene" uid="uid://dnejbk4onyjfd" path="res://Scenes/Components/Hurtbox.tscn" id="4_a4o0v"]
 [ext_resource type="PackedScene" uid="uid://b5cpx8vlupe1t" path="res://Scenes/Enemies/EnemyHealthBar.tscn" id="5_qrdcj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g5wpe"]
+resource_local_to_scene = true
+shader = ExtResource("2_klugy")
+shader_parameter/isFlashing = false
+shader_parameter/FlashColor = Color(0.901961, 1, 1, 1)
 
 [sub_resource type="Animation" id="Animation_o200y"]
 resource_name = "Angry"
@@ -111,7 +118,7 @@ tracks/0/path = NodePath("Sprite2D:frame_coords")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.2, 0.3),
+"times": PackedFloat32Array(0, 0.15, 0.2, 0.25, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
 "values": [Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2), Vector2i(3, 2), Vector2i(4, 2)]
@@ -151,6 +158,18 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [9.05539]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D:material:shader_parameter/isFlashing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
 }
 
 [sub_resource type="Animation" id="Animation_my0lm"]
@@ -214,6 +233,18 @@ tracks/4/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Sprite2D:material:shader_parameter/isFlashing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_0htro"]
@@ -303,6 +334,7 @@ ANIMATION_TREE = NodePath("AnimationTree")
 SPRITE = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_g5wpe")
 texture = ExtResource("1_2efmq")
 hframes = 10
 vframes = 4

@@ -1,13 +1,20 @@
-[gd_scene load_steps=54 format=3 uid="uid://621oo0s8t1bf"]
+[gd_scene load_steps=62 format=3 uid="uid://621oo0s8t1bf"]
 
 [ext_resource type="Script" path="res://Scripts/Enemies/RobotDuelist.cs" id="1_1qd7u"]
 [ext_resource type="Texture2D" uid="uid://biymhvdiajyk4" path="res://Sprites/RobotDuelist_FrogNinja.png" id="1_la27p"]
 [ext_resource type="PackedScene" uid="uid://di2ppo2eyg241" path="res://Scenes/Enemies/Duelist/DuelistDagger.tscn" id="2_rb7jj"]
+[ext_resource type="Shader" uid="uid://bwat2i5hqjp71" path="res://Materials/FlashMaterial.tres" id="3_two2x"]
 [ext_resource type="PackedScene" uid="uid://b5cpx8vlupe1t" path="res://Scenes/Enemies/EnemyHealthBar.tscn" id="4_80vum"]
 [ext_resource type="PackedScene" uid="uid://dnejbk4onyjfd" path="res://Scenes/Components/Hurtbox.tscn" id="4_ouq0h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3hppv"]
 size = Vector2(24, 24)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_326js"]
+resource_local_to_scene = true
+shader = ExtResource("3_two2x")
+shader_parameter/isFlashing = false
+shader_parameter/FlashColor = Color(0.956863, 1, 1, 1)
 
 [sub_resource type="Animation" id="Animation_7p5av"]
 resource_name = "ApexSlash"
@@ -324,6 +331,18 @@ tracks/4/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Sprite2D:material:shader_parameter/isFlashing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_y7c6f"]
 resource_name = "RiseUpward"
@@ -341,6 +360,34 @@ tracks/0/keys = {
 "values": [Vector2i(0, 1), Vector2i(1, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_16t1k"]
+resource_name = "TakingDamage"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/isFlashing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationTree:parameters/conditions/isTakingDamage")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qgv3d"]
 _data = {
 "ApexSlash": SubResource("Animation_7p5av"),
@@ -353,13 +400,14 @@ _data = {
 "LandFloor": SubResource("Animation_oj2bq"),
 "LandWall": SubResource("Animation_t1xq2"),
 "RESET": SubResource("Animation_iuv5g"),
-"RiseUpward": SubResource("Animation_y7c6f")
+"RiseUpward": SubResource("Animation_y7c6f"),
+"TakingDamage": SubResource("Animation_16t1k")
 }
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bjews"]
 animation = &"ApexSlash"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gwjw8"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gydw5"]
 animation = &"DieFloating"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ofdp8"]
@@ -429,6 +477,9 @@ blend_point_2/pos = Vector2(0, 1)
 triangles = PackedInt32Array(0, 1, 2)
 blend_mode = 1
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_vqdvv"]
+animation = &"TakingDamage"
+
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ktylk"]
 advance_mode = 2
 advance_condition = &"isJumping"
@@ -465,43 +516,63 @@ advance_condition = &"isAttacking"
 advance_mode = 2
 advance_condition = &"isAttacking"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3wodh"]
-advance_mode = 2
-advance_condition = &"isDead"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_uhha5"]
-advance_mode = 2
-advance_condition = &"isDead"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_t3dvw"]
-advance_mode = 2
-advance_condition = &"isDead"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_46rje"]
-advance_mode = 2
-advance_condition = &"isDead"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_k6sse"]
-advance_mode = 2
-advance_condition = &"isDead"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_u4be0"]
-switch_mode = 2
-advance_mode = 2
-advance_condition = &"isOnSurface"
-
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0yy4u"]
 switch_mode = 2
 advance_mode = 2
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7is1p"]
+advance_mode = 2
+advance_condition = &"isTakingDamage"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3tbhd"]
+advance_mode = 2
+advance_condition = &"isTakingDamage"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bkjq7"]
+advance_mode = 2
+advance_condition = &"isTakingDamage"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fq36t"]
+advance_mode = 2
+advance_condition = &"isTakingDamage"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_r0itr"]
+advance_mode = 2
+advance_condition = &"isTakingDamage"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_agaxy"]
+priority = 0
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"isDead"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_h2qxf"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_eoxp3"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"isAttacking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bx7fb"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"isJumping"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_e4qu2"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"isOnSurface"
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_4gmn0"]
 states/ApexSlash/node = SubResource("AnimationNodeAnimation_bjews")
 states/ApexSlash/position = Vector2(351, 16)
-states/Die/node = SubResource("AnimationNodeAnimation_gwjw8")
-states/Die/position = Vector2(717, 196)
+states/DieFloating/node = SubResource("AnimationNodeAnimation_gydw5")
+states/DieFloating/position = Vector2(788, -117)
 states/DieLandFloor/node = SubResource("AnimationNodeAnimation_ofdp8")
-states/DieLandFloor/position = Vector2(523, 196)
-states/End/position = Vector2(351, 196)
+states/DieLandFloor/position = Vector2(950, -117)
+states/End/position = Vector2(1143, -117)
 states/FloatMidAir/node = SubResource("AnimationNodeBlendSpace2D_35yxn")
 states/FloatMidAir/position = Vector2(351, 100)
 states/GrabSurface/node = SubResource("AnimationNodeBlendSpace2D_rnrme")
@@ -510,8 +581,10 @@ states/Jump/node = SubResource("AnimationNodeAnimation_yaicc")
 states/Jump/position = Vector2(523, 16)
 states/LandOnSurface/node = SubResource("AnimationNodeBlendSpace2D_8rb8e")
 states/LandOnSurface/position = Vector2(523, 100)
-transitions = ["GrabSurface", "Jump", SubResource("AnimationNodeStateMachineTransition_ktylk"), "FloatMidAir", "LandOnSurface", SubResource("AnimationNodeStateMachineTransition_oispc"), "Jump", "LandOnSurface", SubResource("AnimationNodeStateMachineTransition_bvnmw"), "Jump", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_e73u1"), "Start", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_825dc"), "LandOnSurface", "GrabSurface", SubResource("AnimationNodeStateMachineTransition_oc2ef"), "ApexSlash", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_mb8ph"), "Jump", "ApexSlash", SubResource("AnimationNodeStateMachineTransition_a0qj5"), "FloatMidAir", "ApexSlash", SubResource("AnimationNodeStateMachineTransition_da8ns"), "ApexSlash", "Die", SubResource("AnimationNodeStateMachineTransition_3wodh"), "FloatMidAir", "Die", SubResource("AnimationNodeStateMachineTransition_uhha5"), "Jump", "Die", SubResource("AnimationNodeStateMachineTransition_t3dvw"), "GrabSurface", "Die", SubResource("AnimationNodeStateMachineTransition_46rje"), "LandOnSurface", "Die", SubResource("AnimationNodeStateMachineTransition_k6sse"), "Die", "DieLandFloor", SubResource("AnimationNodeStateMachineTransition_u4be0"), "DieLandFloor", "End", SubResource("AnimationNodeStateMachineTransition_0yy4u")]
-graph_offset = Vector2(-132, 9)
+states/TakingDamage/node = SubResource("AnimationNodeAnimation_vqdvv")
+states/TakingDamage/position = Vector2(535, 310)
+transitions = ["GrabSurface", "Jump", SubResource("AnimationNodeStateMachineTransition_ktylk"), "FloatMidAir", "LandOnSurface", SubResource("AnimationNodeStateMachineTransition_oispc"), "Jump", "LandOnSurface", SubResource("AnimationNodeStateMachineTransition_bvnmw"), "Jump", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_e73u1"), "Start", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_825dc"), "LandOnSurface", "GrabSurface", SubResource("AnimationNodeStateMachineTransition_oc2ef"), "ApexSlash", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_mb8ph"), "Jump", "ApexSlash", SubResource("AnimationNodeStateMachineTransition_a0qj5"), "FloatMidAir", "ApexSlash", SubResource("AnimationNodeStateMachineTransition_da8ns"), "DieLandFloor", "End", SubResource("AnimationNodeStateMachineTransition_0yy4u"), "ApexSlash", "TakingDamage", SubResource("AnimationNodeStateMachineTransition_7is1p"), "FloatMidAir", "TakingDamage", SubResource("AnimationNodeStateMachineTransition_3tbhd"), "Jump", "TakingDamage", SubResource("AnimationNodeStateMachineTransition_bkjq7"), "LandOnSurface", "TakingDamage", SubResource("AnimationNodeStateMachineTransition_fq36t"), "GrabSurface", "TakingDamage", SubResource("AnimationNodeStateMachineTransition_r0itr"), "TakingDamage", "DieFloating", SubResource("AnimationNodeStateMachineTransition_agaxy"), "DieFloating", "DieLandFloor", SubResource("AnimationNodeStateMachineTransition_h2qxf"), "TakingDamage", "ApexSlash", SubResource("AnimationNodeStateMachineTransition_eoxp3"), "TakingDamage", "FloatMidAir", SubResource("AnimationNodeStateMachineTransition_bx7fb"), "TakingDamage", "GrabSurface", SubResource("AnimationNodeStateMachineTransition_e4qu2")]
+graph_offset = Vector2(-163, 72)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8beqi"]
 size = Vector2(30, 30)
@@ -533,6 +606,7 @@ shape = SubResource("RectangleShape2D_3hppv")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_as_relative = false
+material = SubResource("ShaderMaterial_326js")
 texture = ExtResource("1_la27p")
 flip_h = true
 hframes = 5
@@ -552,6 +626,7 @@ parameters/conditions/isAttacking = false
 parameters/conditions/isDead = false
 parameters/conditions/isJumping = false
 parameters/conditions/isOnSurface = false
+parameters/conditions/isTakingDamage = false
 parameters/FloatMidAir/blend_position = Vector2(0.00800002, 0.00389099)
 parameters/GrabSurface/blend_position = Vector2(0, 1)
 parameters/LandOnSurface/blend_position = Vector2(0, -1)
@@ -586,3 +661,4 @@ shape = SubResource("RectangleShape2D_8beqi")
 [connection signal="timeout" from="JumpCooldownTimer" to="." method="OnJumpCooldownTimerTimeout"]
 [connection signal="timeout" from="AttackCooldownTimer" to="." method="OnAttackCooldownTimerTimeout"]
 [connection signal="Dead" from="Hurtbox" to="." method="OnDead"]
+[connection signal="OnTakingDamage" from="Hurtbox" to="." method="OnTakingDamage"]
