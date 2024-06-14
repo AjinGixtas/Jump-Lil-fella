@@ -1,0 +1,315 @@
+[gd_scene load_steps=27 format=3 uid="uid://w1si4wglgv0h"]
+
+[ext_resource type="Texture2D" uid="uid://bgixtw54qposr" path="res://Sprites/Sawblade.png" id="1_2jpkr"]
+[ext_resource type="Script" path="res://Scripts/SawBlade.cs" id="1_dmcti"]
+[ext_resource type="PackedScene" uid="uid://cbo517a5hki3f" path="res://Scenes/Components/Hitbox.tscn" id="3_mceuo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gboi5"]
+size = Vector2(24, 24)
+
+[sub_resource type="Animation" id="Animation_gkkd3"]
+resource_name = "Attack"
+length = 0.1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Vector2i(0, 4), Vector2i(1, 4)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hitbox/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_u0ho7"]
+resource_name = "Deploy"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_uv8ut"]
+resource_name = "Destroy"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 3), Vector2i(1, 3), Vector2i(2, 3), Vector2i(3, 3)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.4),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Hitbox/CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_woxjy"]
+resource_name = "Fly"
+length = 0.2
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_oksv0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hitbox/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationTree:parameters/conditions/isAttacking")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_68plb"]
+resource_name = "Roll"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2), Vector2i(3, 2)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hitbox/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_muhip"]
+_data = {
+"Attack": SubResource("Animation_gkkd3"),
+"Deploy": SubResource("Animation_u0ho7"),
+"Destroy": SubResource("Animation_uv8ut"),
+"Fly": SubResource("Animation_woxjy"),
+"RESET": SubResource("Animation_oksv0"),
+"Roll": SubResource("Animation_68plb")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_stw1h"]
+animation = &"Attack"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_vg6xn"]
+animation = &"Deploy"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0wut8"]
+animation = &"Destroy"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_b4hv2"]
+animation = &"Fly"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_w6xsj"]
+animation = &"Roll"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_h3kd1"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tjlqe"]
+advance_mode = 2
+advance_condition = &"isOnSurface"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jyc28"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mrlvk"]
+advance_mode = 2
+advance_condition = &"isDestroy"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_am2f4"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6q4ts"]
+advance_mode = 2
+advance_condition = &"isAttacking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vj7l1"]
+advance_mode = 2
+advance_condition = &"isDestroy"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_m78rs"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_qqrlq"]
+states/Attack/node = SubResource("AnimationNodeAnimation_stw1h")
+states/Attack/position = Vector2(745, 202)
+states/Deploy/node = SubResource("AnimationNodeAnimation_vg6xn")
+states/Deploy/position = Vector2(552, 100)
+states/Destroy/node = SubResource("AnimationNodeAnimation_0wut8")
+states/Destroy/position = Vector2(952, 100)
+states/End/position = Vector2(1149, 100)
+states/Fly/node = SubResource("AnimationNodeAnimation_b4hv2")
+states/Fly/position = Vector2(336, 100)
+states/Roll/node = SubResource("AnimationNodeAnimation_w6xsj")
+states/Roll/position = Vector2(745, 100)
+transitions = ["Start", "Fly", SubResource("AnimationNodeStateMachineTransition_h3kd1"), "Fly", "Deploy", SubResource("AnimationNodeStateMachineTransition_tjlqe"), "Deploy", "Roll", SubResource("AnimationNodeStateMachineTransition_jyc28"), "Roll", "Destroy", SubResource("AnimationNodeStateMachineTransition_mrlvk"), "Destroy", "End", SubResource("AnimationNodeStateMachineTransition_am2f4"), "Roll", "Attack", SubResource("AnimationNodeStateMachineTransition_6q4ts"), "Attack", "Destroy", SubResource("AnimationNodeStateMachineTransition_vj7l1"), "Attack", "Roll", SubResource("AnimationNodeStateMachineTransition_m78rs")]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_21x2l"]
+radius = 20.0
+
+[node name="PlayerSawblade" type="CharacterBody2D" node_paths=PackedStringArray("SPRITE", "ANIMATION_TREE")]
+collision_layer = 0
+script = ExtResource("1_dmcti")
+SPRITE = NodePath("Sprite2D")
+ANIMATION_TREE = NodePath("AnimationTree")
+FLYING_SPEED = 5.0
+MOVE_SPEED = 15.0
+metadata/_edit_horizontal_guides_ = [-32.0]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_gboi5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_2jpkr")
+offset = Vector2(0, -8)
+hframes = 4
+vframes = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+process_mode = 3
+libraries = {
+"": SubResource("AnimationLibrary_muhip")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+process_mode = 3
+tree_root = SubResource("AnimationNodeStateMachine_qqrlq")
+anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/isAttacking = false
+parameters/conditions/isDestroy = false
+parameters/conditions/isOnSurface = false
+
+[node name="LifetimeTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+autostart = true
+
+[node name="Hitbox" parent="." instance=ExtResource("3_mceuo")]
+collision_layer = 0
+collision_mask = 4
+damage = 0.5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_21x2l")
+disabled = true
+
+[connection signal="timeout" from="LifetimeTimer" to="." method="OnLifetimeTimerTimeout"]
+[connection signal="OnDealingDamage" from="Hitbox" to="." method="OnDealingDamage"]

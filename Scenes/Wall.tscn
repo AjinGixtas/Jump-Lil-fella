@@ -7,6 +7,7 @@ distance = 4.0
 
 [node name="Wall" type="StaticBody2D" groups=["Wall"]]
 z_as_relative = false
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -9)

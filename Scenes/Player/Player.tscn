@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://d38w3kvjpff8u"]
+[gd_scene load_steps=68 format=3 uid="uid://d38w3kvjpff8u"]
 
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_kg7dr"]
 [ext_resource type="PackedScene" uid="uid://b04ghogku75b4" path="res://Scenes/TrajectoryPoint.tscn" id="2_p7oop"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://cmg1agna74220" path="res://Scenes/Player/PlayerHealthBar.tscn" id="5_8csau"]
 [ext_resource type="PackedScene" uid="uid://dfl581b4elkou" path="res://Scenes/Player/PlayerStarSpike.tscn" id="5_rg3rk"]
 [ext_resource type="PackedScene" uid="uid://bmmmknw7gg2cd" path="res://Scenes/Player/PlayerShieldBar.tscn" id="6_jmplk"]
+[ext_resource type="PackedScene" uid="uid://w1si4wglgv0h" path="res://Scenes/Player/PlayerSawblade.tscn" id="6_u4hmv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eiv2h"]
 size = Vector2(16, 32)
@@ -693,6 +694,7 @@ TRAJECTORY_POINT_SCENE = ExtResource("2_p7oop")
 SMALL_DAGGER_SCENE = ExtResource("3_35hns")
 BIG_DAGGER_SCENE = ExtResource("4_ym2fe")
 BOMB_SCENE = ExtResource("5_rg3rk")
+SAW_BLADE_SCENE = ExtResource("6_u4hmv")
 DAGGER_SPAWN_POINTS_CONTAINER = NodePath("DaggerSpawnPointContainer")
 DAGGER_SPAWN_POINTS = [NodePath("DaggerSpawnPointContainer/DaggerSpawnPoint0"), NodePath("DaggerSpawnPointContainer/DaggerSpawnPoint1"), NodePath("DaggerSpawnPointContainer/DaggerSpawnPoint2")]
 ANIMATION_PLAYER = NodePath("AnimationPlayer")

@@ -32,5 +32,5 @@ public partial class StarSpike : CharacterBody2D
 		GD.Print(CurrentHealth);
 	}
 	public void OnFuseTimerTimeout() { ANIMATION_TREE.Set("parameters/conditions/isStopped", true); isMoving = false; }
-	public void OnDealingDamage() { CurrentHealth--; ANIMATION_TREE.Set("parameters/conditions/isAttacking", true); }
+	public void OnDealingDamage() { CurrentHealth -= .33f; ANIMATION_TREE.Set("parameters/conditions/isAttacking", true); }
 }

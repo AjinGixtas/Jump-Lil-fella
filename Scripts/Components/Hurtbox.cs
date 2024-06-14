@@ -88,6 +88,5 @@ public partial class Hurtbox : Area2D
 		EmitSignal(SignalName.OnTakingDamage);
 		if (MAX_SHIELD == 0) { CURRENT_HEALTH -= damage; return; }
 		CURRENT_SHIELD -= damage;
-		GD.Print("I'm dead :(");
 	}
 }
