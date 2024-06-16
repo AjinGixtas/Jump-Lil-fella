@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=3 uid="uid://d38w3kvjpff8u"]
+[gd_scene load_steps=74 format=3 uid="uid://d38w3kvjpff8u"]
 
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_kg7dr"]
 [ext_resource type="PackedScene" uid="uid://b04ghogku75b4" path="res://Scenes/TrajectoryPoint.tscn" id="2_p7oop"]
@@ -10,14 +10,35 @@
 [ext_resource type="PackedScene" uid="uid://dfl581b4elkou" path="res://Scenes/Player/PlayerStarSpike.tscn" id="5_rg3rk"]
 [ext_resource type="PackedScene" uid="uid://bmmmknw7gg2cd" path="res://Scenes/Player/PlayerShieldBar.tscn" id="6_jmplk"]
 [ext_resource type="PackedScene" uid="uid://w1si4wglgv0h" path="res://Scenes/Player/PlayerSawblade.tscn" id="6_u4hmv"]
+[ext_resource type="Texture2D" uid="uid://b6tgy2qk0pjx8" path="res://Sprites/DashAfterImage.png" id="11_i57l0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eiv2h"]
 size = Vector2(16, 32)
 
+[sub_resource type="Curve" id="Curve_jkp3r"]
+_data = [Vector2(0.04, 1), 0.0, 0.0, 0, 0, Vector2(0.993333, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_qcswy"]
+curve = SubResource("Curve_jkp3r")
+
+[sub_resource type="Gradient" id="Gradient_w6gmk"]
+colors = PackedColorArray(0, 1, 1, 1, 0, 0, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_0uoeh"]
+gradient = SubResource("Gradient_w6gmk")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_sdfiu"]
+particle_flag_disable_z = true
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("GradientTexture1D_0uoeh")
+alpha_curve = SubResource("CurveTexture_qcswy")
+
 [sub_resource type="Animation" id="Animation_t0px0"]
 resource_name = "Dash"
-length = 0.3
-step = 0.05
+length = 0.12
+step = 0.02
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -25,10 +46,22 @@ tracks/0/path = NodePath("Sprite2D:frame_coords")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25),
+"times": PackedFloat32Array(0, 0.02, 0.04, 0.06, 0.08, 0.1),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [Vector2i(0, 8), Vector2i(1, 8), Vector2i(2, 8), Vector2i(3, 8), Vector2i(4, 8), Vector2i(5, 8)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:IsDashing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.12),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
 }
 
 [sub_resource type="Animation" id="Animation_j0qf4"]
@@ -277,6 +310,18 @@ tracks/7/path = NodePath("AnimationTree:parameters/Attack/conditions/whirlwindAt
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath(".:IsDashing")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -679,6 +724,7 @@ script = ExtResource("1_kg7dr")
 JUMP_FORCE = 100.0
 MAX_STAMINA = 3.0
 FRICTION_FACTOR = 0.97
+DASH_FORCE = 15.0
 TRAJECTORY_POINTS = []
 AMOUNT_OF_TRAJECTORY_POINT = 75
 TRAJECTORY_POINT_SCENE = ExtResource("2_p7oop")
@@ -703,6 +749,14 @@ position = Vector2(0, -1)
 texture = ExtResource("2_sx6ou")
 hframes = 7
 vframes = 13
+
+[node name="DashParticles" type="Node2D" parent="Sprite2D"]
+
+[node name="AfterImageParticles" type="GPUParticles2D" parent="Sprite2D/DashParticles"]
+amount = 1000
+process_material = SubResource("ParticleProcessMaterial_sdfiu")
+texture = ExtResource("11_i57l0")
+lifetime = 0.12
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

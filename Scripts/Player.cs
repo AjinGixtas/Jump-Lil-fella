@@ -2,7 +2,7 @@ using Godot;
 
 public partial class Player : CharacterBody2D
 {
-	[Export] public float JUMP_FORCE, MAX_STAMINA, FRICTION_FACTOR;
+	[Export] public float JUMP_FORCE, MAX_STAMINA, FRICTION_FACTOR, DASH_FORCE;
 	[Export] TrajectoryPoint[] TRAJECTORY_POINTS;
 	[Export] int AMOUNT_OF_TRAJECTORY_POINT;
 	[Export] PackedScene TRAJECTORY_POINT_SCENE, SMALL_DAGGER_SCENE, BIG_DAGGER_SCENE, BOMB_SCENE, SAW_BLADE_SCENE;
@@ -15,6 +15,14 @@ public partial class Player : CharacterBody2D
 	enum SurfaceType { NONE, FLOOR, WALL_LEFT, WALL_RIGHT, CEILING }
 	float GRAVITY = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 	[Export] bool affectByGravity = true, isSliding = false;
+	bool isDashing = false;
+	[Export] bool IsDashing {
+		get { return isDashing; } 
+		set { 
+			isDashing = value;
+			if(!isDashing) { velocity = velocity.Normalized() * 3f; }
+		}
+	}
 	float currentStamina, deltaF;
 	float CurrentStamina
 	{
@@ -68,6 +76,7 @@ public partial class Player : CharacterBody2D
 		get { return Velocity; }
 		set
 		{
+			if(isDashing) return;
 			if (Mathf.Abs(value.X) < 1) { isSliding = false; }
 			Velocity = value;
 			if (value.X != 0) SPRITE.FlipH = value.X > 0;
@@ -172,6 +181,11 @@ public partial class Player : CharacterBody2D
 			ANIMATION_TREE.Set("parameters/Attack/conditions/throwThing", true);
 			return;
 		}
+		if (Input.IsActionJustPressed("ui_dash")) {
+			Dash();
+			ANIMATION_TREE.Set("parameters/conditions/isAttacking", true);
+			ANIMATION_TREE.Set("parameters/Attack/conditions/dash", true);
+		}
 	}
 	void HandlePhysics()
 	{
@@ -247,5 +261,18 @@ public partial class Player : CharacterBody2D
 		PROJECTILE_CONTAINER.AddChild(c_sawBladeInstance);
 		c_sawBladeInstance.GlobalPosition = DAGGER_SPAWN_POINTS[0].GlobalPosition;
 		c_sawBladeInstance.Intialize(new(Mathf.Cos(DAGGER_SPAWN_POINTS[0].GlobalRotation), Mathf.Sin(DAGGER_SPAWN_POINTS[0].GlobalRotation)), Velocity);
+	}
+	void Dash() {
+		c_direction = GetGlobalMousePosition() - GlobalPosition;
+		if (SurfaceCurrentlyInContact == SurfaceType.CEILING) { c_direction = new(c_direction.X, Mathf.Max(0, c_direction.Y)); }
+		else if (SurfaceCurrentlyInContact == SurfaceType.FLOOR)
+		{
+			c_CalculatingVector = c_direction * c_direction;
+			isSliding = c_CalculatingVector.X / (c_CalculatingVector.X + c_CalculatingVector.Y) >= 0.933012701894f;
+			if (isSliding) c_direction = new(c_direction.X, 0);
+		}
+		else if (SurfaceCurrentlyInContact == SurfaceType.WALL_LEFT) { c_direction = new(Mathf.Max(0, c_direction.X), c_direction.Y); }
+		else if (SurfaceCurrentlyInContact == SurfaceType.WALL_RIGHT) { c_direction = new(Mathf.Min(0, c_direction.X), c_direction.Y); }
+		velocity = c_direction.Normalized() * DASH_FORCE;
 	}
 }
