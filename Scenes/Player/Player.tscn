@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=3 uid="uid://d38w3kvjpff8u"]
+[gd_scene load_steps=80 format=3 uid="uid://d38w3kvjpff8u"]
 
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_kg7dr"]
 [ext_resource type="PackedScene" uid="uid://b04ghogku75b4" path="res://Scenes/TrajectoryPoint.tscn" id="2_p7oop"]
@@ -11,34 +11,44 @@
 [ext_resource type="PackedScene" uid="uid://bmmmknw7gg2cd" path="res://Scenes/Player/PlayerShieldBar.tscn" id="6_jmplk"]
 [ext_resource type="PackedScene" uid="uid://w1si4wglgv0h" path="res://Scenes/Player/PlayerSawblade.tscn" id="6_u4hmv"]
 [ext_resource type="Texture2D" uid="uid://b6tgy2qk0pjx8" path="res://Sprites/DashAfterImage.png" id="11_i57l0"]
+[ext_resource type="Texture2D" uid="uid://btm3y58wcmetp" path="res://Sprites/BlackRing.svg" id="12_0xexm"]
+[ext_resource type="Texture2D" uid="uid://r4ugowyckaga" path="res://Sprites/OrangeRing.svg" id="13_kxayc"]
+[ext_resource type="Texture2D" uid="uid://ddecanu3po3qu" path="res://Sprites/Dagger.png" id="14_0kj3l"]
+[ext_resource type="Texture2D" uid="uid://30nq1k4dgts5" path="res://Sprites/BigDagger.png" id="15_aba2x"]
+[ext_resource type="Texture2D" uid="uid://cuya67sfc2jpj" path="res://Sprites/SawbladeThumbnail.png" id="16_uo8fy"]
+[ext_resource type="Texture2D" uid="uid://dijrweusbgffw" path="res://Sprites/Bomb.png" id="17_n711n"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eiv2h"]
 size = Vector2(16, 32)
 
 [sub_resource type="Curve" id="Curve_jkp3r"]
-_data = [Vector2(0.04, 1), 0.0, 0.0, 0, 0, Vector2(0.993333, 0), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 1), 0.0, -2.69689, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_qcswy"]
 curve = SubResource("Curve_jkp3r")
 
-[sub_resource type="Gradient" id="Gradient_w6gmk"]
-colors = PackedColorArray(0, 1, 1, 1, 0, 0, 1, 1)
+[sub_resource type="Curve" id="Curve_tc1xm"]
+min_value = 1.0
+max_value = 1.5
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.7, 1.15), 0.0, 0.0, 0, 0, Vector2(1, 1.5), 0.0, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_0uoeh"]
-gradient = SubResource("Gradient_w6gmk")
+[sub_resource type="CurveTexture" id="CurveTexture_atpme"]
+curve = SubResource("Curve_tc1xm")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_sdfiu"]
-particle_flag_disable_z = true
 spread = 0.0
 gravity = Vector3(0, 0, 0)
-color_ramp = SubResource("GradientTexture1D_0uoeh")
+scale_curve = SubResource("CurveTexture_atpme")
+color = Color(0, 0, 0, 1)
 alpha_curve = SubResource("CurveTexture_qcswy")
 
 [sub_resource type="Animation" id="Animation_t0px0"]
 resource_name = "Dash"
-length = 0.12
-step = 0.02
+length = 0.05
+step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -46,10 +56,10 @@ tracks/0/path = NodePath("Sprite2D:frame_coords")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.02, 0.04, 0.06, 0.08, 0.1),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [Vector2i(0, 8), Vector2i(1, 8), Vector2i(2, 8), Vector2i(3, 8), Vector2i(4, 8), Vector2i(5, 8)]
+"values": [Vector2i(2, 8)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -58,10 +68,46 @@ tracks/1/path = NodePath(".:IsDashing")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.12),
+"times": PackedFloat32Array(0, 0.05),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D/DashParticles/AfterImageParticles:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Hurtbox:canTakeDamage")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:isSliding")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_j0qf4"]
@@ -322,6 +368,42 @@ tracks/8/path = NodePath(".:IsDashing")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Sprite2D/DashParticles/AfterImageParticles:emitting")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Hurtbox:canTakeDamage")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath(".:isSliding")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -718,13 +800,17 @@ graph_offset = Vector2(-64, -84)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1ax5r"]
 size = Vector2(12, 28)
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("TRAJECTORY_POINTS", "DAGGER_SPAWN_POINTS_CONTAINER", "DAGGER_SPAWN_POINTS", "ANIMATION_PLAYER", "ANIMATION_TREE", "SPRITE")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("SMALL_DAGGER_BAR", "BIG_DAGGER_BAR", "SAW_BLADE_BAR", "SPIKE_STAR_BAR", "TRAJECTORY_POINTS", "DAGGER_SPAWN_POINTS_CONTAINER", "DAGGER_SPAWN_POINTS", "ANIMATION_PLAYER", "ANIMATION_TREE", "SPRITE")]
 collision_layer = 0
 script = ExtResource("1_kg7dr")
 JUMP_FORCE = 100.0
 MAX_STAMINA = 3.0
 FRICTION_FACTOR = 0.97
-DASH_FORCE = 15.0
+DASH_FORCE = 30.0
+SMALL_DAGGER_BAR = NodePath("CanvasLayer/Control2/WeaponAmmoBarContainer/SmallDagger")
+BIG_DAGGER_BAR = NodePath("CanvasLayer/Control2/WeaponAmmoBarContainer/BigDagger")
+SAW_BLADE_BAR = NodePath("CanvasLayer/Control2/WeaponAmmoBarContainer/SawBlade")
+SPIKE_STAR_BAR = NodePath("CanvasLayer/Control2/WeaponAmmoBarContainer/SpikeStar")
 TRAJECTORY_POINTS = []
 AMOUNT_OF_TRAJECTORY_POINT = 75
 TRAJECTORY_POINT_SCENE = ExtResource("2_p7oop")
@@ -753,10 +839,12 @@ vframes = 13
 [node name="DashParticles" type="Node2D" parent="Sprite2D"]
 
 [node name="AfterImageParticles" type="GPUParticles2D" parent="Sprite2D/DashParticles"]
-amount = 1000
+emitting = false
+amount = 5
 process_material = SubResource("ParticleProcessMaterial_sdfiu")
 texture = ExtResource("11_i57l0")
-lifetime = 0.12
+lifetime = 0.1
+trail_lifetime = 0.05
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -785,8 +873,8 @@ collision_mask = 0
 script = ExtResource("4_dkvq4")
 MAX_HEALTH = 4.0
 MAX_SHIELD = 2.0
-HEALTH_BAR = NodePath("../CanvasLayer/HealthBarSprite")
-SHIELD_BAR = NodePath("../CanvasLayer/ShieldBarSprite")
+HEALTH_BAR = NodePath("../CanvasLayer/Control2/Control/HealthBarSprite")
+SHIELD_BAR = NodePath("../CanvasLayer/Control2/Control/ShieldBarSprite")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 position = Vector2(0, -1)
@@ -794,10 +882,141 @@ shape = SubResource("RectangleShape2D_1ax5r")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="HealthBarSprite" parent="CanvasLayer" instance=ExtResource("5_8csau")]
+[node name="Control2" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
-[node name="ShieldBarSprite" parent="CanvasLayer" instance=ExtResource("6_jmplk")]
+[node name="Control" type="Control" parent="CanvasLayer/Control2"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 260.0
+offset_bottom = 102.0
+
+[node name="HealthBarSprite" parent="CanvasLayer/Control2/Control" instance=ExtResource("5_8csau")]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 260.0
+offset_bottom = 60.0
+
+[node name="ShieldBarSprite" parent="CanvasLayer/Control2/Control" instance=ExtResource("6_jmplk")]
+offset_left = 0.0
+offset_top = 50.0
+offset_right = 136.0
+offset_bottom = 102.0
 INITIAL_SCALE = Vector2(52, 52)
+
+[node name="WeaponAmmoBarContainer" type="Control" parent="CanvasLayer/Control2"]
+anchors_preset = 0
+offset_left = 221.0
+offset_right = 413.0
+offset_bottom = 192.0
+pivot_offset = Vector2(96, 96)
+
+[node name="SmallDagger" type="TextureProgressBar" parent="CanvasLayer/Control2/WeaponAmmoBarContainer"]
+layout_mode = 2
+anchor_left = 0.677083
+anchor_top = 0.359375
+anchor_right = 0.677083
+anchor_bottom = 0.359375
+offset_left = -130.0
+offset_top = -5.0
+offset_right = -2.0
+offset_bottom = 123.0
+scale = Vector2(0.5, 0.5)
+max_value = 2.0
+value = 2.0
+fill_mode = 4
+texture_under = ExtResource("12_0xexm")
+texture_progress = ExtResource("13_kxayc")
+metadata/_edit_use_anchors_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Control2/WeaponAmmoBarContainer/SmallDagger"]
+position = Vector2(64, 64)
+rotation = -0.785398
+scale = Vector2(4, 4)
+texture = ExtResource("14_0kj3l")
+
+[node name="Sprite2D2" type="Sprite2D" parent="CanvasLayer/Control2/WeaponAmmoBarContainer/SmallDagger"]
+position = Vector2(73.3333, 88)
+scale = Vector2(4, 4)
+texture = ExtResource("14_0kj3l")
+
+[node name="Sprite2D3" type="Sprite2D" parent="CanvasLayer/Control2/WeaponAmmoBarContainer/SmallDagger"]
+position = Vector2(40, 54.6667)
+rotation = -1.5708
+scale = Vector2(4, 4)
+texture = ExtResource("14_0kj3l")
+
+[node name="BigDagger" type="TextureProgressBar" parent="CanvasLayer/Control2/WeaponAmmoBarContainer"]
+layout_mode = 2
+anchor_left = 0.673177
+anchor_top = 0.667969
+anchor_right = 0.673177
+anchor_bottom = 0.667969
+offset_left = -1.25
+offset_top = -64.25
+offset_right = 126.75
+offset_bottom = 63.75
+scale = Vector2(0.5, 0.5)
+max_value = 2.0
+value = 2.0
+fill_mode = 4
+texture_under = ExtResource("12_0xexm")
+texture_progress = ExtResource("13_kxayc")
+metadata/_edit_use_anchors_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Control2/WeaponAmmoBarContainer/BigDagger"]
+position = Vector2(64, 64)
+rotation = -0.785398
+scale = Vector2(3, 3)
+texture = ExtResource("15_aba2x")
+
+[node name="SawBlade" type="TextureProgressBar" parent="CanvasLayer/Control2/WeaponAmmoBarContainer"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 128.0
+offset_right = 192.0
+offset_bottom = 256.0
+scale = Vector2(0.5, 0.5)
+max_value = 2.0
+value = 2.0
+fill_mode = 4
+texture_under = ExtResource("12_0xexm")
+texture_progress = ExtResource("13_kxayc")
+metadata/_edit_use_anchors_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Control2/WeaponAmmoBarContainer/SawBlade"]
+position = Vector2(64, 64)
+scale = Vector2(2.75, 2.75)
+texture = ExtResource("16_uo8fy")
+
+[node name="SpikeStar" type="TextureProgressBar" parent="CanvasLayer/Control2/WeaponAmmoBarContainer"]
+layout_mode = 2
+anchor_left = 0.641927
+anchor_top = 0.671875
+anchor_right = 0.641927
+anchor_bottom = 0.671875
+offset_left = -59.25
+offset_top = -129.0
+offset_right = 68.75
+offset_bottom = -1.0
+scale = Vector2(0.5, 0.5)
+max_value = 2.0
+value = 2.0
+fill_mode = 4
+texture_under = ExtResource("12_0xexm")
+texture_progress = ExtResource("13_kxayc")
+metadata/_edit_use_anchors_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Control2/WeaponAmmoBarContainer/SpikeStar"]
+position = Vector2(64.5, 64.5)
+scale = Vector2(2.4, 2.4)
+texture = ExtResource("17_n711n")
+hframes = 6
+vframes = 3
+frame = 11
 
 [node name="DaggerSpawnPointContainer" type="Node2D" parent="."]
 scale = Vector2(5, 5)

@@ -3,6 +3,7 @@ using Godot;
 public partial class Player : CharacterBody2D
 {
 	[Export] public float JUMP_FORCE, MAX_STAMINA, FRICTION_FACTOR, DASH_FORCE;
+	[Export] TextureProgressBar SMALL_DAGGER_BAR, BIG_DAGGER_BAR, SAW_BLADE_BAR, SPIKE_STAR_BAR;
 	[Export] TrajectoryPoint[] TRAJECTORY_POINTS;
 	[Export] int AMOUNT_OF_TRAJECTORY_POINT;
 	[Export] PackedScene TRAJECTORY_POINT_SCENE, SMALL_DAGGER_SCENE, BIG_DAGGER_SCENE, BOMB_SCENE, SAW_BLADE_SCENE;
@@ -14,13 +15,14 @@ public partial class Player : CharacterBody2D
 	[Export] Sprite2D SPRITE;
 	enum SurfaceType { NONE, FLOOR, WALL_LEFT, WALL_RIGHT, CEILING }
 	float GRAVITY = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
+	int MAX_WHIRLWIND_CHARGE = 1, MAX_DASH_CHARGE = 1;
 	[Export] bool affectByGravity = true, isSliding = false;
 	bool isDashing = false;
 	[Export] bool IsDashing {
 		get { return isDashing; } 
 		set { 
 			isDashing = value;
-			if(!isDashing) { velocity = velocity.Normalized() * 3f; }
+			if(!isDashing) { velocity = velocity.Normalized() * 2.5f; }
 		}
 	}
 	float currentStamina, deltaF;
@@ -33,6 +35,7 @@ public partial class Player : CharacterBody2D
 			if (currentStamina == 0) affectByGravity = true;
 		}
 	}
+	int currentWhirlwindCharge, currentDashCharge;
 	SurfaceType surfaceCurrentlyInContact;
 	SurfaceType SurfaceCurrentlyInContact
 	{
@@ -48,6 +51,7 @@ public partial class Player : CharacterBody2D
 				return;
 			}
 
+			currentWhirlwindCharge = MAX_WHIRLWIND_CHARGE; currentDashCharge = MAX_DASH_CHARGE;
 			ANIMATION_TREE.Set("parameters/conditions/isOnSurface", true);
 			ANIMATION_TREE.Set("parameters/conditions/isFloating", false);
 			CurrentStamina = 3;
@@ -79,7 +83,7 @@ public partial class Player : CharacterBody2D
 			if(isDashing) return;
 			if (Mathf.Abs(value.X) < 1) { isSliding = false; }
 			Velocity = value;
-			if (value.X != 0) SPRITE.FlipH = value.X > 0;
+			if (value.X != 0) SPRITE.Scale = new(value.X > 0 ? -1 : 1, SPRITE.Scale.Y);
 			ANIMATION_TREE.Set("parameters/FloatMidAir/blend_position", Velocity.Normalized());
 			ANIMATION_TREE.Set("parameters/GrabSurface/blend_position", Velocity.Normalized());
 		}
@@ -145,43 +149,49 @@ public partial class Player : CharacterBody2D
 		}
 		else
 		{
-			if (Input.IsActionJustPressed("ui_whirlwindAttack"))
+			if (Input.IsActionJustPressed("ui_whirlwindAttack") && currentWhirlwindCharge > 0)
 			{
+				currentWhirlwindCharge--;
 				WhirlwindAttack();
 				ANIMATION_TREE.Set("parameters/conditions/isAttacking", true);
 				ANIMATION_TREE.Set("parameters/Attack/conditions/whirlwindAttack", true);
 				return;
 			}
 		}
-		if (Input.IsActionJustPressed("ui_throwSmallDagger"))
+		if (Input.IsActionJustPressed("ui_throwSmallDagger") && SMALL_DAGGER_BAR.Value > 0)
 		{
+			SMALL_DAGGER_BAR.Value--;
 			ThrowDagger(true);
 			ANIMATION_TREE.Set("parameters/conditions/isAttacking", true);
 			ANIMATION_TREE.Set("parameters/Attack/conditions/throwThing", true);
 			return;
 		}
-		if (Input.IsActionJustPressed("ui_throwBigDagger"))
+		if (Input.IsActionJustPressed("ui_throwBigDagger") && BIG_DAGGER_BAR.Value > 0)
 		{
+			BIG_DAGGER_BAR.Value--;
 			ThrowDagger(false);
 			ANIMATION_TREE.Set("parameters/conditions/isAttacking", true);
 			ANIMATION_TREE.Set("parameters/Attack/conditions/throwThing", true);
 			return;
 		}
-		if (Input.IsActionJustPressed("ui_throwBomb"))
+		if (Input.IsActionJustPressed("ui_throwBomb") && SPIKE_STAR_BAR.Value > 0)
 		{
+			SPIKE_STAR_BAR.Value--;
 			ThrowStarSpike();
 			ANIMATION_TREE.Set("parameters/conditions/isAttacking", true);
 			ANIMATION_TREE.Set("parameters/Attack/conditions/throwThing", true);
 			return;
 		}
-		if (Input.IsActionJustPressed("ui_throwSawBlade"))
+		if (Input.IsActionJustPressed("ui_throwSawBlade") && SAW_BLADE_BAR.Value > 0)
 		{
+			SAW_BLADE_BAR.Value--;
 			ThrowSawBlade();
 			ANIMATION_TREE.Set("parameters/conditions/isAttacking", true);
 			ANIMATION_TREE.Set("parameters/Attack/conditions/throwThing", true);
 			return;
 		}
-		if (Input.IsActionJustPressed("ui_dash")) {
+		if (Input.IsActionJustPressed("ui_dash") && currentDashCharge > 0) {
+			currentDashCharge--;
 			Dash();
 			ANIMATION_TREE.Set("parameters/conditions/isAttacking", true);
 			ANIMATION_TREE.Set("parameters/Attack/conditions/dash", true);
@@ -189,7 +199,7 @@ public partial class Player : CharacterBody2D
 	}
 	void HandlePhysics()
 	{
-		if (!isSliding) velocity = new(velocity.X, affectByGravity ? velocity.Y + GRAVITY * deltaF : velocity.Y);
+		if (!isSliding && !isDashing) velocity = new(velocity.X, affectByGravity ? velocity.Y + GRAVITY * deltaF : velocity.Y);
 		else velocity = new(velocity.X * FRICTION_FACTOR, 0);
 		c_collision = MoveAndCollide(velocity);
 
