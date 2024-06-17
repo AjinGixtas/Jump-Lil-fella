@@ -109,6 +109,7 @@ collision_layer = 0
 script = ExtResource("1_yty2o")
 SPEED = 15.0
 IsMoving = true
+amoutOfTarget = 1
 ANIMATION_PLAYER = NodePath("AnimationPlayer")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -133,3 +134,5 @@ shape = SubResource("RectangleShape2D_foh32")
 libraries = {
 "": SubResource("AnimationLibrary_t664x")
 }
+
+[connection signal="OnDealingDamage" from="Hitbox" to="." method="OnDealingDamage"]

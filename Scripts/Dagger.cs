@@ -4,6 +4,7 @@ public partial class Dagger : CharacterBody2D
 {
 	[Export] float SPEED; 
 	[Export] bool IsMoving, affectByGravity;
+	[Export] int amoutOfTarget;
 	float GRAVITY = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 	[Export] AnimationPlayer ANIMATION_PLAYER;
 	KinematicCollision2D c_kinematicCollision;
@@ -26,5 +27,9 @@ public partial class Dagger : CharacterBody2D
 				ANIMATION_PLAYER.Play("StuckToWall");
 			}
 		}
+	}
+	public void OnDealingDamage() {
+		amoutOfTarget--;
+		if(amoutOfTarget == 0) QueueFree();
 	}
 }
