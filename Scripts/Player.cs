@@ -18,11 +18,14 @@ public partial class Player : CharacterBody2D
 	int MAX_WHIRLWIND_CHARGE = 1, MAX_DASH_CHARGE = 1;
 	[Export] bool affectByGravity = true, isSliding = false;
 	bool isDashing = false;
-	[Export] bool IsDashing {
-		get { return isDashing; } 
-		set { 
+	[Export]
+	bool IsDashing
+	{
+		get { return isDashing; }
+		set
+		{
 			isDashing = value;
-			if(!isDashing) { velocity = velocity.Normalized() * 2.5f; }
+			if (!isDashing) { velocity = velocity.Normalized() * 2.5f; }
 		}
 	}
 	float currentStamina, deltaF;
@@ -47,7 +50,7 @@ public partial class Player : CharacterBody2D
 				affectByGravity = true; surfaceCurrentlyInContact = value;
 				ANIMATION_TREE.Set("parameters/conditions/isFloating", true);
 				ANIMATION_TREE.Set("parameters/conditions/isOnSurface", false);
-				ANIMATION_TREE.Set("parameters/Attack/ThrowDagger/blend_position", Vector2.Zero);
+				ANIMATION_TREE.Set("parameters/Attack/ThrowThing/blend_position", Vector2.Zero);
 				return;
 			}
 
@@ -58,21 +61,7 @@ public partial class Player : CharacterBody2D
 			if (c_collision != null) velocity = -c_collision.GetNormal();
 			surfaceCurrentlyInContact = value;
 			affectByGravity = false;
-			switch (surfaceCurrentlyInContact)
-			{
-				case SurfaceType.FLOOR:
-					ANIMATION_TREE.Set("parameters/Attack/ThrowDagger/blend_position", Vector2.Down);
-					break;
-				case SurfaceType.WALL_LEFT:
-					ANIMATION_TREE.Set("parameters/Attack/ThrowDagger/blend_position", Vector2.Left);
-					break;
-				case SurfaceType.WALL_RIGHT:
-					ANIMATION_TREE.Set("parameters/Attack/ThrowDagger/blend_position", Vector2.Right);
-					break;
-				case SurfaceType.CEILING:
-					ANIMATION_TREE.Set("parameters/Attack/ThrowDagger/blend_position", Vector2.Up);
-					break;
-			}
+			ANIMATION_TREE.Set("parameters/Attack/ThrowThing/blend_position", velocity);
 		}
 	}
 	Vector2 velocity
@@ -80,7 +69,7 @@ public partial class Player : CharacterBody2D
 		get { return Velocity; }
 		set
 		{
-			if(isDashing) return;
+			if (isDashing) return;
 			if (Mathf.Abs(value.X) < 1) { isSliding = false; }
 			Velocity = value;
 			if (value.X != 0) SPRITE.Scale = new(value.X > 0 ? -1 : 1, SPRITE.Scale.Y);
@@ -190,7 +179,8 @@ public partial class Player : CharacterBody2D
 			ANIMATION_TREE.Set("parameters/Attack/conditions/throwThing", true);
 			return;
 		}
-		if (Input.IsActionJustPressed("ui_dash") && currentDashCharge > 0) {
+		if (Input.IsActionJustPressed("ui_dash") && currentDashCharge > 0)
+		{
 			currentDashCharge--;
 			Dash();
 			ANIMATION_TREE.Set("parameters/conditions/isAttacking", true);
@@ -272,7 +262,8 @@ public partial class Player : CharacterBody2D
 		c_sawBladeInstance.GlobalPosition = DAGGER_SPAWN_POINTS[0].GlobalPosition;
 		c_sawBladeInstance.Intialize(new(Mathf.Cos(DAGGER_SPAWN_POINTS[0].GlobalRotation), Mathf.Sin(DAGGER_SPAWN_POINTS[0].GlobalRotation)), Velocity);
 	}
-	void Dash() {
+	void Dash()
+	{
 		c_direction = GetGlobalMousePosition() - GlobalPosition;
 		if (SurfaceCurrentlyInContact == SurfaceType.CEILING) { c_direction = new(c_direction.X, Mathf.Max(0, c_direction.Y)); }
 		else if (SurfaceCurrentlyInContact == SurfaceType.FLOOR)

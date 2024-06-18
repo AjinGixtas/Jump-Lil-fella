@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://w1si4wglgv0h"]
+[gd_scene load_steps=28 format=3 uid="uid://w1si4wglgv0h"]
 
 [ext_resource type="Texture2D" uid="uid://bgixtw54qposr" path="res://Sprites/Sawblade.png" id="1_2jpkr"]
 [ext_resource type="Script" path="res://Scripts/SawBlade.cs" id="1_dmcti"]
@@ -105,6 +105,18 @@ tracks/2/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:MOVE_SPEED")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
 
 [sub_resource type="Animation" id="Animation_woxjy"]
 resource_name = "Fly"
@@ -148,7 +160,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -161,6 +173,18 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:MOVE_SPEED")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [15.0]
 }
 
 [sub_resource type="Animation" id="Animation_68plb"]
@@ -178,18 +202,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
 "values": [Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2), Vector2i(3, 2)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Hitbox/CollisionShape2D:disabled")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_muhip"]
@@ -248,6 +260,10 @@ advance_condition = &"isDestroy"
 switch_mode = 2
 advance_mode = 2
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6vaox"]
+advance_mode = 2
+advance_condition = &"isAttacking"
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_qqrlq"]
 states/Attack/node = SubResource("AnimationNodeAnimation_stw1h")
 states/Attack/position = Vector2(745, 202)
@@ -260,7 +276,8 @@ states/Fly/node = SubResource("AnimationNodeAnimation_b4hv2")
 states/Fly/position = Vector2(336, 100)
 states/Roll/node = SubResource("AnimationNodeAnimation_w6xsj")
 states/Roll/position = Vector2(745, 100)
-transitions = ["Start", "Fly", SubResource("AnimationNodeStateMachineTransition_h3kd1"), "Fly", "Deploy", SubResource("AnimationNodeStateMachineTransition_tjlqe"), "Deploy", "Roll", SubResource("AnimationNodeStateMachineTransition_jyc28"), "Roll", "Destroy", SubResource("AnimationNodeStateMachineTransition_mrlvk"), "Destroy", "End", SubResource("AnimationNodeStateMachineTransition_am2f4"), "Roll", "Attack", SubResource("AnimationNodeStateMachineTransition_6q4ts"), "Attack", "Destroy", SubResource("AnimationNodeStateMachineTransition_vj7l1"), "Attack", "Roll", SubResource("AnimationNodeStateMachineTransition_m78rs")]
+transitions = ["Start", "Fly", SubResource("AnimationNodeStateMachineTransition_h3kd1"), "Fly", "Deploy", SubResource("AnimationNodeStateMachineTransition_tjlqe"), "Deploy", "Roll", SubResource("AnimationNodeStateMachineTransition_jyc28"), "Roll", "Destroy", SubResource("AnimationNodeStateMachineTransition_mrlvk"), "Destroy", "End", SubResource("AnimationNodeStateMachineTransition_am2f4"), "Roll", "Attack", SubResource("AnimationNodeStateMachineTransition_6q4ts"), "Attack", "Destroy", SubResource("AnimationNodeStateMachineTransition_vj7l1"), "Attack", "Roll", SubResource("AnimationNodeStateMachineTransition_m78rs"), "Deploy", "Attack", SubResource("AnimationNodeStateMachineTransition_6vaox")]
+graph_offset = Vector2(166, 19)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_21x2l"]
 radius = 20.0
@@ -309,7 +326,6 @@ damage = 0.5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 shape = SubResource("CircleShape2D_21x2l")
-disabled = true
 
 [connection signal="timeout" from="LifetimeTimer" to="." method="OnLifetimeTimerTimeout"]
 [connection signal="OnDealingDamage" from="Hitbox" to="." method="OnDealingDamage"]

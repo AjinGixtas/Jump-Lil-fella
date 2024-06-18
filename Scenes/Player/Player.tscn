@@ -800,7 +800,7 @@ graph_offset = Vector2(-64, -84)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1ax5r"]
 size = Vector2(12, 28)
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("SMALL_DAGGER_BAR", "BIG_DAGGER_BAR", "SAW_BLADE_BAR", "SPIKE_STAR_BAR", "TRAJECTORY_POINTS", "DAGGER_SPAWN_POINTS_CONTAINER", "DAGGER_SPAWN_POINTS", "ANIMATION_PLAYER", "ANIMATION_TREE", "SPRITE")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("SMALL_DAGGER_BAR", "BIG_DAGGER_BAR", "SAW_BLADE_BAR", "SPIKE_STAR_BAR", "TRAJECTORY_POINTS", "DAGGER_SPAWN_POINTS_CONTAINER", "DAGGER_SPAWN_POINTS", "ANIMATION_PLAYER", "ANIMATION_TREE", "SPRITE") groups=["Player"]]
 collision_layer = 0
 script = ExtResource("1_kg7dr")
 JUMP_FORCE = 100.0
@@ -863,7 +863,7 @@ parameters/conditions/isOnSurface = false
 parameters/Attack/conditions/dash = false
 parameters/Attack/conditions/throwThing = false
 parameters/Attack/conditions/whirlwindAttack = false
-parameters/Attack/ThrowThing/blend_position = Vector2(-0.2032, 0.78836)
+parameters/Attack/ThrowThing/blend_position = Vector2(-0.00405681, 0.978836)
 parameters/FloatMidAir/blend_position = Vector2(0, 0)
 parameters/GrabSurface/blend_position = Vector2(0, 0)
 

@@ -1,5 +1,3 @@
-using Godot;
-
 public partial class SpikyBall : Enemy
 {
 	bool isAwake = false;
