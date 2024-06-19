@@ -14,47 +14,83 @@ public partial class SpearMan : Enemy
         set { Velocity = value; }
     }
     Vector2 randomDirection;
-    public override void _Ready() {
+    public override void _Ready()
+    {
         randomDirection = Vector2Extensions.GetRandomVector() * MOVE_SPEED;
     }
-    public override void _Process(double delta)
+    public override void _PhysicsProcess(double delta)
     {
-        if (!IsBusy)
-        {
-            if(canCharge) ANIMATION_TREE.Set("parameters/conditions/isCharge", true);
-            else if(canThrowSpear) ANIMATION_TREE.Set("parameters/conditions/isThrowspear", true);
-            else {
-                c_playerDistance = Vector2Extensions.GetSquaredEuclideanDistance(PLAYER.GlobalPosition, GlobalPosition);
-                if(c_playerDistance < MIN_DISTANCE) Velocity = (PLAYER.GlobalPosition - GlobalPosition).Normalized() * -MOVE_SPEED;
-                else if(c_playerDistance > MAX_DISTANCE) Velocity = (PLAYER.GlobalPosition - GlobalPosition).Normalized() * MOVE_SPEED;
-                else {
-                    Velocity = randomDirection;
-                    if(CHANGE_DIRECTION_VELOCITY_TIMER.IsStopped()) { CHANGE_DIRECTION_VELOCITY_TIMER.Start(); }
-                }
+        SPRITE.FlipH = GlobalPosition.X < PLAYER.Position.X;
+            if (isDead)
+            {
+                Velocity += GRAVITY_VECTOR;
                 MoveAndSlide();
+                if (IsOnFloor())
+                    ANIMATION_TREE.Set("parameters/conditions/isOnGround", true);
             }
-        } else if(isCharging) { Charge(); }
-        // GD.Print(canThrowSpear, canCharge, isThrowingSpear, isCharging, ANIMATION_TREE.Get("parameters/conditions/isThrowspear"), ANIMATION_TREE.Get("parameters/conditions/isWaiting"), ANIMATION_TREE.Get("parameters/conditions/isCharge"));
+            else if (!IsBusy)
+            {
+                if (canCharge)
+                {
+                    ANIMATION_TREE.Set("parameters/conditions/isCharge", true);
+                    ANIMATION_TREE.Set("parameters/conditions/isWaiting", false);
+                }
+                else if (canThrowSpear)
+                {
+                    ANIMATION_TREE.Set("parameters/conditions/isThrowspear", true);
+                    ANIMATION_TREE.Set("parameters/conditions/isWaiting", false);
+                }
+                else
+                {
+                    c_playerDistance = Vector2Extensions.GetSquaredEuclideanDistance(PLAYER.GlobalPosition, GlobalPosition);
+                    if (c_playerDistance < MIN_DISTANCE) Velocity = (PLAYER.GlobalPosition - GlobalPosition).Normalized() * -MOVE_SPEED;
+                    else if (c_playerDistance > MAX_DISTANCE) Velocity = (PLAYER.GlobalPosition - GlobalPosition).Normalized() * MOVE_SPEED;
+                    else
+                    {
+                        Velocity = randomDirection;
+                        if (CHANGE_DIRECTION_VELOCITY_TIMER.IsStopped()) { CHANGE_DIRECTION_VELOCITY_TIMER.Start(); }
+                    }
+                }
+            }
+            else if (isCharging) { Charge(); }
+        MoveAndSlide();
     }
     void MoveTowardPlayer()
     {
         velocity = (PLAYER.GlobalPosition - GlobalPosition).Normalized() * MOVE_SPEED;
-        MoveAndSlide();
     }
     public void ThrowSpear() { GD.Print("Throw spear~"); }
-    void Charge() { 
+    void Charge()
+    {
         Velocity = (PLAYER.GlobalPosition - GlobalPosition).Normalized() * CHARGE_SPEED;
-        MoveAndSlide(); 
+        MoveAndSlide();
     }
     bool attackTypeFlip;
-    public void OnAttackCooldowntTimerTimeout() {
+    public void OnAttackCooldowntTimerTimeout()
+    {
         attackTypeFlip = !attackTypeFlip;
-        if(attackTypeFlip) { canThrowSpear = true; } else { canCharge = true; }
+        if (attackTypeFlip) { canThrowSpear = true; } else { canCharge = true; }
     }
-    public void OnChangeDirectionVelocityTimerTimeout() {
+    public void OnChangeDirectionVelocityTimerTimeout()
+    {
         randomDirection = Vector2Extensions.GetRandomVector() * MOVE_SPEED;
     }
-    public void OnDealingDamage() {
-        
+    public void OnDealingDamage()
+    {
+        ANIMATION_TREE.Set("parameters/conditions/isWaiting", true);
+        ANIMATION_TREE.Set("parameters/conditions/isThrowspear", false);
+        ANIMATION_TREE.Set("parameters/conditions/isCharge", false);
+        isCharging = false;
+    }
+    bool isDead;
+    public void OnDeath()
+    {
+        ANIMATION_TREE.Set("parameters/conditions/isDead", true);
+        isDead = true;
+    }
+    [Export] float KNOCKBACK_FORCE;
+    public void OnTakingDamage(Area2D area)
+    {
+        ANIMATION_TREE.Set("parameters/conditions/isTakingDamage", true);
     }
 }

@@ -5,7 +5,7 @@ public partial class Hurtbox : Area2D
 	float currentHealth, currentShield, shieldDelayProgess, shieldRegenProgress;
 	[Export] public bool canTakeDamage = true;
 	[Signal] public delegate void DeadEventHandler();
-	[Signal] public delegate void OnTakingDamageEventHandler();
+	[Signal] public delegate void OnTakingDamageEventHandler(Area2D area);
 	public float CURRENT_HEALTH
 	{
 		get { return currentHealth; }
@@ -82,10 +82,10 @@ public partial class Hurtbox : Area2D
 			}
 		}
 	}
-	public void TakingDamage(float damage)
+	public void TakingDamage(float damage, Area2D area)
 	{
 		if (!canTakeDamage) return;
-		EmitSignal(SignalName.OnTakingDamage);
+		EmitSignal(SignalName.OnTakingDamage, area);
 		if (MAX_SHIELD == 0) { CURRENT_HEALTH -= damage; return; }
 		CURRENT_SHIELD -= damage;
 	}

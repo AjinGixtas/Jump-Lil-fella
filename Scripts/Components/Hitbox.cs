@@ -5,6 +5,6 @@ public partial class Hitbox : Area2D {
     [Signal] public delegate void OnDealingDamageEventHandler();
 	public void OnAreaEntered(Area2D area) {
         EmitSignal(SignalName.OnDealingDamage);
-        (area as Hurtbox).TakingDamage(damage);
+        (area as Hurtbox).TakingDamage(damage, area);
 	}
 }
