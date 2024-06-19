@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://621oo0s8t1bf" path="res://Scenes/Enemies/Duelist/RobotDuelist.tscn" id="4_52nkb"]
 [ext_resource type="PackedScene" uid="uid://bhtb1ser2d3ts" path="res://Scenes/Enemies/SpikyBall.tscn" id="5_bvfcl"]
 [ext_resource type="Texture2D" uid="uid://bq5c8dhfjui5" path="res://Sprites/icon.svg" id="6_3foqf"]
-[ext_resource type="PackedScene" uid="uid://ddupre33i4kmg" path="res://Scenes/Enemies/SpearMan.tscn" id="7_ulh5o"]
+[ext_resource type="PackedScene" uid="uid://ddupre33i4kmg" path="res://Scenes/Enemies/SpearMan/SpearMan.tscn" id="7_ulh5o"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_70k4x"]
 particle_flag_disable_z = true

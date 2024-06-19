@@ -222,7 +222,7 @@ public partial class Player : CharacterBody2D
 	}
 	void WhirlwindAttack()
 	{
-		velocity = new(velocity.X / 2f, Mathf.Min(-2.5f, velocity.Y - 1));
+		velocity = new(velocity.X, Mathf.Min(-2.5f, velocity.Y - 1));
 	}
 	Dagger c_daggerInstance;
 	void ThrowDagger(bool isThrowingSmallDagger)

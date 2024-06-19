@@ -14,6 +14,8 @@ public partial class SpearMan : Enemy
         set { Velocity = value; }
     }
     Vector2 randomDirection;
+    [Export] PackedScene SPEAR_SCENE;
+    Spear c_spear;
     public override void _Ready()
     {
         randomDirection = Vector2Extensions.GetRandomVector() * MOVE_SPEED;
@@ -59,7 +61,12 @@ public partial class SpearMan : Enemy
     {
         velocity = (PLAYER.GlobalPosition - GlobalPosition).Normalized() * MOVE_SPEED;
     }
-    public void ThrowSpear() { GD.Print("Throw spear~"); }
+    public void ThrowSpear() { 
+        c_spear = SPEAR_SCENE.Instantiate<Spear>(); 
+        c_spear.Intialize(PLAYER.GlobalPosition - GlobalPosition);
+        c_spear.GlobalPosition = GlobalPosition;
+        PROJECTILE_CONTAINER.AddChild(c_spear);
+    }
     void Charge()
     {
         Velocity = (PLAYER.GlobalPosition - GlobalPosition).Normalized() * CHARGE_SPEED;
@@ -88,7 +95,6 @@ public partial class SpearMan : Enemy
         ANIMATION_TREE.Set("parameters/conditions/isDead", true);
         isDead = true;
     }
-    [Export] float KNOCKBACK_FORCE;
     public void OnTakingDamage(Area2D area)
     {
         ANIMATION_TREE.Set("parameters/conditions/isTakingDamage", true);

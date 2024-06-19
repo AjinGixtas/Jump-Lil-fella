@@ -1,0 +1,94 @@
+[gd_scene load_steps=9 format=3 uid="uid://c8nkv8qusfhay"]
+
+[ext_resource type="Script" path="res://Scripts/Spear.cs" id="1_ft4yi"]
+[ext_resource type="Texture2D" uid="uid://betdn0euj1ov8" path="res://Sprites/Spear.png" id="1_ur5nf"]
+[ext_resource type="PackedScene" uid="uid://cbo517a5hki3f" path="res://Scenes/Components/Hitbox.tscn" id="2_qjaqr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wqogt"]
+size = Vector2(6, 4)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m6vrq"]
+size = Vector2(10, 2)
+
+[sub_resource type="Animation" id="Animation_3qg6m"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hitbox/CollisionShape2D:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_7cggk"]
+resource_name = "StuckToWall"
+length = 2.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hitbox/CollisionShape2D:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2.5),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [false],
+"method": &"set_physics_process"
+}, {
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_71w0y"]
+_data = {
+"RESET": SubResource("Animation_3qg6m"),
+"StuckToWall": SubResource("Animation_7cggk")
+}
+
+[node name="Spear" type="CharacterBody2D" node_paths=PackedStringArray("ANIMATION_PLAYER")]
+collision_layer = 0
+script = ExtResource("1_ft4yi")
+SPEED = 9.5
+amoutOfTarget = 1
+ANIMATION_PLAYER = NodePath("AnimationPlayer")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 3.14159
+texture = ExtResource("1_ur5nf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(10, 0)
+shape = SubResource("RectangleShape2D_wqogt")
+
+[node name="Hitbox" parent="." instance=ExtResource("2_qjaqr")]
+collision_layer = 0
+collision_mask = 2
+damage = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(16, 0)
+shape = SubResource("RectangleShape2D_m6vrq")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_71w0y")
+}
