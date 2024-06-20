@@ -1,4 +1,4 @@
-[gd_scene load_steps=80 format=3 uid="uid://d38w3kvjpff8u"]
+[gd_scene load_steps=82 format=3 uid="uid://d38w3kvjpff8u"]
 
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_kg7dr"]
 [ext_resource type="PackedScene" uid="uid://b04ghogku75b4" path="res://Scenes/TrajectoryPoint.tscn" id="2_p7oop"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://dfl581b4elkou" path="res://Scenes/Player/PlayerStarSpike.tscn" id="5_rg3rk"]
 [ext_resource type="PackedScene" uid="uid://bmmmknw7gg2cd" path="res://Scenes/Player/PlayerShieldBar.tscn" id="6_jmplk"]
 [ext_resource type="PackedScene" uid="uid://w1si4wglgv0h" path="res://Scenes/Player/PlayerSawblade.tscn" id="6_u4hmv"]
+[ext_resource type="PackedScene" uid="uid://cbo517a5hki3f" path="res://Scenes/Components/Hitbox.tscn" id="9_gy5nu"]
 [ext_resource type="Texture2D" uid="uid://b6tgy2qk0pjx8" path="res://Sprites/DashAfterImage.png" id="11_i57l0"]
 [ext_resource type="Texture2D" uid="uid://btm3y58wcmetp" path="res://Sprites/BlackRing.svg" id="12_0xexm"]
 [ext_resource type="Texture2D" uid="uid://r4ugowyckaga" path="res://Sprites/OrangeRing.svg" id="13_kxayc"]
@@ -45,6 +46,9 @@ scale_curve = SubResource("CurveTexture_atpme")
 color = Color(0, 0, 0, 1)
 alpha_curve = SubResource("CurveTexture_qcswy")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e05sv"]
+size = Vector2(20, 36)
+
 [sub_resource type="Animation" id="Animation_t0px0"]
 resource_name = "Dash"
 length = 0.05
@@ -76,7 +80,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D/DashParticles/AfterImageParticles:emitting")
+tracks/2/path = NodePath("Sprite2D/DashRelatedStuff/AfterImageParticles:emitting")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -108,6 +112,18 @@ tracks/4/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Sprite2D/DashRelatedStuff/Hitbox/CollisionShape2D:disabled")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
 }
 
 [sub_resource type="Animation" id="Animation_j0qf4"]
@@ -376,7 +392,7 @@ tracks/8/keys = {
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("Sprite2D/DashParticles/AfterImageParticles:emitting")
+tracks/9/path = NodePath("Sprite2D/DashRelatedStuff/AfterImageParticles:emitting")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
@@ -408,6 +424,18 @@ tracks/11/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("Sprite2D/DashRelatedStuff/Hitbox/CollisionShape2D:disabled")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_6srpv"]
@@ -803,10 +831,10 @@ size = Vector2(12, 28)
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("SMALL_DAGGER_BAR", "BIG_DAGGER_BAR", "SAW_BLADE_BAR", "SPIKE_STAR_BAR", "TRAJECTORY_POINTS", "DAGGER_SPAWN_POINTS_CONTAINER", "DAGGER_SPAWN_POINTS", "ANIMATION_PLAYER", "ANIMATION_TREE", "SPRITE") groups=["Player"]]
 collision_layer = 0
 script = ExtResource("1_kg7dr")
-JUMP_FORCE = 100.0
+JUMP_FORCE = 500.0
 MAX_STAMINA = 3.0
 FRICTION_FACTOR = 0.97
-DASH_FORCE = 30.0
+DASH_FORCE = 2000.0
 SMALL_DAGGER_BAR = NodePath("CanvasLayer/Control2/WeaponAmmoBarContainer/SmallDagger")
 BIG_DAGGER_BAR = NodePath("CanvasLayer/Control2/WeaponAmmoBarContainer/BigDagger")
 SAW_BLADE_BAR = NodePath("CanvasLayer/Control2/WeaponAmmoBarContainer/SawBlade")
@@ -836,15 +864,24 @@ texture = ExtResource("2_sx6ou")
 hframes = 7
 vframes = 13
 
-[node name="DashParticles" type="Node2D" parent="Sprite2D"]
+[node name="DashRelatedStuff" type="Node2D" parent="Sprite2D"]
 
-[node name="AfterImageParticles" type="GPUParticles2D" parent="Sprite2D/DashParticles"]
+[node name="AfterImageParticles" type="GPUParticles2D" parent="Sprite2D/DashRelatedStuff"]
 emitting = false
 amount = 300
 process_material = SubResource("ParticleProcessMaterial_sdfiu")
 texture = ExtResource("11_i57l0")
 lifetime = 0.05
 trail_lifetime = 0.05
+
+[node name="Hitbox" parent="Sprite2D/DashRelatedStuff" instance=ExtResource("9_gy5nu")]
+collision_layer = 0
+collision_mask = 4
+damage = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/DashRelatedStuff/Hitbox"]
+shape = SubResource("RectangleShape2D_e05sv")
+disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -1028,8 +1065,8 @@ position = Vector2(2.2, 0)
 
 [node name="DaggerSpawnPoint1" type="Node2D" parent="DaggerSpawnPointContainer"]
 position = Vector2(2, -0.6)
-rotation = -0.418879
+rotation = -0.261799
 
 [node name="DaggerSpawnPoint2" type="Node2D" parent="DaggerSpawnPointContainer"]
 position = Vector2(2, 0.6)
-rotation = 0.418879
+rotation = 0.261799

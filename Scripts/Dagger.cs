@@ -21,7 +21,7 @@ public partial class Dagger : CharacterBody2D
 				Velocity += new Vector2(0, GRAVITY * (float)delta);
 				GlobalRotation = Mathf.Atan2(Velocity.Y, Velocity.X);
 			}
-			c_kinematicCollision = MoveAndCollide(Velocity);
+			c_kinematicCollision = MoveAndCollide(Velocity * (float)delta);
 			if (c_kinematicCollision != null && (c_kinematicCollision.GetCollider() as Node2D).IsInGroup("Wall"))
 			{
 				ANIMATION_PLAYER.Play("StuckToWall");

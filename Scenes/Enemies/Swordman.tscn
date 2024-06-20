@@ -11,6 +11,7 @@
 radius = 22.0227
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mcgny"]
+resource_local_to_scene = true
 shader = ExtResource("1_su6e6")
 shader_parameter/isFlashing = false
 shader_parameter/FlashColor = Color(0.901961, 1, 1, 1)
@@ -88,7 +89,7 @@ tracks/4/keys = {
 tracks/5/type = "method"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("AttackCooldownTimer")
+tracks/5/path = NodePath(".")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -96,7 +97,7 @@ tracks/5/keys = {
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
-"method": &"start"
+"method": &"StartAttackCooldownTimer"
 }]
 }
 
@@ -115,10 +116,22 @@ tracks/0/keys = {
 "update": 1,
 "values": [Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2), Vector2i(3, 2)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hurtbox/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="Animation" id="Animation_ylmxv"]
 resource_name = "Die_Landing"
-length = 0.7
+length = 1.3
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -126,10 +139,39 @@ tracks/0/path = NodePath("Sprite2D:frame_coords")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [Vector2i(4, 2), Vector2i(5, 2), Vector2i(6, 2), Vector2i(7, 2), Vector2i(8, 2), Vector2i(9, 2), Vector2i(10, 2)]
+"values": [Vector2i(4, 2), Vector2i(5, 2), Vector2i(6, 2), Vector2i(7, 2), Vector2i(8, 2), Vector2i(9, 2), Vector2i(10, 2), Vector2i(11, 2)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.3),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [false],
+"method": &"set_physics_process"
+}, {
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Hurtbox/CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_f3dii"]
@@ -271,6 +313,18 @@ tracks/9/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Hurtbox/CollisionShape2D:disabled")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_5iiph"]
 resource_name = "TakingDamage"
@@ -384,15 +438,18 @@ states/TakingDamage/position = Vector2(515, 235)
 transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_hu3em"), "Idle", "Attack", SubResource("AnimationNodeStateMachineTransition_5newx"), "Attack", "TakingDamage", SubResource("AnimationNodeStateMachineTransition_0ut3b"), "Idle", "TakingDamage", SubResource("AnimationNodeStateMachineTransition_rau12"), "TakingDamage", "Attack", SubResource("AnimationNodeStateMachineTransition_kt415"), "TakingDamage", "Idle", SubResource("AnimationNodeStateMachineTransition_vx81n"), "Attack", "Idle", SubResource("AnimationNodeStateMachineTransition_qyj2d"), "TakingDamage", "Die_Falling", SubResource("AnimationNodeStateMachineTransition_q0udf"), "Die_Falling", "Die_Landing", SubResource("AnimationNodeStateMachineTransition_nt35y"), "Die_Landing", "End", SubResource("AnimationNodeStateMachineTransition_mq8aw")]
 graph_offset = Vector2(136, 57)
 
-[node name="Swordman" type="CharacterBody2D" node_paths=PackedStringArray("CHANGE_DIRECTION_VELOCITY_TIMER", "ANIMATION_TREE", "SPRITE")]
+[node name="Swordman" type="CharacterBody2D" node_paths=PackedStringArray("CHANGE_DIRECTION_VELOCITY_TIMER", "ATTACK_COOLDOWN_TIMER", "ANIMATION_TREE", "SPRITE")]
 collision_layer = 0
 script = ExtResource("1_84hkc")
 CHANGE_DIRECTION_VELOCITY_TIMER = NodePath("ChangeDirectionVelocity")
+ATTACK_COOLDOWN_TIMER = NodePath("AttackCooldownTimer")
 MOVE_SPEED = 50.0
 CHARGE_SPEED = 250.0
 CHARGE_RANGE_SQUARED = 5625.0
 MIN_DISTANCE = 15625.0
 MAX_DISTANCE = 22500.0
+ATTACK_COOLDOWN_TIMER_DEFAULT_WAITIME = 3.0
+CHANGE_DIRECTION_VELOCITY_TIMER_DEFAULT_WAITIME = 2.0
 canCharge = true
 ANIMATION_TREE = NodePath("AnimationTree")
 SPRITE = NodePath("Sprite2D")
@@ -419,6 +476,7 @@ shape = SubResource("RectangleShape2D_nquf7")
 
 [node name="Hitbox" parent="." instance=ExtResource("3_3cm1u")]
 collision_layer = 0
+collision_mask = 2
 damage = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
@@ -427,11 +485,13 @@ shape = SubResource("RectangleShape2D_g51ca")
 disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+process_mode = 3
 libraries = {
 "": SubResource("AnimationLibrary_1ob81")
 }
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
+process_mode = 3
 tree_root = SubResource("AnimationNodeStateMachine_gau4p")
 anim_player = NodePath("../AnimationPlayer")
 parameters/conditions/isAttacking = false
@@ -451,5 +511,7 @@ offset_right = 52.0
 wait_time = 3.0
 one_shot = true
 
+[connection signal="Dead" from="Hurtbox" to="." method="OnDeath"]
+[connection signal="OnTakingDamage" from="Hurtbox" to="." method="OnTakingDamage"]
 [connection signal="timeout" from="ChangeDirectionVelocity" to="." method="OnChangeDirectionVelocityTimerTimeout"]
 [connection signal="timeout" from="AttackCooldownTimer" to="." method="OnAttackCooldowntTimerTimeout"]

@@ -67,7 +67,7 @@ _data = {
 [node name="Spear" type="CharacterBody2D" node_paths=PackedStringArray("ANIMATION_PLAYER")]
 collision_layer = 0
 script = ExtResource("1_ft4yi")
-SPEED = 9.5
+SPEED = 400.0
 amoutOfTarget = 1
 ANIMATION_PLAYER = NodePath("AnimationPlayer")
 

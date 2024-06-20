@@ -52,7 +52,7 @@ public partial class RobotDuelist : Enemy
 	{
 		deltaF = (float)delta;
 		velocity += affectByGravity ? GRAVITY_VECTOR * deltaF : Vector2.Zero;
-		c_kinematicCollision = MoveAndCollide(velocity);
+		c_kinematicCollision = MoveAndCollide(velocity * deltaF);
 		if (c_kinematicCollision != null)
 		{
 			c_collisionNode = c_kinematicCollision.GetCollider() as Node2D;

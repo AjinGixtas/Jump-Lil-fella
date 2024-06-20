@@ -5,7 +5,7 @@ public partial class SawBlade : CharacterBody2D
 	public static Player PLAYER;
 	[Export] Sprite2D SPRITE;
 	[Export] AnimationTree ANIMATION_TREE;
-	[Export] float FLYING_SPEED, MOVE_SPEED;
+	[Export] float FLYING_SPEED, MOVE_SPEED = 30;
 	enum SurfaceType { NONE, FLOOR, WALL_LEFT, WALL_RIGHT, CEILING }
 	float GRAVITY = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 	SurfaceType surfaceCurrentlyInContact;
@@ -31,7 +31,7 @@ public partial class SawBlade : CharacterBody2D
 		if (affectByGravity) Velocity = new(Velocity.X, Velocity.Y + GRAVITY * (float)delta);
 		if (stopDuration <= 0)
 		{
-			c_collision = MoveAndCollide(Velocity);
+			c_collision = MoveAndCollide(Velocity * (float)delta);
 			if (c_collision != null)
 			{
 				if (oldNormal != Vector2.Zero) { Velocity = oldNormal; }

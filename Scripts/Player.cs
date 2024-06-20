@@ -15,7 +15,7 @@ public partial class Player : CharacterBody2D
 	[Export] Sprite2D SPRITE;
 	enum SurfaceType { NONE, FLOOR, WALL_LEFT, WALL_RIGHT, CEILING }
 	float GRAVITY = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
-	int MAX_WHIRLWIND_CHARGE = 1, MAX_DASH_CHARGE = 1;
+	[Export] int MAX_WHIRLWIND_CHARGE = 1, MAX_DASH_CHARGE = 1;
 	[Export] bool affectByGravity = true, isSliding = false;
 	bool isDashing = false;
 	[Export]
@@ -24,8 +24,8 @@ public partial class Player : CharacterBody2D
 		get { return isDashing; }
 		set
 		{
+			if (isDashing && !value) { velocity = velocity.Normalized() * JUMP_FORCE / 2f; GD.Print(velocity, velocity.Normalized(), velocity.Normalized() * JUMP_FORCE); }
 			isDashing = value;
-			if (!isDashing) { velocity = velocity.Normalized() * 2.5f; }
 		}
 	}
 	float currentStamina, deltaF;
@@ -58,7 +58,7 @@ public partial class Player : CharacterBody2D
 			ANIMATION_TREE.Set("parameters/conditions/isOnSurface", true);
 			ANIMATION_TREE.Set("parameters/conditions/isFloating", false);
 			CurrentStamina = 3;
-			if (c_collision != null) velocity = -c_collision.GetNormal();
+			if (c_collision != null) velocity = -c_collision.GetNormal() * 100;
 			surfaceCurrentlyInContact = value;
 			affectByGravity = false;
 			ANIMATION_TREE.Set("parameters/Attack/ThrowThing/blend_position", velocity);
@@ -69,9 +69,9 @@ public partial class Player : CharacterBody2D
 		get { return Velocity; }
 		set
 		{
-			if (isDashing) return;
-			if (Mathf.Abs(value.X) < 1) { isSliding = false; }
 			Velocity = value;
+			if (IsDashing) return;
+			if (Mathf.Abs(value.X) < 100) { isSliding = false; }
 			if (value.X != 0) SPRITE.Scale = new(value.X > 0 ? -1 : 1, SPRITE.Scale.Y);
 			ANIMATION_TREE.Set("parameters/FloatMidAir/blend_position", Velocity.Normalized());
 			ANIMATION_TREE.Set("parameters/GrabSurface/blend_position", Velocity.Normalized());
@@ -189,10 +189,9 @@ public partial class Player : CharacterBody2D
 	}
 	void HandlePhysics()
 	{
-		if (!isSliding && !isDashing) velocity = new(velocity.X, affectByGravity ? velocity.Y + GRAVITY * deltaF : velocity.Y);
-		else velocity = new(velocity.X * FRICTION_FACTOR, 0);
-		c_collision = MoveAndCollide(velocity);
-
+		if (!isSliding && !IsDashing) velocity = new(velocity.X, affectByGravity ? velocity.Y + GRAVITY * deltaF : velocity.Y);
+		else if(!isDashing) velocity = new(velocity.X * FRICTION_FACTOR, 0);
+		c_collision = MoveAndCollide(velocity * deltaF);
 		if (c_collision != null)
 		{
 			c_collisionNode = c_collision.GetCollider() as Node2D;
@@ -219,10 +218,11 @@ public partial class Player : CharacterBody2D
 		else if (SurfaceCurrentlyInContact == SurfaceType.WALL_LEFT) { c_direction = new(Mathf.Max(0, c_direction.X), c_direction.Y); }
 		else if (SurfaceCurrentlyInContact == SurfaceType.WALL_RIGHT) { c_direction = new(Mathf.Min(0, c_direction.X), c_direction.Y); }
 		velocity = c_direction.Normalized() * JUMP_FORCE;
+		GD.Print(c_direction.Normalized(), ' ', JUMP_FORCE, ' ', velocity);
 	}
 	void WhirlwindAttack()
 	{
-		velocity = new(velocity.X, Mathf.Min(-2.5f, velocity.Y - 1));
+		velocity = new(velocity.X, Mathf.Min(velocity.Y, -velocity.Y));
 	}
 	Dagger c_daggerInstance;
 	void ThrowDagger(bool isThrowingSmallDagger)

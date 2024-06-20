@@ -71,7 +71,7 @@ ui_dash={
 
 [physics]
 
-2d/default_gravity=10.0
+2d/default_gravity=1000.0
 
 [rendering]
 

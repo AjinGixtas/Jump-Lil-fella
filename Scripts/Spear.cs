@@ -13,7 +13,7 @@ public partial class Spear : CharacterBody2D
 	}
 	public override void _PhysicsProcess(double delta)
 	{
-		c_kinematicCollision = MoveAndCollide(Velocity);
+		c_kinematicCollision = MoveAndCollide(Velocity * (float)delta);
 		if (c_kinematicCollision != null && (c_kinematicCollision.GetCollider() as Node2D).IsInGroup("Wall"))
 		{
 			ANIMATION_PLAYER.Play("StuckToWall");

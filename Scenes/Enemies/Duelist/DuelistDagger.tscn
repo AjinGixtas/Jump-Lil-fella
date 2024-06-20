@@ -107,7 +107,7 @@ _data = {
 z_as_relative = false
 collision_layer = 0
 script = ExtResource("1_53psc")
-SPEED = 7.0
+SPEED = 600.0
 IsMoving = true
 ANIMATION_PLAYER = NodePath("AnimationPlayer")
 

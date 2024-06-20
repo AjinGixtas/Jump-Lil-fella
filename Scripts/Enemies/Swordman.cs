@@ -2,8 +2,8 @@ using Godot;
 
 public partial class Swordman : Enemy
 {
-	[Export] Timer CHANGE_DIRECTION_VELOCITY_TIMER;
-	[Export] float MOVE_SPEED, CHARGE_SPEED, CHARGE_RANGE_SQUARED, MIN_DISTANCE, MAX_DISTANCE;
+	[Export] Timer CHANGE_DIRECTION_VELOCITY_TIMER, ATTACK_COOLDOWN_TIMER;
+	[Export] float MOVE_SPEED, CHARGE_SPEED, CHARGE_RANGE_SQUARED, MIN_DISTANCE, MAX_DISTANCE, ATTACK_COOLDOWN_TIMER_DEFAULT_WAITIME, CHANGE_DIRECTION_VELOCITY_TIMER_DEFAULT_WAITIME;
 	[Export] bool canCharge, isCharging, isDead;
 	Vector2 randomDirection, lockedChargeDirection;
 	float c_playerDistance;
@@ -44,7 +44,7 @@ public partial class Swordman : Enemy
 			else
 			{
 				Velocity = randomDirection;
-				if (CHANGE_DIRECTION_VELOCITY_TIMER.IsStopped()) { CHANGE_DIRECTION_VELOCITY_TIMER.Start(); }
+				if (CHANGE_DIRECTION_VELOCITY_TIMER.IsStopped()) { StartChangeDirectionVelocityTimer(); }
 			}
 		}
 		MoveAndSlide();
@@ -61,4 +61,6 @@ public partial class Swordman : Enemy
         ANIMATION_TREE.Set("parameters/conditions/isTakingDamage", true);
     }
 	public void OnAttackCooldowntTimerTimeout() { canCharge = true; }
+	public void StartAttackCooldownTimer() { ATTACK_COOLDOWN_TIMER.Start(ATTACK_COOLDOWN_TIMER_DEFAULT_WAITIME + (GD.Randf() - .5f) * 2f); }
+	public void StartChangeDirectionVelocityTimer() { CHANGE_DIRECTION_VELOCITY_TIMER.Start(CHANGE_DIRECTION_VELOCITY_TIMER_DEFAULT_WAITIME + (GD.Randf() - .5f) * 2f); }
 }

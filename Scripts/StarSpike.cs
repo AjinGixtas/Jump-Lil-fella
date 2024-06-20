@@ -27,7 +27,7 @@ public partial class StarSpike : CharacterBody2D
 		CurrentHealth -= (float)delta;
 		if (isMoving) {
 			Velocity += new Vector2(0, GRAVITY * (float)delta);
-			if (MoveAndCollide(Velocity) != null) { ANIMATION_TREE.Set("parameters/conditions/isStopped", true); isMoving = false;  }
+			if (MoveAndCollide(Velocity * (float)delta) != null) { ANIMATION_TREE.Set("parameters/conditions/isStopped", true); isMoving = false;  }
 		}
 	}
 	public void OnFuseTimerTimeout() { ANIMATION_TREE.Set("parameters/conditions/isStopped", true); isMoving = false; }

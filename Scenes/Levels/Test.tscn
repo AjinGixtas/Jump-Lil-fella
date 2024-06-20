@@ -45,7 +45,6 @@ position = Vector2(0, 117)
 
 [node name="Player" parent="." node_paths=PackedStringArray("TRAJECTORY_POINT_CONTAINER", "PROJECTILE_CONTAINER", "ENEMIES_MANAGER") instance=ExtResource("2_oc2s3")]
 position = Vector2(88, 66)
-JUMP_FORCE = 7.5
 TRAJECTORY_POINT_CONTAINER = NodePath("../GenericContainer/TrajectoryPointContainer")
 PROJECTILE_CONTAINER = NodePath("../GenericContainer")
 ENEMIES_MANAGER = NodePath("../GenericContainer/EnemiesManager")
@@ -65,3 +64,15 @@ texture = ExtResource("6_3foqf")
 position = Vector2(107, -37)
 
 [node name="Swordman" parent="." instance=ExtResource("8_nhrlo")]
+
+[node name="Swordman2" parent="." instance=ExtResource("8_nhrlo")]
+
+[node name="Swordman3" parent="." instance=ExtResource("8_nhrlo")]
+
+[node name="Swordman4" parent="." instance=ExtResource("8_nhrlo")]
+
+[node name="SpearMan2" parent="." instance=ExtResource("7_ulh5o")]
+
+[node name="SpearMan3" parent="." instance=ExtResource("7_ulh5o")]
+
+[node name="SpearMan4" parent="." instance=ExtResource("7_ulh5o")]

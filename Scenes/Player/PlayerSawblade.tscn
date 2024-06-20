@@ -1,7 +1,7 @@
 [gd_scene load_steps=28 format=3 uid="uid://w1si4wglgv0h"]
 
 [ext_resource type="Texture2D" uid="uid://bgixtw54qposr" path="res://Sprites/Sawblade.png" id="1_2jpkr"]
-[ext_resource type="Script" path="res://Scripts/SawBlade.cs" id="1_dmcti"]
+[ext_resource type="Script" path="res://Scripts/SawBlade.cs" id="1_vc8mj"]
 [ext_resource type="PackedScene" uid="uid://cbo517a5hki3f" path="res://Scenes/Components/Hitbox.tscn" id="3_mceuo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gboi5"]
@@ -105,18 +105,6 @@ tracks/2/keys = {
 "update": 1,
 "values": [true]
 }
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:MOVE_SPEED")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
 
 [sub_resource type="Animation" id="Animation_woxjy"]
 resource_name = "Fly"
@@ -173,18 +161,6 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:MOVE_SPEED")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [15.0]
 }
 
 [sub_resource type="Animation" id="Animation_68plb"]
@@ -284,11 +260,11 @@ radius = 20.0
 
 [node name="PlayerSawblade" type="CharacterBody2D" node_paths=PackedStringArray("SPRITE", "ANIMATION_TREE")]
 collision_layer = 0
-script = ExtResource("1_dmcti")
+script = ExtResource("1_vc8mj")
 SPRITE = NodePath("Sprite2D")
 ANIMATION_TREE = NodePath("AnimationTree")
-FLYING_SPEED = 5.0
-MOVE_SPEED = 15.0
+FLYING_SPEED = 550.0
+MOVE_SPEED = 2000.0
 metadata/_edit_horizontal_guides_ = [-32.0]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

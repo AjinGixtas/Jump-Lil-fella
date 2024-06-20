@@ -3,8 +3,8 @@ using Godot;
 
 public partial class SpearMan : Enemy
 {
-    [Export] Timer CHANGE_DIRECTION_VELOCITY_TIMER;
-    [Export] float MOVE_SPEED, CHARGE_SPEED, MIN_DISTANCE, MAX_DISTANCE;
+    [Export] Timer CHANGE_DIRECTION_VELOCITY_TIMER, ATTACK_COOLDOWN_TIMER;
+    [Export] float MOVE_SPEED, CHARGE_SPEED, MIN_DISTANCE, MAX_DISTANCE, CHANGE_DIRECTION_VELOCITY_TIMER_DEFAULT_WAITIME, ATTACK_COOLDOWN_TIMER_DEFAULT_WAITIME;
     [Export] bool canThrowSpear = true, canCharge = true, isThrowingSpear, isCharging;
     bool IsBusy { get { return isThrowingSpear || isCharging; } }
     float c_playerDistance;
@@ -48,17 +48,20 @@ public partial class SpearMan : Enemy
                 {
                     Velocity = (PLAYER.GlobalPosition - GlobalPosition).Normalized() * -MOVE_SPEED;
                     randomDirection = Vector2Extensions.GetRandomVector() * MOVE_SPEED;
-                } else if (c_playerDistance > MAX_DISTANCE) { 
+                }
+                else if (c_playerDistance > MAX_DISTANCE)
+                {
                     Velocity = (PLAYER.GlobalPosition - GlobalPosition).Normalized() * MOVE_SPEED;
                     randomDirection = Vector2Extensions.GetRandomVector() * MOVE_SPEED;
-                } else
+                }
+                else
                 {
                     Velocity = randomDirection;
-                    if (CHANGE_DIRECTION_VELOCITY_TIMER.IsStopped()) { CHANGE_DIRECTION_VELOCITY_TIMER.Start(); }
+                    if (CHANGE_DIRECTION_VELOCITY_TIMER.IsStopped()) { StartChangeDirectionVelocityTimer(); }
                 }
             }
         }
-        else if (isCharging) { Charge(); }
+        else if (isCharging) { Velocity = (PLAYER.GlobalPosition - GlobalPosition).Normalized() * CHARGE_SPEED; }
         MoveAndSlide();
     }
     void MoveTowardPlayer()
@@ -71,11 +74,6 @@ public partial class SpearMan : Enemy
         c_spear.Intialize(PLAYER.GlobalPosition - GlobalPosition);
         c_spear.GlobalPosition = GlobalPosition;
         PROJECTILE_CONTAINER.AddChild(c_spear);
-    }
-    void Charge()
-    {
-        Velocity = (PLAYER.GlobalPosition - GlobalPosition).Normalized() * CHARGE_SPEED;
-        MoveAndSlide();
     }
     bool attackTypeFlip;
     public void OnAttackCooldowntTimerTimeout()
@@ -104,4 +102,6 @@ public partial class SpearMan : Enemy
     {
         ANIMATION_TREE.Set("parameters/conditions/isTakingDamage", true);
     }
+    public void StartAttackCooldownTimer() { ATTACK_COOLDOWN_TIMER.Start(ATTACK_COOLDOWN_TIMER_DEFAULT_WAITIME + (GD.Randf() - .5f) * 2f); }
+    public void StartChangeDirectionVelocityTimer() { CHANGE_DIRECTION_VELOCITY_TIMER.Start(CHANGE_DIRECTION_VELOCITY_TIMER_DEFAULT_WAITIME + (GD.Randf() - .5f) * 2f); }
 }

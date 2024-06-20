@@ -277,7 +277,7 @@ collision_mask = 5
 script = ExtResource("1_f6k2m")
 ANIMATION_TREE = NodePath("AnimationTree")
 FUSE_TIMER = NodePath("FuseTimer")
-SPEED = 10.0
+SPEED = 444.0
 MAX_HEALTH = 5.0
 isMoving = true
 
