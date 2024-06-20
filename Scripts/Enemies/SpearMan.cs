@@ -23,46 +23,51 @@ public partial class SpearMan : Enemy
     public override void _PhysicsProcess(double delta)
     {
         SPRITE.FlipH = GlobalPosition.X < PLAYER.Position.X;
-            if (isDead)
+        if (isDead)
+        {
+            Velocity += GRAVITY_VECTOR;
+            if (IsOnFloor())
+                ANIMATION_TREE.Set("parameters/conditions/isOnGround", true);
+        }
+        else if (!IsBusy)
+        {
+            if (canCharge)
             {
-                Velocity += GRAVITY_VECTOR;
-                MoveAndSlide();
-                if (IsOnFloor())
-                    ANIMATION_TREE.Set("parameters/conditions/isOnGround", true);
+                ANIMATION_TREE.Set("parameters/conditions/isCharge", true);
+                ANIMATION_TREE.Set("parameters/conditions/isWaiting", false);
             }
-            else if (!IsBusy)
+            else if (canThrowSpear)
             {
-                if (canCharge)
+                ANIMATION_TREE.Set("parameters/conditions/isThrowspear", true);
+                ANIMATION_TREE.Set("parameters/conditions/isWaiting", false);
+            }
+            else
+            {
+                c_playerDistance = Vector2Extensions.GetSquaredEuclideanDistance(PLAYER.GlobalPosition, GlobalPosition);
+                if (c_playerDistance < MIN_DISTANCE)
                 {
-                    ANIMATION_TREE.Set("parameters/conditions/isCharge", true);
-                    ANIMATION_TREE.Set("parameters/conditions/isWaiting", false);
-                }
-                else if (canThrowSpear)
+                    Velocity = (PLAYER.GlobalPosition - GlobalPosition).Normalized() * -MOVE_SPEED;
+                    randomDirection = Vector2Extensions.GetRandomVector() * MOVE_SPEED;
+                } else if (c_playerDistance > MAX_DISTANCE) { 
+                    Velocity = (PLAYER.GlobalPosition - GlobalPosition).Normalized() * MOVE_SPEED;
+                    randomDirection = Vector2Extensions.GetRandomVector() * MOVE_SPEED;
+                } else
                 {
-                    ANIMATION_TREE.Set("parameters/conditions/isThrowspear", true);
-                    ANIMATION_TREE.Set("parameters/conditions/isWaiting", false);
-                }
-                else
-                {
-                    c_playerDistance = Vector2Extensions.GetSquaredEuclideanDistance(PLAYER.GlobalPosition, GlobalPosition);
-                    if (c_playerDistance < MIN_DISTANCE) Velocity = (PLAYER.GlobalPosition - GlobalPosition).Normalized() * -MOVE_SPEED;
-                    else if (c_playerDistance > MAX_DISTANCE) Velocity = (PLAYER.GlobalPosition - GlobalPosition).Normalized() * MOVE_SPEED;
-                    else
-                    {
-                        Velocity = randomDirection;
-                        if (CHANGE_DIRECTION_VELOCITY_TIMER.IsStopped()) { CHANGE_DIRECTION_VELOCITY_TIMER.Start(); }
-                    }
+                    Velocity = randomDirection;
+                    if (CHANGE_DIRECTION_VELOCITY_TIMER.IsStopped()) { CHANGE_DIRECTION_VELOCITY_TIMER.Start(); }
                 }
             }
-            else if (isCharging) { Charge(); }
+        }
+        else if (isCharging) { Charge(); }
         MoveAndSlide();
     }
     void MoveTowardPlayer()
     {
         velocity = (PLAYER.GlobalPosition - GlobalPosition).Normalized() * MOVE_SPEED;
     }
-    public void ThrowSpear() { 
-        c_spear = SPEAR_SCENE.Instantiate<Spear>(); 
+    public void ThrowSpear()
+    {
+        c_spear = SPEAR_SCENE.Instantiate<Spear>();
         c_spear.Intialize(PLAYER.GlobalPosition - GlobalPosition);
         c_spear.GlobalPosition = GlobalPosition;
         PROJECTILE_CONTAINER.AddChild(c_spear);

@@ -62,15 +62,16 @@ void fragment() {
 
 }
 "
+graph_offset = Vector2(-350.921, 113.642)
 mode = 1
 flags/light_only = false
-nodes/fragment/0/position = Vector2(280, 660)
+nodes/fragment/0/position = Vector2(200, 660)
 nodes/fragment/2/node = SubResource("VisualShaderNodeBooleanParameter_vqpy3")
-nodes/fragment/2/position = Vector2(-340, 880)
+nodes/fragment/2/position = Vector2(-620, 660)
 nodes/fragment/3/node = SubResource("VisualShaderNodeColorParameter_7nwhr")
-nodes/fragment/3/position = Vector2(-300, 620)
+nodes/fragment/3/position = Vector2(-320, 620)
 nodes/fragment/6/node = SubResource("VisualShaderNodeIf_hhrtl")
 nodes/fragment/6/position = Vector2(40, 660)
 nodes/fragment/7/node = SubResource("VisualShaderNodeInput_alty3")
-nodes/fragment/7/position = Vector2(-520, 800)
-nodes/fragment/connections = PackedInt32Array(2, 0, 6, 0, 3, 0, 6, 3, 6, 0, 0, 0, 7, 0, 6, 4, 7, 0, 6, 5)
+nodes/fragment/7/position = Vector2(-380, 780)
+nodes/fragment/connections = PackedInt32Array(2, 0, 6, 0, 3, 0, 6, 3, 7, 0, 6, 4, 7, 0, 6, 5, 6, 0, 0, 0)

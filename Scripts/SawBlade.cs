@@ -38,7 +38,9 @@ public partial class SawBlade : CharacterBody2D
 				else
 				{
 					oldNormal = c_collision.GetNormal();
-					if (Vector2Extensions.GetPerpendicularVector(oldNormal).Dot(GlobalPosition - PLAYER.GlobalPosition) >= 0) Velocity = Vector2Extensions.GetPerpendicularVector(oldNormal); else Velocity = Vector2Extensions.GetOppositePerpendicularVector(oldNormal);
+					if (Vector2Extensions.GetPerpendicularVector(oldNormal).Dot(GlobalPosition - PLAYER.GlobalPosition) >= 0)
+					{ Velocity = Vector2Extensions.GetPerpendicularVector(oldNormal); SPRITE.FlipH = true; }
+					else { Velocity = Vector2Extensions.GetOppositePerpendicularVector(oldNormal); }
 				}
 				oldNormal = c_collision.GetNormal();
 				Velocity = Velocity.Normalized() * MOVE_SPEED;
@@ -51,7 +53,8 @@ public partial class SawBlade : CharacterBody2D
 				else { SurfaceCurrentlyInContact = SurfaceType.NONE; }
 			}
 			else { SurfaceCurrentlyInContact = SurfaceType.NONE; }
-		} else stopDuration -= (float)delta;
+		}
+		else stopDuration -= (float)delta;
 	}
 	public void OnLifetimeTimerTimeout()
 	{

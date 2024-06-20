@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bpsp21lh2suvu"]
+[gd_scene load_steps=10 format=3 uid="uid://bpsp21lh2suvu"]
 
 [ext_resource type="PackedScene" uid="uid://b0k8lbg3xfgl7" path="res://Scenes/Wall.tscn" id="1_y4sgl"]
 [ext_resource type="PackedScene" uid="uid://d38w3kvjpff8u" path="res://Scenes/Player/Player.tscn" id="2_oc2s3"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bhtb1ser2d3ts" path="res://Scenes/Enemies/SpikyBall.tscn" id="5_bvfcl"]
 [ext_resource type="Texture2D" uid="uid://bq5c8dhfjui5" path="res://Sprites/icon.svg" id="6_3foqf"]
 [ext_resource type="PackedScene" uid="uid://ddupre33i4kmg" path="res://Scenes/Enemies/SpearMan/SpearMan.tscn" id="7_ulh5o"]
+[ext_resource type="PackedScene" uid="uid://bk5ostu624xgw" path="res://Scenes/Enemies/Swordman.tscn" id="8_nhrlo"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_70k4x"]
 particle_flag_disable_z = true
@@ -62,3 +63,5 @@ texture = ExtResource("6_3foqf")
 
 [node name="SpearMan" parent="." instance=ExtResource("7_ulh5o")]
 position = Vector2(107, -37)
+
+[node name="Swordman" parent="." instance=ExtResource("8_nhrlo")]
