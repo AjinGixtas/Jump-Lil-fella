@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://ddupre33i4kmg"]
+[gd_scene load_steps=45 format=3 uid="uid://ddupre33i4kmg"]
 
 [ext_resource type="Texture2D" uid="uid://ftabu3edqeul" path="res://Sprites/SpearMan.png" id="1_raup4"]
 [ext_resource type="Script" path="res://Scripts/Enemies/SpearMan.cs" id="1_rwgyn"]
@@ -39,10 +39,10 @@ tracks/1/path = NodePath("AnimationTree:parameters/conditions/isWaiting")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 3),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false, true]
+"values": [false]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -51,10 +51,10 @@ tracks/2/path = NodePath("AnimationTree:parameters/conditions/isCharge")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 3),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true, false]
+"values": [true]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -75,10 +75,10 @@ tracks/4/path = NodePath(".:isCharging")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 3),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true, false]
+"values": [true]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -87,10 +87,10 @@ tracks/5/path = NodePath("Hitbox/CollisionShape2D:disabled")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0.1, 3),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false, true]
+"values": [false]
 }
 tracks/6/type = "method"
 tracks/6/imported = false
@@ -99,12 +99,99 @@ tracks/6/path = NodePath(".")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"values": []
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("AnimationTree:parameters/conditions/endedCharge")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="Animation" id="Animation_hyoq2"]
+resource_name = "ChargeEnd"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hitbox/CollisionShape2D:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimationTree:parameters/conditions/isWaiting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimationTree:parameters/conditions/isCharge")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:isCharging")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
 "method": &"StartAttackCooldownTimer"
 }]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("AnimationTree:parameters/conditions/endedCharge")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_nlh2d"]
@@ -141,6 +228,18 @@ tracks/2/path = NodePath("Sprite2D:material:shader_parameter/isFlashing")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("EnemyHealthBar:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -190,6 +289,18 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("EnemyHealthBar:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_e8n2c"]
@@ -355,6 +466,42 @@ tracks/11/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("EnemyHealthBar:visible")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("Hitbox/CollisionShape2D:disabled")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("AnimationTree:parameters/conditions/endedCharge")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_mebe4"]
 resource_name = "TakingDamage"
@@ -455,20 +602,21 @@ tracks/5/path = NodePath(".")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.3),
+"times": PackedFloat32Array(0.3, 1.5),
 "transitions": PackedFloat32Array(1, 1),
 "values": [{
 "args": [],
-"method": &"StartAttackCooldownTimer"
+"method": &"ThrowSpear"
 }, {
 "args": [],
-"method": &"ThrowSpear"
+"method": &"StartAttackCooldownTimer"
 }]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qgr0j"]
 _data = {
 "Charge": SubResource("Animation_xupcp"),
+"ChargeEnd": SubResource("Animation_hyoq2"),
 "Death_Falling": SubResource("Animation_nlh2d"),
 "Death_Landing": SubResource("Animation_1ouh4"),
 "Idle": SubResource("Animation_e8n2c"),
@@ -479,6 +627,9 @@ _data = {
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_m80ua"]
 animation = &"Charge"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2mp06"]
+animation = &"ChargeEnd"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_crh8v"]
 animation = &"Death_Falling"
@@ -510,10 +661,6 @@ advance_condition = &"isCharge"
 advance_mode = 2
 advance_condition = &"isWaiting"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fctct"]
-advance_mode = 2
-advance_condition = &"isWaiting"
-
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_t4qv4"]
 advance_mode = 2
 advance_condition = &"isOnGround"
@@ -535,10 +682,6 @@ advance_condition = &"isTakingDamage"
 advance_mode = 2
 advance_condition = &"isTakingDamage"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gmrlv"]
-advance_mode = 2
-advance_condition = &"isTakingDamage"
-
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2nps6"]
 switch_mode = 2
 advance_mode = 2
@@ -554,9 +697,29 @@ switch_mode = 2
 advance_mode = 2
 advance_condition = &"isCharge"
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_73sr8"]
+advance_mode = 2
+advance_condition = &"endedCharge"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_j0n7u"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"isTakingDamage"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2iwtd"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"isWaiting"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5mecn"]
+advance_mode = 2
+advance_condition = &"isTakingDamage"
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_djrk7"]
 states/Charge/node = SubResource("AnimationNodeAnimation_m80ua")
 states/Charge/position = Vector2(546, 246)
+states/ChargeEnd/node = SubResource("AnimationNodeAnimation_2mp06")
+states/ChargeEnd/position = Vector2(546, 155)
 states/Death_Falling/node = SubResource("AnimationNodeAnimation_crh8v")
 states/Death_Falling/position = Vector2(922, 105)
 states/Death_Landing/node = SubResource("AnimationNodeAnimation_7mlxl")
@@ -568,8 +731,8 @@ states/TakingDamage/node = SubResource("AnimationNodeAnimation_4xhtf")
 states/TakingDamage/position = Vector2(743, 105)
 states/ThrowSpear/node = SubResource("AnimationNodeAnimation_8ox30")
 states/ThrowSpear/position = Vector2(546, -11)
-transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_5n78y"), "Idle", "ThrowSpear", SubResource("AnimationNodeStateMachineTransition_28fib"), "Idle", "Charge", SubResource("AnimationNodeStateMachineTransition_khj41"), "ThrowSpear", "Idle", SubResource("AnimationNodeStateMachineTransition_xjoen"), "Charge", "Idle", SubResource("AnimationNodeStateMachineTransition_fctct"), "Death_Falling", "Death_Landing", SubResource("AnimationNodeStateMachineTransition_t4qv4"), "Death_Landing", "End", SubResource("AnimationNodeStateMachineTransition_s4no2"), "TakingDamage", "Death_Falling", SubResource("AnimationNodeStateMachineTransition_tu5bw"), "ThrowSpear", "TakingDamage", SubResource("AnimationNodeStateMachineTransition_imftj"), "Idle", "TakingDamage", SubResource("AnimationNodeStateMachineTransition_voeoh"), "Charge", "TakingDamage", SubResource("AnimationNodeStateMachineTransition_gmrlv"), "TakingDamage", "ThrowSpear", SubResource("AnimationNodeStateMachineTransition_2nps6"), "TakingDamage", "Idle", SubResource("AnimationNodeStateMachineTransition_lhq57"), "TakingDamage", "Charge", SubResource("AnimationNodeStateMachineTransition_06so8")]
-graph_offset = Vector2(168, -187)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_5n78y"), "Idle", "ThrowSpear", SubResource("AnimationNodeStateMachineTransition_28fib"), "Idle", "Charge", SubResource("AnimationNodeStateMachineTransition_khj41"), "ThrowSpear", "Idle", SubResource("AnimationNodeStateMachineTransition_xjoen"), "Death_Falling", "Death_Landing", SubResource("AnimationNodeStateMachineTransition_t4qv4"), "Death_Landing", "End", SubResource("AnimationNodeStateMachineTransition_s4no2"), "TakingDamage", "Death_Falling", SubResource("AnimationNodeStateMachineTransition_tu5bw"), "ThrowSpear", "TakingDamage", SubResource("AnimationNodeStateMachineTransition_imftj"), "Idle", "TakingDamage", SubResource("AnimationNodeStateMachineTransition_voeoh"), "TakingDamage", "ThrowSpear", SubResource("AnimationNodeStateMachineTransition_2nps6"), "TakingDamage", "Idle", SubResource("AnimationNodeStateMachineTransition_lhq57"), "TakingDamage", "Charge", SubResource("AnimationNodeStateMachineTransition_06so8"), "Charge", "ChargeEnd", SubResource("AnimationNodeStateMachineTransition_73sr8"), "ChargeEnd", "TakingDamage", SubResource("AnimationNodeStateMachineTransition_j0n7u"), "ChargeEnd", "Idle", SubResource("AnimationNodeStateMachineTransition_2iwtd"), "Charge", "TakingDamage", SubResource("AnimationNodeStateMachineTransition_5mecn")]
+graph_offset = Vector2(64, 56)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0007i"]
 size = Vector2(27, 30)
@@ -583,7 +746,7 @@ script = ExtResource("1_rwgyn")
 CHANGE_DIRECTION_VELOCITY_TIMER = NodePath("ChangeDirectionVelocityTimer")
 ATTACK_COOLDOWN_TIMER = NodePath("AttackCooldownTimer")
 MOVE_SPEED = 40.0
-CHARGE_SPEED = 60.0
+CHARGE_SPEED = 125.0
 MIN_DISTANCE = 10000.0
 MAX_DISTANCE = 40000.0
 CHANGE_DIRECTION_VELOCITY_TIMER_DEFAULT_WAITIME = 2.0
@@ -614,6 +777,7 @@ libraries = {
 process_mode = 3
 tree_root = SubResource("AnimationNodeStateMachine_djrk7")
 anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/endedCharge = false
 parameters/conditions/isCharge = false
 parameters/conditions/isDead = false
 parameters/conditions/isOnGround = false
@@ -642,7 +806,9 @@ shape = SubResource("RectangleShape2D_0007i")
 
 [node name="EnemyHealthBar" parent="." instance=ExtResource("4_cf7dn")]
 offset_left = -8.0
+offset_top = -21.0
 offset_right = 54.0
+offset_bottom = -9.0
 
 [node name="Hitbox" parent="." instance=ExtResource("5_l28xd")]
 collision_layer = 0

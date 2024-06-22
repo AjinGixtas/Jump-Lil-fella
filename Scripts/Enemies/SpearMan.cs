@@ -25,7 +25,7 @@ public partial class SpearMan : Enemy
         SPRITE.FlipH = GlobalPosition.X < PLAYER.Position.X;
         if (isDead)
         {
-            Velocity += GRAVITY_VECTOR;
+            Velocity += GRAVITY_VECTOR * (float)delta;
             if (IsOnFloor())
                 ANIMATION_TREE.Set("parameters/conditions/isOnGround", true);
         }
@@ -90,6 +90,7 @@ public partial class SpearMan : Enemy
         ANIMATION_TREE.Set("parameters/conditions/isWaiting", true);
         ANIMATION_TREE.Set("parameters/conditions/isThrowspear", false);
         ANIMATION_TREE.Set("parameters/conditions/isCharge", false);
+        ANIMATION_TREE.Set("parameters/conditions/endedCharge", true);
         isCharging = false;
     }
     bool isDead;

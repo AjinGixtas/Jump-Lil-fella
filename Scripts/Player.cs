@@ -24,7 +24,7 @@ public partial class Player : CharacterBody2D
 		get { return isDashing; }
 		set
 		{
-			if (isDashing && !value) { velocity = velocity.Normalized() * JUMP_FORCE / 2f; GD.Print(velocity, velocity.Normalized(), velocity.Normalized() * JUMP_FORCE); }
+			if (isDashing && !value) { velocity = velocity.Normalized() * JUMP_FORCE / 2f; }
 			isDashing = value;
 		}
 	}
@@ -58,7 +58,7 @@ public partial class Player : CharacterBody2D
 			ANIMATION_TREE.Set("parameters/conditions/isOnSurface", true);
 			ANIMATION_TREE.Set("parameters/conditions/isFloating", false);
 			CurrentStamina = 3;
-			if (c_collision != null) velocity = -c_collision.GetNormal() * 100;
+			if (c_collision != null) velocity = -c_collision.GetNormal() * 120;
 			surfaceCurrentlyInContact = value;
 			affectByGravity = false;
 			ANIMATION_TREE.Set("parameters/Attack/ThrowThing/blend_position", velocity);
@@ -95,7 +95,6 @@ public partial class Player : CharacterBody2D
 	public override void _Process(double delta)
 	{
 		HandlePlayerInput();
-		// GD.Print(ANIMATION_TREE.Get("parameters/conditions/isAttacking"), ANIMATION_TREE.Get("parameters/conditions/isFloating"), ANIMATION_TREE.Get("parameters/conditions/isJumping"), ANIMATION_TREE.Get("parameters/conditions/isOnSurface"), ANIMATION_TREE.Get("parameters/Attack/conditions/dash"), ANIMATION_TREE.Get("parameters/Attack/conditions/throwThing"), ANIMATION_TREE.Get("parameters/Attack/conditions/whirlwindAttack"));
 	}
 	public override void _PhysicsProcess(double delta)
 	{
@@ -122,7 +121,7 @@ public partial class Player : CharacterBody2D
 				else if (SurfaceCurrentlyInContact == SurfaceType.WALL_LEFT) { c_direction = new(Mathf.Max(0, c_direction.X), c_direction.Y); }
 				else if (SurfaceCurrentlyInContact == SurfaceType.WALL_RIGHT) { c_direction = new(Mathf.Min(0, c_direction.X), c_direction.Y); }
 				c_direction = c_direction.Normalized() * JUMP_FORCE;
-				for (int i = 0; i < AMOUNT_OF_TRAJECTORY_POINT; ++i) { TRAJECTORY_POINTS[i].Update(Position, canSlide, c_direction, i * .75f, FRICTION_FACTOR); }
+				for (int i = 0; i < AMOUNT_OF_TRAJECTORY_POINT; ++i) { TRAJECTORY_POINTS[i].Update(Position, canSlide, c_direction, i * .05f, FRICTION_FACTOR); }
 				return;
 			}
 			else
@@ -218,7 +217,6 @@ public partial class Player : CharacterBody2D
 		else if (SurfaceCurrentlyInContact == SurfaceType.WALL_LEFT) { c_direction = new(Mathf.Max(0, c_direction.X), c_direction.Y); }
 		else if (SurfaceCurrentlyInContact == SurfaceType.WALL_RIGHT) { c_direction = new(Mathf.Min(0, c_direction.X), c_direction.Y); }
 		velocity = c_direction.Normalized() * JUMP_FORCE;
-		GD.Print(c_direction.Normalized(), ' ', JUMP_FORCE, ' ', velocity);
 	}
 	void WhirlwindAttack()
 	{

@@ -25,9 +25,14 @@ public partial class SawBlade : CharacterBody2D
 	public void Intialize(Vector2 direction, Vector2 inheritedMomentum) { Velocity = direction.Normalized() * FLYING_SPEED + inheritedMomentum; }
 	Node2D c_collisionNode; KinematicCollision2D c_collision;
 	Vector2 oldNormal = Vector2.Zero; bool affectByGravity = true;
-	float stopDuration;
+	float stopDuration, liveDuration = 1;
 	public override void _PhysicsProcess(double delta)
 	{
+		liveDuration -= (float)delta;
+		if (liveDuration <= 0)
+		{
+			ANIMATION_TREE.Set("parameters/conditions/isDestroy", true);
+		}
 		if (affectByGravity) Velocity = new(Velocity.X, Velocity.Y + GRAVITY * (float)delta);
 		if (stopDuration <= 0)
 		{
@@ -58,11 +63,11 @@ public partial class SawBlade : CharacterBody2D
 	}
 	public void OnLifetimeTimerTimeout()
 	{
-		ANIMATION_TREE.Set("parameters/conditions/isDestroy", true);
 	}
 	public void OnDealingDamage()
 	{
 		ANIMATION_TREE.Set("parameters/conditions/isAttacking", true);
 		stopDuration = .33f;
+		liveDuration += .2f;
 	}
 }

@@ -290,11 +290,6 @@ parameters/conditions/isAttacking = false
 parameters/conditions/isDestroy = false
 parameters/conditions/isOnSurface = false
 
-[node name="LifetimeTimer" type="Timer" parent="."]
-wait_time = 3.0
-one_shot = true
-autostart = true
-
 [node name="Hitbox" parent="." instance=ExtResource("3_mceuo")]
 collision_layer = 0
 collision_mask = 4
@@ -303,5 +298,4 @@ damage = 0.5
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 shape = SubResource("CircleShape2D_21x2l")
 
-[connection signal="timeout" from="LifetimeTimer" to="." method="OnLifetimeTimerTimeout"]
 [connection signal="OnDealingDamage" from="Hitbox" to="." method="OnDealingDamage"]

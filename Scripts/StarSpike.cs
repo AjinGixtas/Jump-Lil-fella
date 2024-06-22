@@ -5,12 +5,12 @@ public partial class StarSpike : CharacterBody2D
 	[Export] AnimationTree ANIMATION_TREE;
 	[Export] Timer FUSE_TIMER;
 	[Export] float SPEED;
-	[Export] float MAX_HEALTH;
-	[Export] float currentHealth;
+	[Export] float MAX_HEALTH, DAMAGE_ON_HIT;
+	float currentHealth;
 	float CurrentHealth { 
 		get { return currentHealth; } 
 		set { 
-			currentHealth = value;
+			currentHealth = Mathf.Min(MAX_HEALTH, value);
 			if(currentHealth <= 0) { ANIMATION_TREE.Set("parameters/conditions/isDestroyed", true); } 
 		} 
 	}
@@ -31,5 +31,5 @@ public partial class StarSpike : CharacterBody2D
 		}
 	}
 	public void OnFuseTimerTimeout() { ANIMATION_TREE.Set("parameters/conditions/isStopped", true); isMoving = false; }
-	public void OnDealingDamage() { CurrentHealth -= .33f; ANIMATION_TREE.Set("parameters/conditions/isAttacking", true); }
+	public void OnDealingDamage() { CurrentHealth -= DAMAGE_ON_HIT; ANIMATION_TREE.Set("parameters/conditions/isAttacking", true); }
 }

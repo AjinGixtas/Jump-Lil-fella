@@ -13,7 +13,7 @@ public partial class Swordman : Enemy
 		if(!isCharging) SPRITE.FlipH = GlobalPosition.X < PLAYER.Position.X;
 		if (isDead)
 		{
-			Velocity += GRAVITY_VECTOR;
+			Velocity += GRAVITY_VECTOR * (float)delta;
 			if (IsOnFloor())
 				ANIMATION_TREE.Set("parameters/conditions/isOnGround", true);
 		}

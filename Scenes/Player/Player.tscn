@@ -831,7 +831,7 @@ size = Vector2(12, 28)
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("SMALL_DAGGER_BAR", "BIG_DAGGER_BAR", "SAW_BLADE_BAR", "SPIKE_STAR_BAR", "TRAJECTORY_POINTS", "DAGGER_SPAWN_POINTS_CONTAINER", "DAGGER_SPAWN_POINTS", "ANIMATION_PLAYER", "ANIMATION_TREE", "SPRITE") groups=["Player"]]
 collision_layer = 0
 script = ExtResource("1_kg7dr")
-JUMP_FORCE = 500.0
+JUMP_FORCE = 444.0
 MAX_STAMINA = 3.0
 FRICTION_FACTOR = 0.97
 DASH_FORCE = 2000.0
