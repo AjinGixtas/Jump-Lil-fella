@@ -94,8 +94,9 @@ public partial class SpearMan : Enemy
         isCharging = false;
     }
     bool isDead;
-    public void OnDeath()
+    public override void OnDeath()
     {
+		base.OnDeath();
         ANIMATION_TREE.Set("parameters/conditions/isDead", true);
         isDead = true;
     }

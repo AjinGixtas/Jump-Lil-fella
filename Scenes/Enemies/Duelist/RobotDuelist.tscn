@@ -708,5 +708,5 @@ shape = SubResource("RectangleShape2D_8beqi")
 
 [connection signal="timeout" from="JumpCooldownTimer" to="." method="OnJumpCooldownTimerTimeout"]
 [connection signal="timeout" from="AttackCooldownTimer" to="." method="OnAttackCooldownTimerTimeout"]
-[connection signal="Dead" from="Hurtbox" to="." method="OnDead"]
+[connection signal="Dead" from="Hurtbox" to="." method="OnDeath"]
 [connection signal="OnTakingDamage" from="Hurtbox" to="." method="OnTakingDamage"]

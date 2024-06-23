@@ -402,5 +402,5 @@ offset_top = -15.0
 offset_right = 49.0
 offset_bottom = -3.0
 
-[connection signal="Dead" from="Hurtbox" to="." method="OnDead"]
+[connection signal="Dead" from="Hurtbox" to="." method="OnDeath"]
 [connection signal="OnTakingDamage" from="Hurtbox" to="." method="OnTakingDamage"]

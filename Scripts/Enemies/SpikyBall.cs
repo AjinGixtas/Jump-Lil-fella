@@ -14,7 +14,8 @@ public partial class SpikyBall : Enemy
 		}
 		ANIMATION_TREE.Set("parameters/conditions/isTakingDamage", true);
 	}
-	public void OnDead() {
+	public override void OnDeath() {
+		base.OnDeath();
 		ANIMATION_TREE.Set("parameters/conditions/isDead", true);
 	}
 }

@@ -30,6 +30,7 @@ public partial class Dagger : CharacterBody2D
 	}
 	public void OnDealingDamage() {
 		amoutOfTarget--;
-		if(amoutOfTarget == 0) QueueFree();
+		if(amoutOfTarget == 0) ANIMATION_PLAYER.Play("Destroy");
 	}
+	public void OnDestroy() { QueueFree(); }
 }

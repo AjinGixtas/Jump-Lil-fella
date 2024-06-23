@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0k8lbg3xfgl7"]
+
+[ext_resource type="Texture2D" uid="uid://dmrmnk0gcl38q" path="res://Sprites/Tile.png" id="1_ia35l"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_irh0j"]
+
+[node name="Wall" type="StaticBody2D" groups=["Wall"]]
+z_as_relative = false
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("WorldBoundaryShape2D_irh0j")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+offset_left = -320.0
+offset_right = 320.0
+offset_bottom = 128.0
+texture = ExtResource("1_ia35l")
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2

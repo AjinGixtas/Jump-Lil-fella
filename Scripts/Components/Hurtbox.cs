@@ -12,7 +12,7 @@ public partial class Hurtbox : Area2D
 		set
 		{
 			currentHealth = value;
-			HEALTH_BAR.VALUE_BAR.Value = value;
+			if(HEALTH_BAR != null) HEALTH_BAR.VALUE_BAR.Value = value;
 			if (currentHealth <= 0)
 			{
 				EmitSignal(SignalName.Dead);
@@ -62,7 +62,7 @@ public partial class Hurtbox : Area2D
 	public override void _Ready()
 	{
 		CURRENT_HEALTH = MAX_HEALTH;
-		HEALTH_BAR.Intialize(MAX_HEALTH);
+		if(HEALTH_BAR != null) HEALTH_BAR.Intialize(MAX_HEALTH);
 		if (MAX_SHIELD > 0)
 		{
 			CURRENT_SHIELD = MAX_SHIELD; SHIELD_BAR.Intialize(MAX_SHIELD);

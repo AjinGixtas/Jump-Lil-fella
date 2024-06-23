@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://bpsp21lh2suvu"]
 
-[ext_resource type="PackedScene" uid="uid://b0k8lbg3xfgl7" path="res://Scenes/Wall.tscn" id="1_y4sgl"]
+[ext_resource type="PackedScene" uid="uid://b0k8lbg3xfgl7" path="res://Scenes/Levels/Wall.tscn" id="1_y4sgl"]
 [ext_resource type="PackedScene" uid="uid://d38w3kvjpff8u" path="res://Scenes/Player/Player.tscn" id="2_oc2s3"]
 [ext_resource type="Script" path="res://Scripts/Enemies/EnemiesManager.cs" id="3_hcwis"]
-[ext_resource type="PackedScene" uid="uid://c5e88yn3h3gtq" path="res://Scenes/Enemies/LaserMenace.tscn" id="5_ok8hd"]
+[ext_resource type="PackedScene" uid="uid://c5e88yn3h3gtq" path="res://Scenes/Enemies/LaserMenace/LaserMenace.tscn" id="5_ok8hd"]
 [ext_resource type="PackedScene" uid="uid://ddupre33i4kmg" path="res://Scenes/Enemies/SpearMan/SpearMan.tscn" id="7_ulh5o"]
 
 [node name="Node2D" type="Node2D"]
@@ -17,22 +17,22 @@ script = ExtResource("3_hcwis")
 enemies = [null]
 
 [node name="Camera2D" type="Camera2D" parent="GenericContainer"]
-zoom = Vector2(2.5, 2.5)
+zoom = Vector2(2, 2)
 
 [node name="Wall" parent="GenericContainer" groups=["Ceiling"] instance=ExtResource("1_y4sgl")]
-position = Vector2(0, -117)
+position = Vector2(0, -160)
 rotation = 3.14159
 
 [node name="Wall2" parent="GenericContainer" groups=["WallRight"] instance=ExtResource("1_y4sgl")]
-position = Vector2(218, 0)
+position = Vector2(256, 0)
 rotation = -1.5708
 
 [node name="Wall3" parent="GenericContainer" groups=["WallLeft"] instance=ExtResource("1_y4sgl")]
-position = Vector2(-218, 4)
+position = Vector2(-256, 0)
 rotation = 1.5708
 
 [node name="Wall4" parent="GenericContainer" groups=["Floor"] instance=ExtResource("1_y4sgl")]
-position = Vector2(0, 117)
+position = Vector2(0, 160)
 
 [node name="Player" parent="." node_paths=PackedStringArray("TRAJECTORY_POINT_CONTAINER", "PROJECTILE_CONTAINER", "ENEMIES_MANAGER") instance=ExtResource("2_oc2s3")]
 position = Vector2(88, 66)
@@ -43,3 +43,14 @@ ENEMIES_MANAGER = NodePath("../GenericContainer/EnemiesManager")
 [node name="SpearMan" parent="." instance=ExtResource("7_ulh5o")]
 
 [node name="LaserMenace" parent="." instance=ExtResource("5_ok8hd")]
+position = Vector2(-66, 6)
+
+[node name="LaserMenace2" parent="." instance=ExtResource("5_ok8hd")]
+
+[node name="LaserMenace3" parent="." instance=ExtResource("5_ok8hd")]
+
+[node name="LaserMenace4" parent="." instance=ExtResource("5_ok8hd")]
+
+[node name="LaserMenace5" parent="." instance=ExtResource("5_ok8hd")]
+
+[node name="LaserMenace6" parent="." instance=ExtResource("5_ok8hd")]

@@ -220,7 +220,7 @@ public partial class Player : CharacterBody2D
 	}
 	void WhirlwindAttack()
 	{
-		velocity = new(velocity.X, Mathf.Min(velocity.Y, -velocity.Y));
+		velocity = new(velocity.X, -Mathf.Abs(velocity.Y));
 	}
 	Dagger c_daggerInstance;
 	void ThrowDagger(bool isThrowingSmallDagger)
@@ -273,5 +273,11 @@ public partial class Player : CharacterBody2D
 		else if (SurfaceCurrentlyInContact == SurfaceType.WALL_LEFT) { c_direction = new(Mathf.Max(0, c_direction.X), c_direction.Y); }
 		else if (SurfaceCurrentlyInContact == SurfaceType.WALL_RIGHT) { c_direction = new(Mathf.Min(0, c_direction.X), c_direction.Y); }
 		velocity = c_direction.Normalized() * DASH_FORCE;
+	}
+	public void RestoreWeaponCharge(int amount) {
+		if(SPIKE_STAR_BAR.Value != SPIKE_STAR_BAR.MaxValue) { SPIKE_STAR_BAR.Value += amount; }
+		else if(BIG_DAGGER_BAR.Value != BIG_DAGGER_BAR.MaxValue) { BIG_DAGGER_BAR.Value += amount; }
+		else if(SAW_BLADE_BAR.Value != SAW_BLADE_BAR.MaxValue) { SAW_BLADE_BAR.Value += amount; }
+		else { SMALL_DAGGER_BAR.Value += amount; }
 	}
 }

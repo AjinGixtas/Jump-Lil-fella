@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://c8nkv8qusfhay"]
+[gd_scene load_steps=11 format=3 uid="uid://c8nkv8qusfhay"]
 
 [ext_resource type="Script" path="res://Scripts/Spear.cs" id="1_ft4yi"]
 [ext_resource type="Texture2D" uid="uid://betdn0euj1ov8" path="res://Sprites/Spear.png" id="1_ur5nf"]
 [ext_resource type="PackedScene" uid="uid://cbo517a5hki3f" path="res://Scenes/Components/Hitbox.tscn" id="2_qjaqr"]
+[ext_resource type="PackedScene" uid="uid://dnejbk4onyjfd" path="res://Scenes/Components/Hurtbox.tscn" id="4_k0gcb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wqogt"]
 size = Vector2(6, 4)
@@ -64,6 +65,9 @@ _data = {
 "StuckToWall": SubResource("Animation_7cggk")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xv5da"]
+size = Vector2(54, 6)
+
 [node name="Spear" type="CharacterBody2D" node_paths=PackedStringArray("ANIMATION_PLAYER")]
 collision_layer = 0
 script = ExtResource("1_ft4yi")
@@ -92,3 +96,13 @@ shape = SubResource("RectangleShape2D_m6vrq")
 libraries = {
 "": SubResource("AnimationLibrary_71w0y")
 }
+
+[node name="Hurtbox" parent="." instance=ExtResource("4_k0gcb")]
+collision_layer = 4
+collision_mask = 0
+MAX_HEALTH = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("RectangleShape2D_xv5da")
+
+[connection signal="Dead" from="Hurtbox" to="." method="OnDestroy"]

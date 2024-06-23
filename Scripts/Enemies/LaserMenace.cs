@@ -62,7 +62,7 @@ public partial class LaserMenace : Enemy
 				else
 				{
 					oldNormal = c_collision.GetNormal();
-					if (Vector2Extensions.GetPerpendicularVector(oldNormal).Dot(GlobalPosition - PLAYER.GlobalPosition) >= 0)
+					if (GlobalPosition.X < 0)
 					{ Velocity = Vector2Extensions.GetPerpendicularVector(oldNormal); SPRITE.FlipH = true; }
 					else { Velocity = Vector2Extensions.GetOppositePerpendicularVector(oldNormal); }
 				}
@@ -107,7 +107,19 @@ public partial class LaserMenace : Enemy
 	public void OnTakingDamage(Area2D area) {
 		ANIMATION_TREE.Set("parameters/conditions/isTakingDamage", true);
 	}
-	public void OnDeath() {
-		ANIMATION_TREE.Set("parameters/conditions/isDeath", true);
+	public override void OnDeath() {
+		base.OnDeath();
+		ANIMATION_TREE.Set("parameters/conditions/isDead", true);
+	}
+	[Export] PackedScene LASER_SCENE;
+	[Export] Node2D LASER_SPAWN_POINT;
+	Dagger c_laser; // Dagger behave by moving with an intial velocity and choose to be affected by gravity or not
+	// It's weird to have the dagger class in a laser attack but uhmmm... deal with it :)
+	public void ShootLaser() {
+		c_laser = LASER_SCENE.Instantiate<Dagger>();
+		PROJECTILE_CONTAINER.AddChild(c_laser);
+		c_laser.GlobalPosition = LASER_SPAWN_POINT.GlobalPosition;
+		c_laser.LookAt(PLAYER.GlobalPosition);
+		c_laser.Intialize(PLAYER.GlobalPosition - c_laser.GlobalPosition);
 	}
 }

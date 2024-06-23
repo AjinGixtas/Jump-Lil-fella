@@ -19,4 +19,5 @@ public partial class Spear : CharacterBody2D
 			ANIMATION_PLAYER.Play("StuckToWall");
 		}
 	}
+	public void OnDestroy() { QueueFree(); }
 }

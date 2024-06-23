@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://cbo517a5hki3f" path="res://Scenes/Components/Hitbox.tscn" id="3_2apdc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_aq3yh"]
-radius = 20.0
 
 [sub_resource type="Animation" id="Animation_aq8f6"]
 resource_name = "Attack"

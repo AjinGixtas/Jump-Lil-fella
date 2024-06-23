@@ -51,8 +51,9 @@ public partial class Swordman : Enemy
 	}
 	public void OnChangeDirectionVelocityTimerTimeout()
 	{ randomDirection = Vector2Extensions.GetRandomVector() * MOVE_SPEED; }
-    public void OnDeath()
+    public override void OnDeath()
     {
+		base.OnDeath();
         ANIMATION_TREE.Set("parameters/conditions/isDead", true);
         isDead = true;
     }

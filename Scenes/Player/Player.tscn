@@ -47,7 +47,7 @@ color = Color(0, 0, 0, 1)
 alpha_curve = SubResource("CurveTexture_qcswy")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e05sv"]
-size = Vector2(20, 36)
+size = Vector2(64, 64)
 
 [sub_resource type="Animation" id="Animation_t0px0"]
 resource_name = "Dash"
@@ -622,6 +622,18 @@ tracks/0/keys = {
 "update": 1,
 "values": [Vector2i(0, 7), Vector2i(1, 7), Vector2i(2, 7), Vector2i(3, 7), Vector2i(4, 7), Vector2i(5, 7), Vector2i(6, 7)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D/DashRelatedStuff/Hitbox/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_rqa5f"]
 _data = {
@@ -851,6 +863,8 @@ DAGGER_SPAWN_POINTS = [NodePath("DaggerSpawnPointContainer/DaggerSpawnPoint0"), 
 ANIMATION_PLAYER = NodePath("AnimationPlayer")
 ANIMATION_TREE = NodePath("AnimationTree")
 SPRITE = NodePath("Sprite2D")
+MAX_WHIRLWIND_CHARGE = 3
+MAX_DASH_CHARGE = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -1)
@@ -1065,8 +1079,8 @@ position = Vector2(2.2, 0)
 
 [node name="DaggerSpawnPoint1" type="Node2D" parent="DaggerSpawnPointContainer"]
 position = Vector2(2, -0.6)
-rotation = -0.261799
+rotation = -0.418879
 
 [node name="DaggerSpawnPoint2" type="Node2D" parent="DaggerSpawnPointContainer"]
 position = Vector2(2, 0.6)
-rotation = 0.261799
+rotation = 0.418879

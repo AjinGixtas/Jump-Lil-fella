@@ -14,7 +14,7 @@ public partial class RobotDuelist : Enemy
 		{
 			Velocity = value;
 			if (value.X != 0 && !isAttacking) SPRITE.FlipH = value.X > 0;
-			else if(isAttacking) SPRITE.FlipH = PLAYER.Position.X > Position.X;
+			else if (isAttacking) SPRITE.FlipH = PLAYER.Position.X > Position.X;
 			ANIMATION_TREE.Set("parameters/FloatMidAir/blend_position", Velocity.Normalized());
 			ANIMATION_TREE.Set("parameters/GrabSurface/blend_position", Velocity.Normalized());
 			ANIMATION_TREE.Set("parameters/LandOnSurface/blend_position", Velocity.Normalized());
@@ -45,7 +45,7 @@ public partial class RobotDuelist : Enemy
 	public override void _Process(double delta)
 	{
 		if (canAttack && SurfaceCurrentlyInContact == SurfaceType.NONE && Mathf.Abs(Velocity.Y) < 2) { ANIMATION_TREE.Set("parameters/conditions/isAttacking", true); canAttack = false; ATTACK_COOLDOWN_TIMER.Start(); }
-		if(canJump) Jump();
+		if (canJump) Jump();
 	}
 	float deltaF;
 	public override void _PhysicsProcess(double delta)
@@ -84,5 +84,11 @@ public partial class RobotDuelist : Enemy
 	public void OnJumpCooldownTimerTimeout() { canJump = true; }
 	public void OnAttackCooldownTimerTimeout() { canAttack = true; }
 	public void OnTakingDamage(Area2D area) { ANIMATION_TREE.Set("parameters/conditions/isTakingDamage", true); }
-	public void OnDead() {surfaceCurrentlyInContact = SurfaceType.NONE; Velocity = Vector2.Zero; ANIMATION_TREE.Set("parameters/conditions/isDead", true); }
+	public override void OnDeath()
+	{
+		base.OnDeath();
+		surfaceCurrentlyInContact = SurfaceType.NONE; 
+		Velocity = Vector2.Zero; 
+		ANIMATION_TREE.Set("parameters/conditions/isDead", true);
+	}
 }
