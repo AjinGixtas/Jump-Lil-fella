@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Frog_Ninja_Retried"
+config/name="Jumpy_Lil_Guy"
 run/main_scene="res://Scenes/Levels/Menu.tscn"
 config/features=PackedStringArray("4.2", "C#", "Mobile")
 config/icon="res://Sprites/icon.svg"
